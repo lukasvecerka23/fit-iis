@@ -6,6 +6,10 @@ public record DeviceEntity : IEntity
     public required string UserAlias { get; set; }
     public string? Description { get; set; }
 
+    public required Guid CreatorId { get; set; }
+    public required Guid SystemId { get; set; }
+    public required Guid DeviceTypeId { get; set; }
+    
     public UserEntity? Creator { get; init; }
     public SystemEntity? System { get; init; }
     public DeviceTypeEntity? DeviceType { get; init; }

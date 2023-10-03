@@ -6,7 +6,7 @@ public record RoleOfUserEntity : IEntity
 
     public required Guid UserId { get; set; }
     public required Guid RoleId { get; set; }
-
+    
     public UserEntity? User { get; init; }
     public RoleEntity? Role { get; init; }
 }
