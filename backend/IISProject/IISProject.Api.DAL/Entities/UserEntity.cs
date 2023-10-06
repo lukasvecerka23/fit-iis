@@ -13,4 +13,5 @@ public record UserEntity : IEntity
     public ICollection<DeviceEntity> Devices { get; set; } = new List<DeviceEntity>();
     public ICollection<MeasurementEntity> Measurements { get; set; } = new List<MeasurementEntity>();
     public ICollection<KpiEntity> Kpis { get; set; } = new List<KpiEntity>();
+    public ICollection<SystemEntity> Systems { get; set; } = new List<SystemEntity>();
 }
