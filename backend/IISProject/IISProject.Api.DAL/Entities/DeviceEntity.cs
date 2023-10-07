@@ -2,13 +2,13 @@
 
 public record DeviceEntity : IEntity
 {
-    public required Guid Id { get; set; } // Id nebo Designation?
+    public required Guid Id { get; set; }
     public required string UserAlias { get; set; }
     public string? Description { get; set; }
 
-    public required Guid CreatorId { get; set; }
-    public required Guid SystemId { get; set; }
-    public required Guid DeviceTypeId { get; set; }
+    public Guid? CreatorId { get; set; }
+    public Guid? SystemId { get; set; }
+    public Guid? DeviceTypeId { get; set; }
     
     public UserEntity? Creator { get; init; }
     public SystemEntity? System { get; init; }

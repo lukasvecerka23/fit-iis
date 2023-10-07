@@ -7,7 +7,7 @@ public record MeasurementEntity : IEntity
     public required DateTime TimeStamp { get; set; }
 
     public required Guid DeviceId { get; set; }
-    public required Guid CreatorId { get; set; }
+    public Guid? CreatorId { get; set; }
     public required Guid ParameterId { get; set; }
     
     public DeviceEntity? Device { get; init; }
