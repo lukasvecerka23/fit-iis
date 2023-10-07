@@ -5,7 +5,7 @@ using IISProject.Api.BL.Models.UserInSystem;
 
 namespace IISProject.Api.BL.Models.User;
 
-public record UserDetailModel
+public record UserDetailModel: IModel
 {
     public Guid Id { get; set; }
     public required string Name { get; set; }
