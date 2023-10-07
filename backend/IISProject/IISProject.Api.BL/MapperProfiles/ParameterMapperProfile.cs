@@ -13,8 +13,10 @@ public class ParameterMapperProfile: Profile
         
         CreateMap<ParameterEntity, ParameterDetailModel>()
             .MapMember(src => src.Kpis, dst => dst.Kpis);
-        
+
         CreateMap<ParameterDetailModel, ParameterEntity>()
-            .Ignore(src=> src.Kpis);
+            .Ignore(dst => dst.Kpis)
+            .Ignore(dst => dst.DeviceType)
+            .Ignore(dst => dst.Measurements);
     }
 }

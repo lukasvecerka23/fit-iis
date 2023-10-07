@@ -21,6 +21,8 @@ public class UserMapperProfile: Profile
             .Ignore(dst => dst.Devices)
             .Ignore(dst => dst.Roles)
             .Ignore(dst => dst.Kpis)
-            .Ignore(dst => dst.UserInSystems);
+            .Ignore(dst => dst.UserInSystems)
+            .Ignore(dst => dst.Measurements);
+
     }
 }

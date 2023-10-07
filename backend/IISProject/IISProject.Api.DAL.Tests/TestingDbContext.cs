@@ -1,4 +1,4 @@
-using IISProject.Api.Common.Seeds;
+using IISProject.Api.DAL.Tests.Seeds;
 using Microsoft.EntityFrameworkCore;
 
 namespace IISProject.Api.DAL.Tests;

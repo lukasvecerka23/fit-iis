@@ -1,7 +1,7 @@
 using IISProject.Api.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace IISProject.Api.Common.Seeds;
+namespace IISProject.Api.DAL.Tests.Seeds;
 
 public static class RoleSeeds
 {
