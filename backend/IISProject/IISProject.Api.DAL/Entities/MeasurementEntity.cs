@@ -1,4 +1,6 @@
-﻿namespace IISProject.Api.DAL.Entities;
+﻿using AutoMapper;
+
+namespace IISProject.Api.DAL.Entities;
 
 public record MeasurementEntity : IEntity
 {
@@ -13,4 +15,12 @@ public record MeasurementEntity : IEntity
     public DeviceEntity? Device { get; init; }
     public UserEntity? Creator { get; init; }
     public ParameterEntity? Parameter { get; init; }
+    
+    public class MeasurementEntityProfile : Profile
+    {
+        public MeasurementEntityProfile()
+        {
+            CreateMap<MeasurementEntity, MeasurementEntity>();
+        }
+    }
 }

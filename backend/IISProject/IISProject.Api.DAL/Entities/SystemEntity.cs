@@ -1,4 +1,6 @@
-﻿namespace IISProject.Api.DAL.Entities;
+﻿using AutoMapper;
+
+namespace IISProject.Api.DAL.Entities;
 
 public record SystemEntity : IEntity
 {
@@ -12,4 +14,11 @@ public record SystemEntity : IEntity
     public ICollection<UserInSystemEntity> UsersInSystem { get; set; } = new List<UserInSystemEntity>();
     public ICollection<DeviceEntity> Devices { get; set; } = new List<DeviceEntity>();
 
+    public class SystemEntityProfile : Profile
+    {
+        public SystemEntityProfile()
+        {
+            CreateMap<SystemEntity, SystemEntity>();
+        }
+    }
 }
