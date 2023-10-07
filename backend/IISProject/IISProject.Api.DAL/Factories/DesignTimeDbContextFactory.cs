@@ -4,12 +4,12 @@ using Microsoft.Extensions.Configuration;
 
 namespace IISProject.Api.DAL.Factories;
 
-public class IISProjectDbContextFactory: IDesignTimeDbContextFactory<IISProjectDbContext>
+public class DesignTimeDbContextFactory: IDesignTimeDbContextFactory<IISProjectDbContext>
 {
     public IISProjectDbContext CreateDbContext(string[] args)
     {
         var configuration = new ConfigurationBuilder()
-            .AddUserSecrets<IISProjectDbContextFactory>(optional: true)
+            .AddUserSecrets<DesignTimeDbContextFactory>(optional: true)
             .Build();
         
         var optionsBuilder = new DbContextOptionsBuilder<IISProjectDbContext>();
