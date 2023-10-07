@@ -5,10 +5,12 @@ namespace IISProject.Api.DAL;
 
 public class IISProjectDbContext : DbContext
 {
-    public IISProjectDbContext(DbContextOptions contextOptions)
+    private readonly bool _seedDemoData;
+
+    public IISProjectDbContext(DbContextOptions contextOptions, bool seedDemoData = false)
         : base(contextOptions)
     {
-        
+        _seedDemoData = seedDemoData;       
     }
     
     public DbSet<DeviceEntity> Devices => Set<DeviceEntity>();
@@ -95,6 +97,11 @@ public class IISProjectDbContext : DbContext
                 .WithOne(i => i.User)
                 .OnDelete(DeleteBehavior.Cascade);
         });
+
+        if (_seedDemoData)
+        {
+            // TODO: seed demo data
+        }
         
     }
 }
