@@ -1,4 +1,5 @@
-﻿using IISProject.Api.DAL.Entities;
+﻿using IISProject.Api.DAL.Seeds;
+using IISProject.Api.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace IISProject.Api.DAL;
@@ -100,7 +101,16 @@ public class IISProjectDbContext : DbContext
 
         if (_seedDemoData)
         {
-            // TODO: seed demo data
+            DeviceSeeds.Seed(modelBuilder);
+            DeviceTypeSeeds.Seed(modelBuilder);
+            KpiSeeds.Seed(modelBuilder);
+            MeasurementSeeds.Seed(modelBuilder);
+            ParameterSeeds.Seed(modelBuilder);
+            RoleSeeds.Seed(modelBuilder);
+            RoleOfUserSeeds.Seed(modelBuilder);
+            SystemSeeds.Seed(modelBuilder);
+            UserSeeds.Seed(modelBuilder);
+            UserInSystemSeeds.Seed(modelBuilder);
         }
         
     }
