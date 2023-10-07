@@ -35,7 +35,6 @@ public class IISProjectDbContext : DbContext
             entity.HasMany(i => i.Kpis)
                 .WithOne(i => i.Device)
                 .OnDelete(DeleteBehavior.Cascade);
-
         });
 
         modelBuilder.Entity<DeviceTypeEntity>(entity =>
@@ -46,7 +45,7 @@ public class IISProjectDbContext : DbContext
 
             entity.HasMany(i => i.Devices)
                 .WithOne(i => i.DeviceType)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.SetNull);
             
         });
 
@@ -72,10 +71,6 @@ public class IISProjectDbContext : DbContext
         
         modelBuilder.Entity<SystemEntity>(entity =>
         {
-            entity.HasMany(i => i.Devices)
-                .WithOne(i => i.System)
-                .OnDelete(DeleteBehavior.SetNull);
-            
             entity.HasMany(i => i.UsersInSystem)
                 .WithOne(i => i.System)
                 .OnDelete(DeleteBehavior.Cascade);
@@ -84,10 +79,6 @@ public class IISProjectDbContext : DbContext
         
         modelBuilder.Entity<UserEntity>(entity =>
         {
-            entity.HasMany(i => i.Devices)
-                .WithOne(i => i.Creator)
-                .OnDelete(DeleteBehavior.Cascade);
-            
             entity.HasMany(i => i.Measurements)
                 .WithOne(i => i.Creator)
                 .OnDelete(DeleteBehavior.SetNull);
@@ -102,10 +93,6 @@ public class IISProjectDbContext : DbContext
             
             entity.HasMany(i => i.UserInSystems)
                 .WithOne(i => i.User)
-                .OnDelete(DeleteBehavior.Cascade);
-            
-            entity.HasMany(i => i.Systems)
-                .WithOne(i => i.Creator)
                 .OnDelete(DeleteBehavior.Cascade);
         });
         
