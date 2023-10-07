@@ -1,4 +1,5 @@
 using AutoMapper;
+using IISProject.Api.BL.Extensions;
 using IISProject.Api.BL.Models.Kpi;
 using IISProject.Api.DAL.Entities;
 
@@ -10,6 +11,9 @@ public class KpiMapperProfile: Profile
     {
         CreateMap<KpiEntity, KpiListModel>();
         CreateMap<KpiEntity, KpiDetailModel>();
-        CreateMap<KpiDetailModel, KpiEntity>();
+        CreateMap<KpiDetailModel, KpiEntity>()
+            .Ignore(dst => dst.Creator)
+            .Ignore(dst => dst.Device)
+            .Ignore(dst => dst.Parameter);
     }
 }

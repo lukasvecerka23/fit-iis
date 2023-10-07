@@ -1,4 +1,5 @@
 using AutoMapper;
+using IISProject.Api.BL.Extensions;
 using IISProject.Api.BL.Models.Device;
 using IISProject.Api.DAL.Entities;
 
@@ -10,6 +11,12 @@ public class DeviceMapperProfile: Profile
     {
         CreateMap<DeviceEntity, DeviceListModel>();
         CreateMap<DeviceEntity, DeviceDetailModel>();
-        CreateMap<DeviceDetailModel, DeviceEntity>();
+        CreateMap<DeviceDetailModel, DeviceEntity>()
+            .Ignore(dst => dst.CreatorId)
+            .Ignore(dst => dst.Creator)
+            .Ignore(dst => dst.System)
+            .Ignore(dst => dst.DeviceType)
+            .Ignore(dst => dst.Measurements)
+            .Ignore(dst => dst.Kpis);
     }
 }

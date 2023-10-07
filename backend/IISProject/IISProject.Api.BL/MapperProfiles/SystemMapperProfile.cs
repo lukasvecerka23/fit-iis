@@ -15,6 +15,7 @@ public class SystemMapperProfile: Profile
             .MapMember(dst => dst.Users, src => src.UsersInSystem);
 
         CreateMap<SystemDetailModel, SystemEntity>()
+            .Ignore(dst => dst.Creator)
             .Ignore(dst => dst.Devices)
             .Ignore(dst => dst.UsersInSystem);
     }
