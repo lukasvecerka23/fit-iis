@@ -1,4 +1,6 @@
-﻿namespace IISProject.Api.DAL.Entities;
+﻿using AutoMapper;
+
+namespace IISProject.Api.DAL.Entities;
 
 public record KpiEntity : IEntity
 {
@@ -14,4 +16,11 @@ public record KpiEntity : IEntity
     public DeviceEntity? Device { get; init; }
     public ParameterEntity? Parameter { get; init; }
     
+    public class KpiEntityProfile : Profile
+    {
+        public KpiEntityProfile()
+        {
+            CreateMap<KpiEntity, KpiEntity>();
+        }
+    }
 }

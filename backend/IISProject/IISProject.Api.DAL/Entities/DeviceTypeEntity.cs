@@ -1,4 +1,6 @@
-﻿namespace IISProject.Api.DAL.Entities;
+﻿using AutoMapper;
+
+namespace IISProject.Api.DAL.Entities;
 
 public record DeviceTypeEntity : IEntity
 {
@@ -7,4 +9,12 @@ public record DeviceTypeEntity : IEntity
 
     public ICollection<DeviceEntity> Devices { get; set; } = new List<DeviceEntity>();
     public ICollection<ParameterEntity> Parameters { get; set; } = new List<ParameterEntity>();
+    
+    public class DeviceTypeEntityProfile : Profile
+    {
+        public DeviceTypeEntityProfile()
+        {
+            CreateMap<DeviceTypeEntity, DeviceTypeEntity>();
+        }
+    }
 }
