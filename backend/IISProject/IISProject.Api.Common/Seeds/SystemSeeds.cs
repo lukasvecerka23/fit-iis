@@ -10,8 +10,7 @@ public static class SystemSeeds
         Id = Guid.Parse("9BBFFF33-EDCE-45B2-A4C9-5EC0279ED808"),
         Name = "Default",
         Description = "Default system",
-        CreatorId = UserSeeds.DefaultUser.Id,
-        Creator = UserSeeds.DefaultUser
+        CreatorId = UserSeeds.DefaultUser.Id
     };
     
     public static readonly SystemEntity SystemToDelete =

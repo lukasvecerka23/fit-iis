@@ -11,11 +11,8 @@ public static class MeasurementSeeds
         Value = 10.0,
         TimeStamp = DateTime.Parse("2021-10-10T10:10:10.0000000"),
         DeviceId = DeviceSeeds.DefaultDevice.Id,
-        Device = DeviceSeeds.DefaultDevice,
         CreatorId = UserSeeds.DefaultUser.Id,
-        Creator = UserSeeds.DefaultUser,
-        ParameterId = ParameterSeeds.DefaultParameter.Id,
-        Parameter = ParameterSeeds.DefaultParameter
+        ParameterId = ParameterSeeds.DefaultParameter.Id
     };
     
     public static readonly MeasurementEntity MeasurementToDelete =

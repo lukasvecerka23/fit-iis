@@ -9,9 +9,7 @@ public static class UserInSystemSeeds
     {
         Id = Guid.Parse("E44E156A-9C07-4288-B222-ABED81FA7989"),
         UserId = UserSeeds.DefaultUser.Id,
-        SystemId = SystemSeeds.DefaultSystem.Id,
-        User = UserSeeds.DefaultUser,
-        System = SystemSeeds.DefaultSystem
+        SystemId = SystemSeeds.DefaultSystem.Id
 
     };
     

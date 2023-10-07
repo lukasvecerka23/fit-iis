@@ -9,9 +9,7 @@ public static class RoleOfUserSeeds
     {
         Id = Guid.Parse("A80FE169-3BBC-4B4F-B25E-93339A46B03F"),
         RoleId = RoleSeeds.DefaultRole.Id,
-        UserId = UserSeeds.DefaultUser.Id,
-        User = UserSeeds.DefaultUser,
-        Role = RoleSeeds.DefaultRole
+        UserId = UserSeeds.DefaultUser.Id
     };
     
     public static readonly RoleOfUserEntity RoleOfUserToDelete =

@@ -11,8 +11,7 @@ public static class ParameterSeeds
         Name = "DefaultParameter",
         LowerLimit = -10.0,
         UpperLimit = 10.0,
-        DeviceTypeId = DeviceTypeSeeds.DefaultDeviceType.Id,
-        DeviceType = DeviceTypeSeeds.DefaultDeviceType
+        DeviceTypeId = DeviceTypeSeeds.DefaultDeviceType.Id
     };
     
     public static readonly ParameterEntity ParameterToDelete =

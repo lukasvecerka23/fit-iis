@@ -11,11 +11,8 @@ public static class KpiSeeds
         Function = "Default Function",
         Error = false,
         CreatorId = UserSeeds.DefaultUser.Id,
-        Creator = UserSeeds.DefaultUser,
         DeviceId = DeviceSeeds.DefaultDevice.Id,
-        Device = DeviceSeeds.DefaultDevice,
-        ParameterId = ParameterSeeds.DefaultParameter.Id,
-        Parameter = ParameterSeeds.DefaultParameter
+        ParameterId = ParameterSeeds.DefaultParameter.Id
     };
     
     public static readonly KpiEntity KpiToDelete =

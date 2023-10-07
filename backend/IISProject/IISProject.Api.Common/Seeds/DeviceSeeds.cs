@@ -10,11 +10,8 @@ public static class DeviceSeeds
         Id = Guid.Parse("4804E24D-0D25-4C3F-9F05-74738D5A1806"),
         UserAlias = "Default Device",
         DeviceTypeId = DeviceTypeSeeds.DefaultDeviceType.Id,
-        DeviceType = DeviceTypeSeeds.DefaultDeviceType,
         CreatorId = UserSeeds.DefaultUser.Id,
-        Creator = UserSeeds.DefaultUser,
         SystemId = SystemSeeds.DefaultSystem.Id,
-        System = SystemSeeds.DefaultSystem,
         Description = "Default Device Description"
     };
 
