@@ -1,3 +1,4 @@
+using IISProject.Api.Common.Seeds;
 using Microsoft.EntityFrameworkCore;
 
 namespace IISProject.Api.DAL.Tests;
@@ -18,7 +19,16 @@ public class TestingDbContext: IISProjectDbContext
 
         if (_seedTestingData)
         {
-            // TODO: Seed testing data
+            DeviceSeeds.Seed(modelBuilder);
+            DeviceTypeSeeds.Seed(modelBuilder);
+            KpiSeeds.Seed(modelBuilder);
+            MeasurementSeeds.Seed(modelBuilder);
+            ParameterSeeds.Seed(modelBuilder);
+            RoleSeeds.Seed(modelBuilder);
+            RoleOfUserSeeds.Seed(modelBuilder);
+            SystemSeeds.Seed(modelBuilder);
+            UserSeeds.Seed(modelBuilder);
+            UserInSystemSeeds.Seed(modelBuilder);
         }
     }
 }

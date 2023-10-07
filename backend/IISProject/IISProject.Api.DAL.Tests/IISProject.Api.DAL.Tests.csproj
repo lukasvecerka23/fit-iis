@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\IISProject.Api.Common\IISProject.Api.Common.csproj" />
       <ProjectReference Include="..\IISProject.Api.DAL\IISProject.Api.DAL.csproj" />
     </ItemGroup>
 
