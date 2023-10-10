@@ -1,50 +1,50 @@
 using IISProject.Api.BL.Facades;
-using IISProject.Api.BL.Models.Device;
+using IISProject.Api.BL.Models.DeviceType;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IISProject.Controllers;
 
 [ApiController]
-[Route("api/devices")]
-public class DeviceController : ControllerBase
+[Route("api/deviceTypes")]
+public class DeviceTypeController : ControllerBase
 {
-    private readonly ILogger<DeviceController> _logger;
-    private readonly DeviceFacade _deviceFacade;
+    private readonly ILogger<DeviceTypeController> _logger;
+    private readonly DeviceTypeFacade _deviceTypeFacade;
 
-    public DeviceController(ILogger<DeviceController> logger, DeviceFacade deviceFacade)
+    public DeviceTypeController(ILogger<DeviceTypeController> logger, DeviceTypeFacade deviceTypeFacade)
     {
         _logger = logger;
-        _deviceFacade = deviceFacade;
+        _deviceTypeFacade = deviceTypeFacade;
     }
 
     [HttpGet]
-    public async Task<IEnumerable<DeviceListModel>> GetDevices()
+    public async Task<IEnumerable<DeviceTypeListModel>> GetDeviceTypes()
     {
-        return await _deviceFacade.GetAllAsync();
+        return await _deviceTypeFacade.GetAllAsync();
     }
 
     [HttpGet("{id}")]
-    public async Task<DeviceDetailModel?> GetDeviceById(Guid id)
+    public async Task<DeviceTypeDetailModel?> GetDeviceTypeById(Guid id)
     {
-        return await _deviceFacade.GetByIdAsync(id);
+        return await _deviceTypeFacade.GetByIdAsync(id);
     }
 
     [HttpPost]
-    public async Task<DeviceDetailModel> CreateDevice(DeviceDetailModel device)
+    public async Task<DeviceTypeDetailModel> CreateDevice(DeviceTypeDetailModel deviceType)
     {
-        return await _deviceFacade.SaveAsync(device);
+        return await _deviceTypeFacade.SaveAsync(deviceType);
     }
     
     [HttpPut("{id}")]
-    public async Task<DeviceDetailModel> UpdateDevice(Guid id, DeviceDetailModel device)
+    public async Task<DeviceTypeDetailModel> UpdateDeviceType(Guid id, DeviceTypeDetailModel deviceType)
     {
-        device.Id = id;
-        return await _deviceFacade.SaveAsync(device);
+        deviceType.Id = id;
+        return await _deviceTypeFacade.SaveAsync(deviceType);
     }
 
     [HttpDelete("{id}")]
-    public async Task DeleteDevice(Guid id)
+    public async Task DeleteDeviceType(Guid id)
     {
-        await _deviceFacade.DeleteAsync(id);
+        await _deviceTypeFacade.DeleteAsync(id);
     }
 }
