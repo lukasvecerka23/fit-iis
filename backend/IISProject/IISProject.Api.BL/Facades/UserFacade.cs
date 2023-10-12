@@ -12,4 +12,12 @@ public class UserFacade: FacadeBase<UserEntity, UserListModel, UserDetailModel>,
     {
         
     }
+    
+    public override List<string> NavigationPathDetails => new()
+    {
+        $"{nameof(UserEntity.Roles)}",
+        $"{nameof(UserEntity.UserInSystems)}",
+        $"{nameof(UserEntity.Kpis)}",
+        $"{nameof(UserEntity.Devices)}"
+    };
 }

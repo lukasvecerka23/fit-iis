@@ -12,4 +12,9 @@ public class ParameterFacade: FacadeBase<ParameterEntity, ParameterListModel, Pa
     {
         
     }
+    
+    public override List<string> NavigationPathDetails => new()
+    {
+        $"{nameof(ParameterEntity.Kpis)}"
+    };
 }

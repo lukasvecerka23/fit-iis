@@ -12,4 +12,10 @@ public class RoleFacade: FacadeBase<RoleEntity, RoleListModel, RoleDetailModel>,
     {
         
     }
+    
+    public override List<string> NavigationPathDetails => new()
+    {
+        $"{nameof(RoleEntity.RoleOfUsers)}",
+        $"{nameof(RoleEntity.RoleOfUsers)}.{nameof(RoleOfUserEntity.User)}"
+    };
 }

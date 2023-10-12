@@ -12,4 +12,10 @@ public class DeviceTypeFacade: FacadeBase<DeviceTypeEntity, DeviceTypeListModel,
     {
         
     }
+    
+    public override List<string> NavigationPathDetails => new()
+    {
+        $"{nameof(DeviceTypeEntity.Devices)}",
+        $"{nameof(DeviceTypeEntity.Parameters)}"
+    };
 }
