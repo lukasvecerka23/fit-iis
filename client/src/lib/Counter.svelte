@@ -1,10 +1,16 @@
 <script>
-  let count = 0
-  const increment = () => {
-    count += 1
-  }
+  import {onMount} from 'svelte'
+
+  let devices = []
+
+  onMount(async () => {
+    const resp = await fetch('https://localhost:7246/api/devices')
+    devices = await resp.json()
+  })
 </script>
 
-<button on:click={increment}>
-  count is {count}
-</button>
+<ul>
+  {#each devices as device (device.id)}
+    <li>{device.userAlias}</li>
+  {/each}
+</ul>
