@@ -1,5 +1,6 @@
 <script>
   import {onMount} from 'svelte'
+  import Sidebar from './components/SideBar.svelte';
 
   let devices = []
 
@@ -9,8 +10,14 @@
   })
 </script>
 
-<ul>
-  {#each devices as device (device.id)}
-    <li class="text-red-700">{device.userAlias}</li>
-  {/each}
-</ul>
+<div class="h-full w-full min-h-screen bg-slate-400 flex justify-center">
+  <Sidebar />
+  <div class="h-full w-full min-h-screen bg-primary-white flex justify-center">
+    <ul>
+      {#each devices as device (device.id)}
+        <li class="text-red-900">{device.userAlias}</li>
+      {/each}
+    </ul>
+  </div>
+</div>
+
