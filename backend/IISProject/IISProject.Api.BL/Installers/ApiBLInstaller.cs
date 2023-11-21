@@ -1,3 +1,4 @@
+using FluentValidation;
 using IISProject.Api.BL.Facades.Interfaces;
 using IISProject.Api.Common.Installers;
 using IISProject.Api.DAL.UnitOfWork;
@@ -16,5 +17,11 @@ public class ApiBLInstaller: IInstaller
                 .AddClasses(classes => classes.AssignableTo(typeof(IFacade<,,,>)))
                 .AsSelfWithInterfaces()
                 .WithScopedLifetime());
+        
+        serviceCollection.Scan(selector =>
+            selector.FromAssemblyOf<ApiBLInstaller>()
+                .AddClasses(classes => classes.AssignableTo(typeof(IValidator<>)))
+                .AsSelfWithInterfaces()
+                .WithTransientLifetime());
     }
 }
