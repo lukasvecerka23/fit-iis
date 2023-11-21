@@ -1,5 +1,6 @@
 using AutoMapper;
 using IISProject.Api.BL.Extensions;
+using IISProject.Api.BL.Models.Responses;
 using IISProject.Api.BL.Models.System;
 using IISProject.Api.DAL.Entities;
 
@@ -14,9 +15,11 @@ public class SystemMapperProfile: Profile
             .MapMember(dst => dst.Devices, src => src.Devices)
             .MapMember(dst => dst.Users, src => src.UsersInSystem);
 
-        CreateMap<SystemDetailModel, SystemEntity>()
+        CreateMap<SystemCreateUpdateModel, SystemEntity>()
             .Ignore(dst => dst.Creator)
             .Ignore(dst => dst.Devices)
             .Ignore(dst => dst.UsersInSystem);
+        
+        CreateMap<SystemEntity, IdModel>();
     }
 }

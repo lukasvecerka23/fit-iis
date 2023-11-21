@@ -3,6 +3,7 @@ using System.Reflection;
 using AutoMapper;
 using IISProject.Api.BL.Facades.Interfaces;
 using IISProject.Api.BL.Models;
+using IISProject.Api.BL.Models.Responses;
 using IISProject.Api.DAL.Entities;
 using IISProject.Api.DAL.Repositories;
 using IISProject.Api.DAL.UnitOfWork;
@@ -10,10 +11,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IISProject.Api.BL.Facades;
 
-public abstract class FacadeBase<TEntity, TListModel, TDetailModel> : IFacade<TEntity, TListModel, TDetailModel>
+public abstract class FacadeBase<TEntity, TListModel, TDetailModel, TCreateUpdateModel> : IFacade<TEntity, TListModel, TDetailModel, TCreateUpdateModel>
 where TEntity : class, IEntity
 where TListModel : IModel
 where TDetailModel : class, IModel
+where TCreateUpdateModel : class
 {
     protected readonly IUnitOfWorkFactory UnitOfWorkFactory;
     protected readonly IMapper Mapper;
@@ -62,31 +64,36 @@ where TDetailModel : class, IModel
         return entity == null ? null : Mapper.Map<TDetailModel>(entity);
     }
 
-    public virtual async Task<TDetailModel> SaveAsync(TDetailModel model)
+    public virtual async Task<IdModel> CreateAsync(TCreateUpdateModel model)
     {
-        TDetailModel result;
-        
-        GuardCollectionsAreNotSet(model);
-        
         TEntity entity = Mapper.Map<TEntity>(model);
         
         await using var uow = UnitOfWorkFactory.Create();
         IRepository<TEntity> repository = uow.GetRepository<TEntity>();
-
-        if (await repository.ExistsAsync(entity))
-        {
-            TEntity updatedEntity = await repository.UpdateAsync(entity);
-            result = Mapper.Map<TDetailModel>(updatedEntity);
-        }
-        else
-        {
-            entity.Id = Guid.NewGuid();
-            TEntity insertedEntity = await repository.InsertAsync(entity);
-            result = Mapper.Map<TDetailModel>(insertedEntity);
-        }
+        
+        entity.Id = Guid.NewGuid();
+        TEntity insertedEntity = await repository.InsertAsync(entity);
         
         await uow.CommitAsync();
         
+        var result = Mapper.Map<IdModel>(insertedEntity);
+        
+        return result;
+    }
+    
+    public async Task<IdModel> UpdateAsync(TCreateUpdateModel model, Guid id)
+    {
+        var entity = Mapper.Map<TEntity>(model);
+
+        await using var uow = UnitOfWorkFactory.Create();
+        var repository = uow.GetRepository<TEntity>();
+
+        entity.Id = id;
+        var updatedEntity = await repository.UpdateAsync(entity);
+
+        await uow.CommitAsync();
+
+        var result = Mapper.Map<IdModel>(updatedEntity);
         return result;
     }
 
@@ -99,29 +106,5 @@ where TDetailModel : class, IModel
         await repository.DeleteAsync(id);
         
         await uow.CommitAsync();
-    }
-    
-    /// <summary>
-    /// This Guard ensures that there is a clear understanding of current infrastructure limitations.
-    /// This version of BL/DAL infrastructure does not support insertion or update of adjacent entities.
-    /// WARN: Does not guard navigation properties.
-    /// </summary>
-    /// <param name="model">Model to be inserted or updated</param>
-    /// <exception cref="InvalidOperationException"></exception>
-    public static void GuardCollectionsAreNotSet(TDetailModel model)
-    {
-        IEnumerable<PropertyInfo> collectionProperties = model
-            .GetType()
-            .GetProperties()
-            .Where(i => typeof(ICollection).IsAssignableFrom(i.PropertyType));
-
-        foreach (PropertyInfo collectionProperty in collectionProperties)
-        {
-            if (collectionProperty.GetValue(model) is ICollection { Count: > 0 })
-            {
-                throw new InvalidOperationException(
-                    "Current BL and DAL infrastructure disallows insert or update of models with adjacent collections.");
-            }
-        }
     }
 }

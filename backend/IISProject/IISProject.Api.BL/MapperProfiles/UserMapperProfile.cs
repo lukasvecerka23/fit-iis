@@ -1,5 +1,6 @@
 using AutoMapper;
 using IISProject.Api.BL.Extensions;
+using IISProject.Api.BL.Models.Responses;
 using IISProject.Api.DAL.Entities;
 using IISProject.Api.BL.Models.User;
 
@@ -17,12 +18,14 @@ public class UserMapperProfile: Profile
             .MapMember(dst => dst.Kpis, src => src.Kpis)
             .MapMember(dst => dst.Systems, src => src.UserInSystems);
 
-        CreateMap<UserDetailModel, UserEntity>()
+        CreateMap<UserCreateUpdateModel, UserEntity>()
             .Ignore(dst => dst.Devices)
             .Ignore(dst => dst.Roles)
             .Ignore(dst => dst.Kpis)
             .Ignore(dst => dst.UserInSystems)
             .Ignore(dst => dst.Measurements);
+        
+        CreateMap<UserEntity, IdModel>();
 
     }
 }

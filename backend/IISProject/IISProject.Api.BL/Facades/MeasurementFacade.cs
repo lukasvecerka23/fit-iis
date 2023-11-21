@@ -6,7 +6,7 @@ using IISProject.Api.DAL.UnitOfWork;
 
 namespace IISProject.Api.BL.Facades;
 
-public class MeasurementFacade: FacadeBase<MeasurementEntity, MeasurementListModel, MeasurementDetailModel>, IMeasurementFacade
+public class MeasurementFacade: FacadeBase<MeasurementEntity, MeasurementListModel, MeasurementDetailModel, MeasurementCreateUpdateModel>, IMeasurementFacade
 {
     public MeasurementFacade(IUnitOfWorkFactory unitOfWorkFactory, IMapper mapper) : base(unitOfWorkFactory, mapper)
     {

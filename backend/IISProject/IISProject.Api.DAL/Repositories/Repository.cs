@@ -20,9 +20,9 @@ public class Repository<TEntity>: IRepository<TEntity>
     
     public IQueryable<TEntity> GetAll() => _dbSet;
 
-    public async ValueTask<bool> ExistsAsync(TEntity entity)
+    public async ValueTask<bool> ExistsAsync(Guid id)
     {
-        return entity.Id != Guid.Empty && await _dbSet.AnyAsync(e => e.Id == entity.Id);
+        return id != Guid.Empty && await _dbSet.AnyAsync(e => e.Id == id);
     }
 
     public async Task<TEntity> InsertAsync(TEntity entity)
@@ -33,9 +33,14 @@ public class Repository<TEntity>: IRepository<TEntity>
 
     public async Task<TEntity> UpdateAsync(TEntity entity)
     {
-        TEntity existingEntity = await _dbSet.SingleAsync(e => e.Id == entity.Id);
+        var existingEntity = await _dbSet.SingleAsync(e => e.Id == entity.Id);
         _mapper.Map(entity, existingEntity);
         return existingEntity;
+    }
+    
+    public bool Exists(Guid id)
+    {
+        return id != Guid.Empty && _dbSet.Any(e => e.Id == id);
     }
     
     public async Task DeleteAsync(Guid id)

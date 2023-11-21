@@ -1,5 +1,6 @@
 using AutoMapper;
 using IISProject.Api.BL.Extensions;
+using IISProject.Api.BL.Models.Responses;
 using IISProject.Api.BL.Models.Role;
 using IISProject.Api.DAL.Entities;
 
@@ -14,7 +15,9 @@ public class RoleMapperProfile: Profile
         CreateMap<RoleEntity, RoleDetailModel>()
             .MapMember(src => src.RoleOfUsers, dst => dst.RoleOfUsers);
 
-        CreateMap<RoleDetailModel, RoleEntity>()
+        CreateMap<RoleCreateUpdateModel, RoleEntity>()
             .Ignore(src => src.RoleOfUsers);
+        
+        CreateMap<RoleEntity, IdModel>();
     }
 }

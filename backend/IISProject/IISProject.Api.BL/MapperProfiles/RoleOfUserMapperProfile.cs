@@ -1,5 +1,6 @@
 using AutoMapper;
 using IISProject.Api.BL.Extensions;
+using IISProject.Api.BL.Models.Responses;
 using IISProject.Api.BL.Models.RoleOfUser;
 using IISProject.Api.DAL.Entities;
 
@@ -11,8 +12,11 @@ public class RoleOfUserMapperProfile: Profile
     {
         CreateMap<RoleOfUserEntity, RoleOfUserListModel>();
         CreateMap<RoleOfUserEntity, RoleOfUserDetailModel>();
-        CreateMap<RoleOfUserDetailModel, RoleOfUserEntity>()
+        
+        CreateMap<RoleOfUserCreateUpdateModel, RoleOfUserEntity>()
             .Ignore(dst => dst.User)
             .Ignore(dst => dst.Role);
+        
+        CreateMap<RoleOfUserEntity, IdModel>();
     }
 }

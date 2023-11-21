@@ -3,7 +3,7 @@ using IISProject.Api.DAL.Entities;
 
 namespace IISProject.Api.BL.Facades.Interfaces;
 
-public interface IUserInSystemFacade: IFacade<UserInSystemEntity, UserInSystemListModel, UserInSystemDetailModel>
+public interface IUserInSystemFacade: IFacade<UserInSystemEntity, UserInSystemListModel, UserInSystemDetailModel, UserInSystemCreateUpdateModel>
 {
     
 }

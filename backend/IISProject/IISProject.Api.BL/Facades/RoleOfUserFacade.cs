@@ -6,7 +6,7 @@ using IISProject.Api.DAL.UnitOfWork;
 
 namespace IISProject.Api.BL.Facades;
 
-public class RoleOfUserFacade: FacadeBase<RoleOfUserEntity, RoleOfUserListModel, RoleOfUserDetailModel>, IRoleOfUserFacade
+public class RoleOfUserFacade: FacadeBase<RoleOfUserEntity, RoleOfUserListModel, RoleOfUserDetailModel, RoleOfUserCreateUpdateModel>, IRoleOfUserFacade
 {
     public RoleOfUserFacade(IUnitOfWorkFactory unitOfWorkFactory, IMapper mapper) : base(unitOfWorkFactory, mapper)
     {

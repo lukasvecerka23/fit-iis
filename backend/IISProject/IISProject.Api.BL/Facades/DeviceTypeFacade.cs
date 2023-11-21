@@ -6,7 +6,7 @@ using IISProject.Api.DAL.UnitOfWork;
 
 namespace IISProject.Api.BL.Facades;
 
-public class DeviceTypeFacade: FacadeBase<DeviceTypeEntity, DeviceTypeListModel, DeviceTypeDetailModel>, IDeviceTypeFacade
+public class DeviceTypeFacade: FacadeBase<DeviceTypeEntity, DeviceTypeListModel, DeviceTypeDetailModel, DeviceTypeCreateUpdateModel>, IDeviceTypeFacade
 {
     public DeviceTypeFacade(IUnitOfWorkFactory unitOfWorkFactory, IMapper mapper) : base(unitOfWorkFactory, mapper)
     {

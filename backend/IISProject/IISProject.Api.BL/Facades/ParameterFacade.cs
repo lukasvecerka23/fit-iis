@@ -6,7 +6,7 @@ using IISProject.Api.DAL.UnitOfWork;
 
 namespace IISProject.Api.BL.Facades;
 
-public class ParameterFacade: FacadeBase<ParameterEntity, ParameterListModel, ParameterDetailModel>, IParameterFacade
+public class ParameterFacade: FacadeBase<ParameterEntity, ParameterListModel, ParameterDetailModel, ParameterCreateUpdateModel>, IParameterFacade
 {
     public ParameterFacade(IUnitOfWorkFactory unitOfWorkFactory, IMapper mapper) : base(unitOfWorkFactory, mapper)
     {
