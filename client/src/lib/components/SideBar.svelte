@@ -11,7 +11,7 @@
     }
 </script> 
 
-<nav class="bg-slate-500 h-screen w-20 text-white flex flex-col">
+<nav class="bg-slate-500 w-20 text-white flex flex-col ">
         <div class="flex-col">
             <NavButton linkPath="/systems"
             text="Systems"
