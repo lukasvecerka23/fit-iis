@@ -65,4 +65,20 @@ public class SystemController : ControllerBase
         
         return Ok();
     }
+    
+    [HttpGet("search")]
+    public async Task<ActionResult<SystemSearchModel>> Search([FromQuery] SearchParams searchParams)
+    {
+        var result = await _systemFacade.SearchAsync(searchParams.Query, searchParams.PageIndex, searchParams.PageSize);
+        return result;
+    }
+}
+
+public class SearchParams
+{
+    [FromQuery(Name = "q")] public string Query { get; set; } = "";
+
+    [FromQuery(Name = "p")] public int PageIndex { get; set; } = 0;
+
+    [FromQuery(Name = "size")] public int PageSize { get; set; } = 10;
 }
