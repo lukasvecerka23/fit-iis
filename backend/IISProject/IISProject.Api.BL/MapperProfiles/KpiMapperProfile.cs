@@ -13,6 +13,7 @@ public class KpiMapperProfile: Profile
         CreateMap<KpiEntity, KpiListModel>();
         CreateMap<KpiEntity, KpiDetailModel>();
         CreateMap<KpiCreateUpdateModel, KpiEntity>()
+            .Ignore(dst => dst.Id)
             .Ignore(dst => dst.Creator)
             .Ignore(dst => dst.Device)
             .Ignore(dst => dst.Parameter);

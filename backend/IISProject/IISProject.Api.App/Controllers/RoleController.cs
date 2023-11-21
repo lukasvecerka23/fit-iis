@@ -1,4 +1,5 @@
 using IISProject.Api.BL.Facades;
+using IISProject.Api.BL.Models.Responses;
 using IISProject.Api.BL.Models.Role;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,28 +24,45 @@ public class RoleController : ControllerBase
         return await _roleFacade.GetAllAsync();
     }
 
-    [HttpGet("{id}")]
-    public async Task<RoleDetailModel?> GetRoleById(Guid id)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<RoleDetailModel>> GetRoleById(Guid id)
     {
-        return await _roleFacade.GetByIdAsync(id);
+        var result = await _roleFacade.GetByIdAsync(id);
+        if (result == null)
+        {
+            return NotFound(new ErrorModel {Error = $"Role with id {id} not found"});
+        }
+        return result;
     }
 
     [HttpPost]
-    public async Task<RoleDetailModel> CreateRole(RoleDetailModel role)
+    public async Task<ActionResult<IdModel>> CreateRole(RoleCreateUpdateModel role)
     {
-        return await _roleFacade.SaveAsync(role);
+        var result = await _roleFacade.CreateAsync(role);
+        return Created($"/api/roles/{result.Id}", result);
     }
     
-    [HttpPut("{id}")]
-    public async Task<RoleDetailModel> UpdateRole(Guid id, RoleDetailModel role)
-    {
-        role.Id = id;
-        return await _roleFacade.SaveAsync(role);
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<IdModel>> UpdateRole(Guid id, RoleCreateUpdateModel role)
+    {   
+        var result = await _roleFacade.UpdateAsync(role, id);
+        if (result == null)
+        {
+            return NotFound(new ErrorModel {Error = $"Role with id {id} not found"});
+        }
+        
+        return result;
     }
 
-    [HttpDelete("{id}")]
-    public async Task DeleteRole(Guid id)
-    {
-        await _roleFacade.DeleteAsync(id);
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult> DeleteRole(Guid id)
+    {   
+        var result = await _roleFacade.DeleteAsync(id);
+        if (!result)
+        {
+            return NotFound(new ErrorModel {Error = $"Role with id {id} not found"});
+        }
+        
+        return Ok();
     }
 }

@@ -81,13 +81,18 @@ where TCreateUpdateModel : class
         return result;
     }
     
-    public async Task<IdModel> UpdateAsync(TCreateUpdateModel model, Guid id)
+    public async Task<IdModel?> UpdateAsync(TCreateUpdateModel model, Guid id)
     {
         var entity = Mapper.Map<TEntity>(model);
 
         await using var uow = UnitOfWorkFactory.Create();
         var repository = uow.GetRepository<TEntity>();
 
+        if (!await repository.ExistsAsync(id))
+        {
+            return null;
+        }
+        
         entity.Id = id;
         var updatedEntity = await repository.UpdateAsync(entity);
 
@@ -97,14 +102,21 @@ where TCreateUpdateModel : class
         return result;
     }
 
-    public virtual async Task DeleteAsync(Guid id)
+    public virtual async Task<bool> DeleteAsync(Guid id)
     {
         await using IUnitOfWork uow = UnitOfWorkFactory.Create();
         
         IRepository<TEntity> repository = uow.GetRepository<TEntity>();
         
+        if (!await repository.ExistsAsync(id))
+        {
+            return false;
+        }
+        
         await repository.DeleteAsync(id);
         
         await uow.CommitAsync();
+        
+        return true;
     }
 }

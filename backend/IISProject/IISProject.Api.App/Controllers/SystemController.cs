@@ -1,4 +1,5 @@
 using IISProject.Api.BL.Facades;
+using IISProject.Api.BL.Models.Responses;
 using IISProject.Api.BL.Models.System;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,28 +24,45 @@ public class SystemController : ControllerBase
         return await _systemFacade.GetAllAsync();
     }
 
-    [HttpGet("{id}")]
-    public async Task<SystemDetailModel?> GetSystemById(Guid id)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<SystemDetailModel>> GetSystemById(Guid id)
     {
-        return await _systemFacade.GetByIdAsync(id);
+        var result = await _systemFacade.GetByIdAsync(id);
+        if (result == null)
+        {
+            return NotFound(new ErrorModel {Error = $"System with id {id} not found"});
+        }
+        return result;
     }
 
     [HttpPost]
-    public async Task<SystemDetailModel> CreateSystem(SystemDetailModel system)
+    public async Task<ActionResult<IdModel>> CreateSystem(SystemCreateUpdateModel system)
     {
-        return await _systemFacade.SaveAsync(system);
+        var result = await _systemFacade.CreateAsync(system);
+        return Created($"/api/systems/{result.Id}", result);
     }
     
-    [HttpPut("{id}")]
-    public async Task<SystemDetailModel> UpdateSystem(Guid id, SystemDetailModel system)
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<IdModel>> UpdateSystem(Guid id, SystemCreateUpdateModel system)
     {
-        system.Id = id;
-        return await _systemFacade.SaveAsync(system);
+        var result = await _systemFacade.UpdateAsync(system, id);
+        if (result == null)
+        {
+            return NotFound(new ErrorModel {Error = $"System with id {id} not found"});
+        }
+        
+        return result;
     }
 
-    [HttpDelete("{id}")]
-    public async Task DeleteSystem(Guid id)
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult> DeleteSystem(Guid id)
     {
-        await _systemFacade.DeleteAsync(id);
+        var result = await _systemFacade.DeleteAsync(id);
+        if (!result)
+        {
+            return NotFound(new ErrorModel {Error = $"System with id {id} not found"});
+        }
+        
+        return Ok();
     }
 }

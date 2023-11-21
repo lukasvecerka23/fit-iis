@@ -1,5 +1,6 @@
 using IISProject.Api.BL.Facades;
 using IISProject.Api.BL.Models.Kpi;
+using IISProject.Api.BL.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IISProject.Controllers;
@@ -23,28 +24,46 @@ public class KpiController : ControllerBase
         return await _kpiFacade.GetAllAsync();
     }
 
-    [HttpGet("{id}")]
-    public async Task<KpiDetailModel?> GetKpiById(Guid id)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<KpiDetailModel>> GetKpiById(Guid id)
     {
-        return await _kpiFacade.GetByIdAsync(id);
+        var result = await _kpiFacade.GetByIdAsync(id);
+        if (result == null)
+        {
+            return NotFound(new ErrorModel {Error = $"Kpi with id {id} not found"});
+        }
+        return result;
     }
 
     [HttpPost]
-    public async Task<KpiDetailModel> CreateDevice(KpiDetailModel kpi)
+    public async Task<ActionResult<IdModel>> CreateDevice(KpiCreateUpdateModel kpi)
     {
-        return await _kpiFacade.SaveAsync(kpi);
+        var result = await _kpiFacade.CreateAsync(kpi);
+        return Created($"/api/kpis/{result.Id}", result);
     }
     
-    [HttpPut("{id}")]
-    public async Task<KpiDetailModel> UpdateKpi(Guid id, KpiDetailModel kpi)
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<IdModel>> UpdateKpi(Guid id, KpiCreateUpdateModel kpi)
     {
-        kpi.Id = id;
-        return await _kpiFacade.SaveAsync(kpi);
+        var result = await _kpiFacade.UpdateAsync(kpi, id);
+        if (result == null)
+        {
+            return NotFound(new ErrorModel {Error = $"Kpi with id {id} not found"});
+        }
+        
+        return result;
     }
 
-    [HttpDelete("{id}")]
-    public async Task DeleteKpi(Guid id)
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult> DeleteKpi(Guid id)
     {
-        await _kpiFacade.DeleteAsync(id);
+        var result = await _kpiFacade.DeleteAsync(id);
+        
+        if (!result)
+        {
+            return NotFound(new ErrorModel {Error = $"Kpi with id {id} not found"});
+        }
+
+        return Ok();
     }
 }

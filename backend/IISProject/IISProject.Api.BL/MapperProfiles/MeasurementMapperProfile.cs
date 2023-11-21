@@ -13,6 +13,7 @@ public class MeasurementMapperProfile: Profile
         CreateMap<MeasurementEntity, MeasurementListModel>();
         CreateMap<MeasurementEntity, MeasurementDetailModel>();
         CreateMap<MeasurementCreateUpdateModel, MeasurementEntity>()
+            .Ignore(dst => dst.Id)
             .Ignore(dst => dst.Device)
             .Ignore(dst => dst.Creator)
             .Ignore(dst => dst.Parameter);

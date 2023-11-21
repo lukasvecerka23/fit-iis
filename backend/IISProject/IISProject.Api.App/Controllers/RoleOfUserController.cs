@@ -1,4 +1,5 @@
 using IISProject.Api.BL.Facades;
+using IISProject.Api.BL.Models.Responses;
 using IISProject.Api.BL.Models.RoleOfUser;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,28 +24,45 @@ public class RoleOfUserController : ControllerBase
         return await _roleOfUserFacade.GetAllAsync();
     }
 
-    [HttpGet("{id}")]
-    public async Task<RoleOfUserDetailModel?> GetRoleOfUserById(Guid id)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<RoleOfUserDetailModel>> GetRoleOfUserById(Guid id)
     {
-        return await _roleOfUserFacade.GetByIdAsync(id);
+        var result = await _roleOfUserFacade.GetByIdAsync(id);
+        if (result == null)
+        {
+            return NotFound(new ErrorModel {Error = $"RoleOfUser with id {id} not found"});
+        }
+        return result;
     }
 
     [HttpPost]
-    public async Task<RoleOfUserDetailModel> CreateRoleOfUser(RoleOfUserDetailModel roleOfUser)
+    public async Task<ActionResult<IdModel>> CreateRoleOfUser(RoleOfUserCreateUpdateModel roleOfUser)
     {
-        return await _roleOfUserFacade.SaveAsync(roleOfUser);
+        var result = await _roleOfUserFacade.CreateAsync(roleOfUser);
+        return Created($"/api/roleOfUsers/{result.Id}", result);
     }
     
-    [HttpPut("{id}")]
-    public async Task<RoleOfUserDetailModel> UpdateRoleOfUser(Guid id, RoleOfUserDetailModel roleOfUser)
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<IdModel>> UpdateRoleOfUser(Guid id, RoleOfUserCreateUpdateModel roleOfUser)
     {
-        roleOfUser.Id = id;
-        return await _roleOfUserFacade.SaveAsync(roleOfUser);
+        var result = await _roleOfUserFacade.UpdateAsync(roleOfUser, id);
+        if (result == null)
+        {
+            return NotFound(new ErrorModel {Error = $"RoleOfUser with id {id} not found"});
+        }
+        
+        return result;
     }
 
-    [HttpDelete("{id}")]
-    public async Task DeleteRoleOfUser(Guid id)
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult> DeleteRoleOfUser(Guid id)
     {
-        await _roleOfUserFacade.DeleteAsync(id);
+        var result = await _roleOfUserFacade.DeleteAsync(id);
+        if (!result)
+        {
+            return NotFound(new ErrorModel {Error = $"RoleOfUser with id {id} not found"});
+        }
+
+        return Ok();
     }
 }

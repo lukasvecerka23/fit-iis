@@ -1,4 +1,5 @@
 using IISProject.Api.BL.Facades;
+using IISProject.Api.BL.Models.Responses;
 using IISProject.Api.BL.Models.User;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,28 +24,46 @@ public class UserController : ControllerBase
         return await _userFacade.GetAllAsync();
     }
 
-    [HttpGet("{id}")]
-    public async Task<UserDetailModel?> GetUserById(Guid id)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<UserDetailModel>> GetUserById(Guid id)
     {
-        return await _userFacade.GetByIdAsync(id);
+        var result = await _userFacade.GetByIdAsync(id);
+        if (result == null)
+        {
+            return NotFound(new ErrorModel {Error = $"User with id {id} not found"});
+        }
+        return result;
     }
 
     [HttpPost]
-    public async Task<UserDetailModel> CreateUser(UserDetailModel user)
+    public async Task<ActionResult<IdModel>> CreateUser(UserCreateUpdateModel user)
     {
-        return await _userFacade.SaveAsync(user);
+        var result = await _userFacade.CreateAsync(user);
+        return Created($"/api/users/{result.Id}", result);
     }
     
-    [HttpPut("{id}")]
-    public async Task<UserDetailModel> UpdateUser(Guid id, UserDetailModel user)
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<IdModel>> UpdateUser(Guid id, UserCreateUpdateModel user)
     {
-        user.Id = id;
-        return await _userFacade.SaveAsync(user);
+        var result = await _userFacade.UpdateAsync(user, id);
+        if (result == null)
+        {
+            return NotFound(new ErrorModel {Error = $"User with id {id} not found"});
+        }
+        
+        return result;
     }
 
-    [HttpDelete("{id}")]
-    public async Task DeleteUser(Guid id)
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult> DeleteUser(Guid id)
     {
-        await _userFacade.DeleteAsync(id);
+        var result = await _userFacade.DeleteAsync(id);
+        
+        if (!result)
+        {
+            return NotFound(new ErrorModel {Error = $"User with id {id} not found"});
+        }
+
+        return Ok();
     }
 }

@@ -1,5 +1,6 @@
 using IISProject.Api.BL.Facades;
 using IISProject.Api.BL.Models.DeviceType;
+using IISProject.Api.BL.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IISProject.Controllers;
@@ -23,28 +24,45 @@ public class DeviceTypeController : ControllerBase
         return await _deviceTypeFacade.GetAllAsync();
     }
 
-    [HttpGet("{id}")]
-    public async Task<DeviceTypeDetailModel?> GetDeviceTypeById(Guid id)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<DeviceTypeDetailModel>> GetDeviceTypeById(Guid id)
     {
-        return await _deviceTypeFacade.GetByIdAsync(id);
+        var result = await _deviceTypeFacade.GetByIdAsync(id);
+        if (result == null)
+        {
+            return NotFound(new ErrorModel {Error = $"Device type with id {id} not found"});
+        }
+        return result;
     }
 
     [HttpPost]
-    public async Task<DeviceTypeDetailModel> CreateDevice(DeviceTypeDetailModel deviceType)
+    public async Task<ActionResult<IdModel>> CreateDevice(DeviceTypeCreateUpdateModel deviceType)
     {
-        return await _deviceTypeFacade.SaveAsync(deviceType);
+        var result = await _deviceTypeFacade.CreateAsync(deviceType);
+        return Created($"/api/deviceTypes/{result.Id}", result);
     }
     
-    [HttpPut("{id}")]
-    public async Task<DeviceTypeDetailModel> UpdateDeviceType(Guid id, DeviceTypeDetailModel deviceType)
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<IdModel>> UpdateDeviceType(Guid id, DeviceTypeCreateUpdateModel deviceType)
     {
-        deviceType.Id = id;
-        return await _deviceTypeFacade.SaveAsync(deviceType);
+        var result = await _deviceTypeFacade.UpdateAsync(deviceType, id);
+        if (result == null)
+        {
+            return NotFound(new ErrorModel {Error = $"Device type with id {id} not found"});
+        }
+        
+        return result;
     }
 
-    [HttpDelete("{id}")]
-    public async Task DeleteDeviceType(Guid id)
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult> DeleteDeviceType(Guid id)
     {
-        await _deviceTypeFacade.DeleteAsync(id);
+        var result = await _deviceTypeFacade.DeleteAsync(id);
+        if (!result)
+        {
+            return NotFound(new ErrorModel {Error = $"Device type with id {id} not found"});
+        }
+
+        return Ok();
     }
 }

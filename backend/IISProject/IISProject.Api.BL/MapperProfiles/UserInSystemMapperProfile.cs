@@ -13,6 +13,7 @@ public class UserInSystemMapperProfile: Profile
         CreateMap<UserInSystemEntity, UserInSystemListModel>();
         CreateMap<UserInSystemEntity, UserInSystemDetailModel>();
         CreateMap<UserInSystemCreateUpdateModel, UserInSystemEntity>()
+            .Ignore(dst => dst.Id)
             .Ignore(dst => dst.User)
             .Ignore(dst => dst.System);
         

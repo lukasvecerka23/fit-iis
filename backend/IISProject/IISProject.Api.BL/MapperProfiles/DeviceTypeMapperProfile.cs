@@ -18,7 +18,8 @@ public class DeviceTypeMapperProfile: Profile
             .MapMember(dst => dst.Parameters, src => src.Parameters)
             .MapMember(dst => dst.Devices, src => src.Devices);
         
-        CreateMap<DeviceCreateUpdateModel, DeviceTypeEntity>()
+        CreateMap<DeviceTypeCreateUpdateModel, DeviceTypeEntity>()
+            .Ignore(dst => dst.Id)
             .Ignore(dst => dst.Parameters)
             .Ignore(dst => dst.Devices);
         
