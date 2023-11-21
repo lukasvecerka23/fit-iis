@@ -14,19 +14,19 @@
 <nav class="bg-slate-500 w-20 text-white flex flex-col ">
         <div class="flex-col">
             <NavButton linkPath="/systems"
-            text="Systems"
+            text="Systémy"
             logoUrl={SystemLogo}
             classBackgroundColor={isActivePage("/systems") ? "bg-slate-600" : ""}
             />
             <NavButton linkPath="/devices"
-            text="Devices"
+            text="Zařízení"
             logoUrl={DevicesLogo}
             classBackgroundColor={isActivePage("/devices") ? "bg-slate-600" : ""}
             />
         </div>
         <div class="flex-col">
             <NavButton linkPath="/"
-            text="Logout"
+            text="Odhlásit"
             logoUrl={LogoutLogo}
             classBackgroundColor={isActivePage("/") ? "bg-slate-600" : ""}
             />
