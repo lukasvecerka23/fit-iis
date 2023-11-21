@@ -14,19 +14,33 @@ public static class DeviceSeeds
         SystemId = SystemSeeds.DefaultSystem.Id,
         Description = "Default Device Description"
     };
-
-    public static readonly DeviceEntity DeviceToDelete =
-        DefaultDevice with { Id = Guid.Parse("F5D37582-5A58-4710-9BCB-7D19DF0606D5") };
     
-    public static readonly DeviceEntity DeviceToUpdate =
-        DefaultDevice with { Id = Guid.Parse("FF1E7470-E672-410F-97D8-462168BD6866") };
+    public static readonly DeviceEntity DefaultDevice2 = new()
+    {
+        Id = Guid.Parse("BD558FF1-B26E-4FB2-8A07-09568B63FFF6"),
+        UserAlias = "Default Device 2",
+        DeviceTypeId = DeviceTypeSeeds.DefaultDeviceType.Id,
+        CreatorId = UserSeeds.DefaultUser.Id,
+        SystemId = SystemSeeds.DefaultSystem.Id,
+        Description = "Default Device Description 2"
+    };
+    
+    public static readonly DeviceEntity DefaultDevice3 = new()
+    {
+        Id = Guid.Parse("BFE2308D-7151-4C19-AFAA-0BB15389D62E"),
+        UserAlias = "Default Device 3",
+        DeviceTypeId = DeviceTypeSeeds.DefaultDeviceType.Id,
+        CreatorId = UserSeeds.DefaultUser.Id,
+        SystemId = SystemSeeds.DefaultSystem2.Id,
+        Description = "Default Device Description 3"
+    };
 
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<DeviceEntity>().HasData(
             DefaultDevice with { Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>() },
-            DeviceToDelete with { Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>() },
-            DeviceToUpdate with { Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>() }
+            DefaultDevice2 with { Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>() },
+            DefaultDevice3 with { Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>() }
             );
     }
 

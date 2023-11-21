@@ -15,18 +15,10 @@ public static class MeasurementSeeds
         ParameterId = ParameterSeeds.DefaultParameter.Id
     };
     
-    public static readonly MeasurementEntity MeasurementToDelete =
-        DefaultMeasurement with { Id = Guid.Parse("0E1DE327-5093-451D-91E2-4089B1D7AD67") };
-    
-    public static readonly MeasurementEntity MeasurementToUpdate =
-        DefaultMeasurement with { Id = Guid.Parse("1721EAC1-4B5D-4C40-A851-DDE1AD13D271") };
-    
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<MeasurementEntity>().HasData(
-            DefaultMeasurement,
-            MeasurementToDelete,
-            MeasurementToUpdate
+            DefaultMeasurement
         );
     }
 }

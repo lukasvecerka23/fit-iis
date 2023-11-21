@@ -10,7 +10,11 @@ public class SystemMapperProfile: Profile
 {
     public SystemMapperProfile()
     {
-        CreateMap<SystemEntity, SystemListModel>();
+        CreateMap<SystemEntity, SystemListModel>()
+            .MapMember(dst => dst.CreatorName, src => $"{src.Creator!.Name} {src.Creator.Surname}")
+            .MapMember(dst => dst.UsersCount, src => src.UsersInSystem.Count)
+            .MapMember(dst => dst.DevicesCount, src => src.Devices.Count);
+        
         CreateMap<SystemEntity, SystemDetailModel>()
             .MapMember(dst => dst.Devices, src => src.Devices)
             .MapMember(dst => dst.Users, src => src.UsersInSystem);

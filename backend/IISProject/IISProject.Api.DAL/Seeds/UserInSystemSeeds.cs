@@ -13,17 +13,28 @@ public static class UserInSystemSeeds
 
     };
     
-    public static readonly UserInSystemEntity UserInSystemToDelete =
-        DefaultUserInSystem with { Id = Guid.Parse("7049E4FB-CF2B-4FCA-B1D2-8F347DC7702E") };
+    public static readonly UserInSystemEntity DefaultUserInSystem2 = new()
+    {
+        Id = Guid.Parse("E85FEC0A-CD58-4BF8-BA22-F4267CD568CA"),
+        UserId = UserSeeds.DefaultUser.Id,
+        SystemId = SystemSeeds.DefaultSystem2.Id
+
+    };
     
-    public static readonly UserInSystemEntity UserInSystemToUpdate = DefaultUserInSystem with { Id = Guid.Parse("5593EB75-3B44-4582-920A-C60743FB170B") };
+    public static readonly UserInSystemEntity DefaultUserInSystem3 = new()
+    {
+        Id = Guid.Parse("0806776F-5F6B-4880-90EA-CE99223DA085"),
+        UserId = UserSeeds.DefaultUser.Id,
+        SystemId = SystemSeeds.DefaultSystem3.Id
+
+    };
     
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserInSystemEntity>().HasData(
             DefaultUserInSystem,
-            UserInSystemToDelete,
-            UserInSystemToUpdate
+            DefaultUserInSystem2,
+            DefaultUserInSystem3
         );
     }
 

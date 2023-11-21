@@ -13,17 +13,10 @@ public static class UserSeeds
         Email = "johndoe@email.email"
     };
     
-    public static readonly UserEntity UserToDelete =
-        DefaultUser with { Id = Guid.Parse("9B2ECD8D-D7A9-4194-917D-34D67E79E4F0") };
-    
-    public static readonly UserEntity UserToUpdate = DefaultUser with { Id = Guid.Parse("7AE65DF4-42F4-4679-8320-C1684B438BCB") };
-    
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserEntity>().HasData(
-            DefaultUser with {Roles = Array.Empty<RoleOfUserEntity>(), UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>()},
-            UserToDelete with {Roles = Array.Empty<RoleOfUserEntity>(), UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>()},
-            UserToUpdate with {Roles = Array.Empty<RoleOfUserEntity>(), UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>()}
+            DefaultUser with {Roles = Array.Empty<RoleOfUserEntity>(), UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>()}
         );
     }
 }

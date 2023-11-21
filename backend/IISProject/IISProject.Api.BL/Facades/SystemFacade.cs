@@ -16,6 +16,7 @@ public class SystemFacade: FacadeBase<SystemEntity, SystemListModel, SystemDetai
     public override List<string> NavigationPathDetails => new()
     {
         $"{nameof(SystemEntity.Devices)}",
-        $"{nameof(SystemEntity.UsersInSystem)}"
+        $"{nameof(SystemEntity.UsersInSystem)}",
+        $"{nameof(SystemEntity.Creator)}"
     };
 }

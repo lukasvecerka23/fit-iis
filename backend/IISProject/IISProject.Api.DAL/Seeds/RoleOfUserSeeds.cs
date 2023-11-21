@@ -12,17 +12,10 @@ public static class RoleOfUserSeeds
         UserId = UserSeeds.DefaultUser.Id
     };
     
-    public static readonly RoleOfUserEntity RoleOfUserToDelete =
-        DefaultRoleOfUser with { Id = Guid.Parse("E454F601-3ED8-4F38-834B-875D6823D6A8") };
-    
-    public static readonly RoleOfUserEntity RoleOfUserToUpdate = DefaultRoleOfUser with { Id = Guid.Parse("E39E03A0-BFE2-41EA-84A1-7D3E5B42264C") };
-    
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<RoleOfUserEntity>().HasData(
-            DefaultRoleOfUser,
-            RoleOfUserToDelete,
-            RoleOfUserToUpdate
+            DefaultRoleOfUser
         );
     }
 }

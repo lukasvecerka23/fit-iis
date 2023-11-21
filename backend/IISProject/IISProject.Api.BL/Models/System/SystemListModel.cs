@@ -6,4 +6,7 @@ public record SystemListModel : IModel
     public required string Name { get; set; }
     
     public required Guid CreatorId { get; set; }
+    public string CreatorName { get; set; } = null!;
+    public int UsersCount { get; set; }
+    public int DevicesCount { get; set; }
 }
