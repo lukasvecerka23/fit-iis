@@ -1,4 +1,4 @@
-using IISProject.Api.DAL.Seeds;
+using IISProject.Api.DAL.Tests.Seeds;
 using IISProject.Api.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
