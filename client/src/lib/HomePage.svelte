@@ -11,6 +11,6 @@
 
 <ul>
   {#each devices as device (device.id)}
-    <li>{device.userAlias}</li>
+    <li class="text-red-700">{device.userAlias}</li>
   {/each}
 </ul>

@@ -1,5 +1,5 @@
 <script>
-  import Router from './lib/Router.svelte'
+  import Router from "./lib/Router.svelte";
 </script>
 
 <main>

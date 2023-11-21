@@ -1,9 +1,8 @@
 <script>
-    import { Router, Route } from 'svelte-routing';
-    import Counter from './Counter.svelte';
-
+    import {Router, Route} from 'svelte-routing';
+    import HomePage from './HomePage.svelte';
 </script>
 
 <Router>
-    <Route path="/" component={Counter}/>
+    <Route path="/" component={HomePage}/>
 </Router>
