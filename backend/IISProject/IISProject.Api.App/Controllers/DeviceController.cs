@@ -1,5 +1,6 @@
 using IISProject.Api.BL.Facades;
 using IISProject.Api.BL.Models.Device;
+using IISProject.Api.BL.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IISProject.Controllers;
@@ -23,28 +24,50 @@ public class DeviceController : ControllerBase
         return await _deviceFacade.GetAllAsync();
     }
 
-    [HttpGet("{id}")]
-    public async Task<DeviceDetailModel?> GetDeviceById(Guid id)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<DeviceDetailModel>> GetDeviceById(Guid id)
     {
-        return await _deviceFacade.GetByIdAsync(id);
+        var result = await _deviceFacade.GetByIdAsync(id);
+        
+        if (result == null)
+        {
+            return NotFound(new ErrorModel {Error = $"Device with id {id} not found"});
+        }
+
+        return result;
     }
 
     [HttpPost]
-    public async Task<DeviceDetailModel> CreateDevice(DeviceDetailModel device)
+    public async Task<ActionResult<IdModel>> CreateDevice(DeviceCreateUpdateModel device)
     {
-        return await _deviceFacade.SaveAsync(device);
+        var result = await _deviceFacade.CreateAsync(device);
+        return Created($"/api/devices/{result.Id}", result);
     }
     
-    [HttpPut("{id}")]
-    public async Task<DeviceDetailModel> UpdateDevice(Guid id, DeviceDetailModel device)
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<IdModel>> UpdateDevice(Guid id, DeviceCreateUpdateModel device)
     {
-        device.Id = id;
-        return await _deviceFacade.SaveAsync(device);
+
+        var result = await _deviceFacade.UpdateAsync(device, id);
+
+        if (result == null)
+        {
+            return NotFound(new ErrorModel {Error = $"Device with id {id} not found"});
+        }
+        
+        return result;
     }
 
-    [HttpDelete("{id}")]
-    public async Task DeleteDevice(Guid id)
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult> DeleteDevice(Guid id)
     {
-        await _deviceFacade.DeleteAsync(id);
+        var result = await _deviceFacade.DeleteAsync(id);
+        
+        if (result)
+        {
+            return NotFound(new ErrorModel {Error = $"Device with id {id} not found"});
+        }
+
+        return Ok();
     }
 }

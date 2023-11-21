@@ -1,5 +1,6 @@
 using IISProject.Api.BL.Facades;
 using IISProject.Api.BL.Models.Parameter;
+using IISProject.Api.BL.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IISProject.Controllers;
@@ -23,28 +24,45 @@ public class ParameterController : ControllerBase
         return await _parameterFacade.GetAllAsync();
     }
 
-    [HttpGet("{id}")]
-    public async Task<ParameterDetailModel?> GetParameterById(Guid id)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<ParameterDetailModel>> GetParameterById(Guid id)
     {
-        return await _parameterFacade.GetByIdAsync(id);
+        var result = await _parameterFacade.GetByIdAsync(id);
+        if (result == null)
+        {
+            return NotFound(new ErrorModel { Error = $"Parameter with id {id} not found " });
+        }
+        return result;
     }
 
     [HttpPost]
-    public async Task<ParameterDetailModel> CreateParameter(ParameterDetailModel parameter)
+    public async Task<ActionResult<IdModel>> CreateParameter(ParameterCreateUpdateModel parameter)
     {
-        return await _parameterFacade.SaveAsync(parameter);
+        var result = await _parameterFacade.CreateAsync(parameter);
+        return Created($"/api/parameters/{result.Id}", result);
     }
     
-    [HttpPut("{id}")]
-    public async Task<ParameterDetailModel> UpdateParameter(Guid id, ParameterDetailModel parameter)
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<IdModel>> UpdateParameter(Guid id, ParameterCreateUpdateModel parameter)
     {
-        parameter.Id = id;
-        return await _parameterFacade.SaveAsync(parameter);
+        var result = await _parameterFacade.UpdateAsync(parameter, id);
+        if (result == null)
+        {
+            return NotFound(new ErrorModel {Error = $"Parameter with id {id} not found"});
+        }
+        
+        return result;   
     }
 
-    [HttpDelete("{id}")]
-    public async Task DeleteParameter(Guid id)
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult> DeleteParameter(Guid id)
     {
-        await _parameterFacade.DeleteAsync(id);
+        var result = await _parameterFacade.DeleteAsync(id);
+        if (!result)
+        {
+            return NotFound(new ErrorModel {Error = $"Parameter with id {id} not found"});
+        }
+
+        return Ok();
     }
 }
