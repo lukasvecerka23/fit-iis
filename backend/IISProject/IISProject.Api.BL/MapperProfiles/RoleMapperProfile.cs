@@ -16,6 +16,7 @@ public class RoleMapperProfile: Profile
             .MapMember(src => src.RoleOfUsers, dst => dst.RoleOfUsers);
 
         CreateMap<RoleCreateUpdateModel, RoleEntity>()
+            .Ignore(dst => dst.Id)
             .Ignore(src => src.RoleOfUsers);
         
         CreateMap<RoleEntity, IdModel>();

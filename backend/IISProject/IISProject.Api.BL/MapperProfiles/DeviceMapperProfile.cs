@@ -15,6 +15,7 @@ public class DeviceMapperProfile: Profile
         CreateMap<DeviceEntity, DeviceCreateUpdateModel>();
         
         CreateMap<DeviceCreateUpdateModel, DeviceEntity>()
+            .Ignore(dst => dst.Id)
             .Ignore(dst => dst.Creator)
             .Ignore(dst => dst.System)
             .Ignore(dst => dst.DeviceType)

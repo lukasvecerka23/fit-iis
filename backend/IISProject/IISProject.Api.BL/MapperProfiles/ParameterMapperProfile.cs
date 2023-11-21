@@ -16,6 +16,7 @@ public class ParameterMapperProfile: Profile
             .MapMember(src => src.Kpis, dst => dst.Kpis);
 
         CreateMap<ParameterCreateUpdateModel, ParameterEntity>()
+            .Ignore(dst => dst.Id)
             .Ignore(dst => dst.Kpis)
             .Ignore(dst => dst.DeviceType)
             .Ignore(dst => dst.Measurements);

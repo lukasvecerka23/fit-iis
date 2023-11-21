@@ -19,6 +19,7 @@ public class UserMapperProfile: Profile
             .MapMember(dst => dst.Systems, src => src.UserInSystems);
 
         CreateMap<UserCreateUpdateModel, UserEntity>()
+            .Ignore(dst => dst.Id)
             .Ignore(dst => dst.Devices)
             .Ignore(dst => dst.Roles)
             .Ignore(dst => dst.Kpis)
