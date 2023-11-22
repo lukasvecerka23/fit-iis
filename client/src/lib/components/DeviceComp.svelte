@@ -3,17 +3,17 @@
     import {systems} from "../../store.js";
     import Users from "../../assets/users.svg";
     import Devices from "../../assets/device.svg";
-    export let system;
+    export let device;
 
-    async function deleteSystem(id) {
+    async function deleteDevice(id) {
         try {
-            const response = await fetch(`https://localhost:7246/api/systems/${id}`, {
+            const response = await fetch(`https://localhost:7246/api/devices/${id}`, {
                 method: 'DELETE'
             });
 
             if (response.ok) {
                 // Remove the system from the local array
-                systems.update(currentSystems => { return currentSystems.filter(system => system.id !== id)});
+                systems.update(currentDevices => { return currentDevices.filter(device => device.id !== id)});
             } else {
                 console.error('Error deleting system:', await response.text());
             }
@@ -24,11 +24,12 @@
   </script>
   
 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-    <td class="py-4 px-6 text-left text-base font-semibold">{system.name}</td>
+    <td class="py-4 px-6 text-left font-semibold text-base">{device.userAlias}</td>
+    <td class="py-4 px-6">{device.deviceTypeId}</td>
     <td class="py-4 px-6">
       <div class="flex-row flex items-center justify-center">
         <div class="">
-          {system.devicesCount}
+            {device.systemId}
         </div>
         <div class="pl-3">
           <img src={Devices} alt="Users" class="w-5 h-5 mr-2">
@@ -38,21 +39,12 @@
     <td class="py-4 px-6">
       <div class="flex-row flex items-center justify-center">
         <div class="">
-          {system.usersCount}
-        </div>
-        <div class="pl-3">
-          <img src={Users} alt="Users" class="w-5 h-5 mr-2">
+          CreatorName
         </div>
       </div>
     </td>
-    <td class="py-4 px-6">{system.creatorName}</td>
     <td class="py-4 px-0">
-      <button class="bg-gray-500 hover:bg-gray-400 text-white font-poppins-light py-2 px-4 rounded">
-          Zažádat správce o přístup
-      </button>
-    </td>
-    <td class="py-4 px-0">
-      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>deleteSystem(system.id)}>
+      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>deleteDevice(device.id)}>
         <img src={TrashBin} alt="Trash Bin" class="w-6 h-6" />
       </button>
     </td>

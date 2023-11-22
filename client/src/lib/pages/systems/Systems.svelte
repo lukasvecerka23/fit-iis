@@ -47,9 +47,9 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="py-3 px-6 text-left">Název systému</th>
-                        <th scope="col" class="py-3 px-6">Správce</th>
                         <th scope="col" class="py-3 px-6">Počet zařízení</th>
                         <th scope="col" class="py-3 px-6">Počet lidí v systému</th>
+                        <th scope="col" class="py-3 px-6">Správce</th>
                         <th scope="col" class="py-3 px-6"></th>
                         <th scope="col" class="py-3 px-6"></th>
                     </tr>
