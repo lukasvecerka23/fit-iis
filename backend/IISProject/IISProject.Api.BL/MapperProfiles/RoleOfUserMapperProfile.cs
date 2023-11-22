@@ -10,7 +10,8 @@ public class RoleOfUserMapperProfile: Profile
 {
     public RoleOfUserMapperProfile()
     {
-        CreateMap<RoleOfUserEntity, RoleOfUserListModel>();
+        CreateMap<RoleOfUserEntity, RoleOfUserListModel>()
+            .MapMember(dst => dst.RoleName, src => src.Role!.Name);
         CreateMap<RoleOfUserEntity, RoleOfUserDetailModel>();
         
         CreateMap<RoleOfUserCreateUpdateModel, RoleOfUserEntity>()

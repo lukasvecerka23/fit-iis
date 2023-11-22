@@ -35,7 +35,8 @@ public class UserRepositoryTests: DALTestsBase
             Id = Guid.NewGuid(),
             Name = "Poe",
             Surname = "Poe",
-            Email = "poepoe@email.email"
+            Username = "poepoe",
+            PasswordHash = "TESTHASH"
         };
 
         // act
