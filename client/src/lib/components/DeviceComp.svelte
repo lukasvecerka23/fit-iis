@@ -3,6 +3,7 @@
     import {systems} from "../../store.js";
     import Users from "../../assets/users.svg";
     import Devices from "../../assets/device.svg";
+    import Edit from "../../assets/edit.svg";
     export let device;
 
     async function deleteDevice(id) {
@@ -31,9 +32,6 @@
         <div class="">
             {device.systemId}
         </div>
-        <div class="pl-3">
-          <img src={Devices} alt="Users" class="w-5 h-5 mr-2">
-        </div>
       </div>
     </td>
     <td class="py-4 px-6">
@@ -45,6 +43,11 @@
     </td>
     <td class="py-4 px-0">
       <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>deleteDevice(device.id)}>
+        <img src={Edit} alt="Trash Bin" class="w-6 h-6" />
+      </button>
+    </td>
+    <td class="py-4 px-0">
+      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded">
         <img src={TrashBin} alt="Trash Bin" class="w-6 h-6" />
       </button>
     </td>
