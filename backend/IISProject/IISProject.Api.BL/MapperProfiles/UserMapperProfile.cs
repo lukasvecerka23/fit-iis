@@ -24,7 +24,8 @@ public class UserMapperProfile: Profile
             .Ignore(dst => dst.Roles)
             .Ignore(dst => dst.Kpis)
             .Ignore(dst => dst.UserInSystems)
-            .Ignore(dst => dst.Measurements);
+            .Ignore(dst => dst.Measurements)
+            .Ignore(dst => dst.PasswordHash);
         
         CreateMap<UserEntity, IdModel>();
 

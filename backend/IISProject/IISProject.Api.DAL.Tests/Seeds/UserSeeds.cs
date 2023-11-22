@@ -1,4 +1,5 @@
 using IISProject.Api.DAL.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IISProject.Api.DAL.Tests.Seeds;
@@ -10,8 +11,15 @@ public static class UserSeeds
         Id = Guid.Parse("F6E282C7-20E0-4AF1-B531-18C70D0C53D2"),
         Name = "John",
         Surname = "Doe",
-        Email = "johndoe@email.email"
+        Username = "johndoe",
+        PasswordHash = GeneratePasswordHash("test123")
     };
+    
+    private static string GeneratePasswordHash(string password)
+    {
+        var passwordHasher = new PasswordHasher<UserEntity>();
+        return passwordHasher.HashPassword(DefaultUser, password);
+    }
     
     public static readonly UserEntity UserToDelete =
         DefaultUser with { Id = Guid.Parse("9B2ECD8D-D7A9-4194-917D-34D67E79E4F0") };

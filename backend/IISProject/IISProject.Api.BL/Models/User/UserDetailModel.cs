@@ -10,7 +10,7 @@ public record UserDetailModel: IModel
     public Guid Id { get; set; }
     public required string Name { get; set; }
     public required string Surname { get; set; }
-    public required string Email { get; set; }
+    public required string Username { get; set; }
     
     public ICollection<RoleOfUserListModel> RoleOfUsers { get; set; } = new List<RoleOfUserListModel>();
     public ICollection<UserInSystemListModel> Systems { get; set; } = new List<UserInSystemListModel>();
