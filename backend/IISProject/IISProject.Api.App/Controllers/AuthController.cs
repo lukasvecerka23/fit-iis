@@ -24,6 +24,29 @@ public class AuthController: ControllerBase
         _roleOfUserFacade = roleOfUserFacade;
     }
     
+    [HttpPost("register")]
+    public async Task<ActionResult> Register(UserCreateUpdateModel registerModel)
+    {
+        var user = await _userFacade.RegisterAsync(registerModel);
+        if (user == null)
+        {
+            return BadRequest();
+        }
+        
+        string token = GenerateJwtToken(user);
+
+        // Create a session cookie
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict
+        };
+
+        Response.Cookies.Append("jwt", token, cookieOptions);
+        return Ok(new { Token = token });
+    }
+    
     [HttpPost("login")]
     public async Task<ActionResult> Login(LoginModel loginModel)
     {
@@ -74,5 +97,20 @@ public class AuthController: ControllerBase
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
+    }
+    
+    [HttpPost("logout")]
+    public ActionResult Logout()
+    {
+        // Delete the session cookie
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict
+        };
+
+        Response.Cookies.Delete("jwt", cookieOptions);
+        return Ok();
     }
 }
