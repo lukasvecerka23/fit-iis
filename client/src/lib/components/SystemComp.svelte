@@ -1,8 +1,10 @@
 <script>
     import TrashBin from "../../assets/trash.svg";
     import {systems} from "../../store.js";
+    import { Link, navigate } from "svelte-routing";
     import Users from "../../assets/users.svg";
     import Devices from "../../assets/device.svg";
+    import Edit from "../../assets/edit.svg";
     export let system;
 
     async function deleteSystem(id) {
@@ -21,10 +23,16 @@
             console.error('Error deleting system:', error);
         }
     }
+
+    function MoveToDetail(systemId){
+      navigate(`/systemDetail/${systemId}`);
+    }
+
+
   </script>
-  
-<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-    <td class="py-4 px-6 text-left text-base font-semibold">{system.name}</td>
+
+<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700 cursor-pointer" on:click={() => MoveToDetail(system.id)}>
+    <td class="py-4 px-6 text-left text-base text-gray-300 font-semibold">{system.name}</td>
     <td class="py-4 px-6">
       <div class="flex-row flex items-center justify-center">
         <div class="">
@@ -49,6 +57,11 @@
     <td class="py-4 px-0">
       <button class="bg-gray-500 hover:bg-gray-400 text-white font-poppins-light py-2 px-4 rounded">
           Zažádat správce o přístup
+      </button>
+    </td>
+    <td class="py-4 px-0">
+      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>deleteSystem(system.id)}>
+        <img src={Edit} alt="Trash Bin" class="w-6 h-6" />
       </button>
     </td>
     <td class="py-4 px-0">

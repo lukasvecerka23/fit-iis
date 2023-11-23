@@ -10,7 +10,7 @@
     let currentPageIndex = 0;
     const pageSize = 10;
     let totalPages = 0;
-  
+    
     async function fetchSystems() {
         const params = new URLSearchParams({
             p: currentPageIndex,
@@ -48,7 +48,7 @@
         <!-- Pole pro filtraci nad seznamem devices -->
         <div class="flex-col flex w-4/5 items-center">
             <div class = "flex-col flex w-full">
-                <h2 class="text-3xl font-bold mb-0 py-6 font-poppins-light text-left">Systémy</h2>
+                <h2 class="text-3xl font-bold mb-0 pt-10 pb-6 font-poppins-light text-left">Systémy</h2>
                 <div class="flex flex-row">
                     <div class="pb-4 w-1/3 self-start">
                         <input
@@ -76,6 +76,7 @@
                         <th scope="col" class="py-3 px-6">Počet zařízení</th>
                         <th scope="col" class="py-3 px-6">Počet lidí v systému</th>
                         <th scope="col" class="py-3 px-6">Správce</th>
+                        <th scope="col" class="py-3 px-6"></th>
                         <th scope="col" class="py-3 px-6"></th>
                         <th scope="col" class="py-3 px-6"></th>
                     </tr>

@@ -16,7 +16,7 @@
             <NavButton linkPath="/systems"
             text="Systémy"
             logoUrl={SystemLogo}
-            classBackgroundColor={isActivePage("/systems") ? "bg-slate-600" : ""}
+            classBackgroundColor={(isActivePage("/systems") || activepage.pathname.includes("/systemDetail/")) ? "bg-slate-600" : ""}
             />
             <NavButton linkPath="/devices"
             text="Zařízení"
