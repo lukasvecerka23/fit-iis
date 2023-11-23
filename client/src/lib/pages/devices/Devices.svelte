@@ -7,11 +7,37 @@
     import New from '../../../assets/new.svg';
   
     let searchTerm = '';
+    let currentPageIndex = 0;
+    const pageSize = 10;
+    let totalPages = 0;
 
-  onMount(async () => {
-    const resp = await fetch('https://localhost:7246/api/devices')
-    devices.set(await resp.json())
-  })
+    async function fetchDevices() {
+        const params = new URLSearchParams({
+            p: currentPageIndex,
+            size: pageSize,
+        });
+        if (searchTerm.length >= 3) {
+            params.append('q', searchTerm);
+        }
+
+        const resp = await fetch(`https://localhost:7246/api/devices/search?${params}`);
+        const data = await resp.json();
+        devices.set(data.devices);
+        totalPages = data.totalPages; // Update this based on your API response
+    }
+
+  onMount(fetchDevices);
+
+  $: if (searchTerm.length >= 3 || searchTerm.length === 0) {
+        currentPageIndex = 0;
+        fetchDevices();
+    }
+
+    function goToPage(page) {
+        currentPageIndex = page;
+        fetchDevices();
+    }
+
 </script>
 
 <div class="flex flex-col w-full h-screen bg-slate-400">
@@ -60,6 +86,21 @@
                     {/each}
                 </tbody>
             </table>
+            <!-- Pagination Controls -->
+            <div class="flex justify-between items-center my-4">
+              <button 
+                  class="px-4 py-2 rounded-xl bg-slate-500 text-white disabled:text-gray-300" 
+                  on:click={goToPage(currentPageIndex - 1)} 
+                  disabled={currentPageIndex === 0}>
+                  Zpět
+              </button>
+              <button 
+                  class="px-4 py-2 rounded-xl bg-slate-500 text-white disabled:text-gray-300" 
+                  on:click={goToPage(currentPageIndex + 1)} 
+                  disabled={currentPageIndex === totalPages - 1}>
+                  Další
+              </button>
+          </div>
 
             </div>
         </div>

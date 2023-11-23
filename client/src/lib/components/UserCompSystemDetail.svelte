@@ -1,13 +1,11 @@
 <script>
     import TrashBin from "../../assets/trash.svg";
     import {systems} from "../../store.js";
-    import { Link, navigate } from "svelte-routing";
     import Users from "../../assets/users.svg";
-    import Devices from "../../assets/device.svg";
     import Edit from "../../assets/edit.svg";
-    export let device;
+    export let user;
 
-    async function deleteDevice(id) {
+    /*async function deleteDevice(id) {
         try {
             const response = await fetch(`https://localhost:7246/api/devices/${id}`, {
                 method: 'DELETE'
@@ -22,32 +20,13 @@
         } catch (error) {
             console.error('Error deleting system:', error);
         }
-    }
-
-    function MoveToDetail(deviceId){
-      navigate(`/devices/${deviceId}`);
-    }
+    }*/
   </script>
   
-<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700 cursor-pointer" on:click={() => MoveToDetail(device.id)}>
-    <td class="py-4 px-6 text-left font-semibold text-base text-gray-300">{device.userAlias}</td>
-    <td class="py-4 px-6">{device.deviceTypeId}</td>
-    <td class="py-4 px-6">
-      <div class="flex-row flex items-center justify-center">
-        <div class="">
-            {device.systemId}
-        </div>
-      </div>
-    </td>
-    <td class="py-4 px-6">
-      <div class="flex-row flex items-center justify-center">
-        <div class="">
-          CreatorName
-        </div>
-      </div>
-    </td>
+<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+    <td class="py-4 px-6 text-left font-semibold text-base">{user.username}</td>
     <td class="py-4 px-0">
-      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>deleteDevice(device.id)}>
+      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded">
         <img src={Edit} alt="Trash Bin" class="w-6 h-6" />
       </button>
     </td>

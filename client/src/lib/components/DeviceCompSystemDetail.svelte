@@ -1,7 +1,6 @@
 <script>
     import TrashBin from "../../assets/trash.svg";
     import {systems} from "../../store.js";
-    import { Link, navigate } from "svelte-routing";
     import Users from "../../assets/users.svg";
     import Devices from "../../assets/device.svg";
     import Edit from "../../assets/edit.svg";
@@ -23,22 +22,11 @@
             console.error('Error deleting system:', error);
         }
     }
-
-    function MoveToDetail(deviceId){
-      navigate(`/devices/${deviceId}`);
-    }
   </script>
   
-<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700 cursor-pointer" on:click={() => MoveToDetail(device.id)}>
-    <td class="py-4 px-6 text-left font-semibold text-base text-gray-300">{device.userAlias}</td>
+<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+    <td class="py-4 px-6 text-left font-semibold text-base">{device.userAlias}</td>
     <td class="py-4 px-6">{device.deviceTypeId}</td>
-    <td class="py-4 px-6">
-      <div class="flex-row flex items-center justify-center">
-        <div class="">
-            {device.systemId}
-        </div>
-      </div>
-    </td>
     <td class="py-4 px-6">
       <div class="flex-row flex items-center justify-center">
         <div class="">
