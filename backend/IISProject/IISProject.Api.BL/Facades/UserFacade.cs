@@ -37,7 +37,7 @@ public class UserFacade: FacadeBase<UserEntity, UserListModel, UserDetailModel, 
     }
     
     public async Task<UserDetailModel?> RegisterAsync(UserCreateUpdateModel userCreateUpdateModel)
-    {
+    { 
         var uow = UnitOfWorkFactory.Create();
         
         var repository = uow.GetRepository<UserEntity>();
