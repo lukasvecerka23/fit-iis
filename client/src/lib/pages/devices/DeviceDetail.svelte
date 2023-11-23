@@ -10,6 +10,7 @@
     import { systems } from '../../../store';
     import New from '../../../assets/new.svg';
     import Remove from '../../../assets/remove.svg';
+    import Edit from '../../../assets/edit_black.svg';
   
     export let id;
 
@@ -65,7 +66,7 @@
     <div class="flex flex-1 bg-primary-white justify-center overflow-auto">
         <div class="flex-col flex w-4/5 items-center">
             <div class = "flex-col flex w-full">
-                <h2 class="text-3xl font-bold mb-0 pt-10 pb-4 font-poppins-light text-left">{device.userAlias}</h2>
+                <h2 class="text-3xl font-bold pt-10 pb-4 font-poppins-light text-left">{device.userAlias}</h2>
                 <h1 class=" text-lg font-medium text-gray-700 pb-10 font-poppins-light text-left">{device.description}</h1>
                 <div class="flex-row flex pb-2">
                     <h1 class=" text-lg text-black font-poppins-light text-left font-semibold">Vytvořil:</h1>
@@ -75,39 +76,46 @@
                     <h1 class=" text-lg font-semibold text-black font-poppins-light text-left">Typ zařízení:</h1>
                     <h1 class=" pl-2 text-lg font-medium text-gray-700 font-poppins-light text-left">{device.deviceTypeId}</h1>
                 </div>
-                {#if device.systemId != undefined}
-                    <div class="flex-row flex pb-2">
+                    <div class="flex-row flex pb-4 items-center">
                         <h1 class=" text-lg font-semibold text-black font-poppins-light text-left">V systému:</h1>
+                        {#if device.systemId != undefined}
                         <h1 class=" pl-2 text-lg font-medium text-gray-700 font-poppins-light text-left">{device.systemId}</h1>
                         <div class="pl-2 rounded-xl">
                             <button class=" bg-slate-300 hover:bg-slate-200  text-white font-medium rounded-3xl">
                                 <img src={Remove} alt="New" class="w-6 h-6 font-poppins-light">
                             </button>
                         </div>
-                    </div>
-                {:else}
-                <div class="pb-4 rounded-xl">
-                    <button class="bg-slate-500 hover:bg-slate-300  text-white font-medium py-2 px-4 rounded-xl">
-                        <div class="flex flex-row">
-                            <img src={New} alt="New" class="w-6 h-6 mr-2 font-poppins-light">
-                            <span>Přidat do systému</span>
+                        {:else}
+                        <div class="rounded-xl pl-2">
+                            <button class="bg-slate-500 hover:bg-slate-300  text-white font-small text-sm py-2 px-2 rounded-2xl">
+                                <div class="flex flex-row">
+                                    <img src={New} alt="New" class="w-4 h-4 pt-1  font-poppins-light">
+                                    <span class="pr-1">Přidat do systému</span>
+                                </div>
+                            </button>
                         </div>
-                    </button>
-                </div>
-                {/if}
-                <div class="grid w-1/6 grid-cols-1 gap-2 rounded-3xl bg-gray-300 p-1">
-                    <div>
-                        <input type="radio" name="option" id="1" value="1" class=" peer hidden" checked on:click={() => (activeCard = 'parameters')}/>
-                        <label for="1" class="{activeCard === 'parameters' ? 'bg-gray-800 text-white' : 'bg-gray-300 hover:bg-gray-400'} radio-label block cursor-pointer select-none rounded-3xl p-1 text-center ">
-                            <div class="flex-row flex justify-center">
-                                {#if activeCard === 'parameters'}
-                                <img src={Eye} alt="Eye" class="w-6 h-6" />
-                                {/if}
-                                {#if !isSmallScreen}
-                                    <p class="pl-2">Parametry</p>
-                                {/if}
-                            </div>
-                        </label>
+                        {/if}
+                    </div>
+                <div class="flex-row flex w-full items-center">
+                    <div class="grid w-1/6 grid-cols-1 gap-2 rounded-3xl bg-gray-300 p-1">
+                        <div>
+                            <input type="radio" name="option" id="1" value="1" class=" peer hidden" checked on:click={() => (activeCard = 'parameters')}/>
+                            <label for="1" class="{activeCard === 'parameters' ? 'bg-gray-800 text-white' : 'bg-gray-300 hover:bg-gray-400'} radio-label block cursor-pointer select-none rounded-3xl p-1 text-center ">
+                                <div class="flex-row flex justify-center">
+                                    {#if activeCard === 'parameters'}
+                                    <img src={Eye} alt="Eye" class="w-6 h-6" />
+                                    {/if}
+                                    {#if !isSmallScreen}
+                                        <p class="pl-2">Parametry</p>
+                                    {/if}
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="pl-4">
+                        <button class=" hover:bg-slate-200 p-1  text-white font-medium rounded-3xl">
+                            <img src={Edit} alt="New" class="w-6 h-6 font-poppins-light">
+                        </button>
                     </div>
                 </div>
             </div>
