@@ -70,7 +70,7 @@
                 <h2 class="text-3xl font-bold mb-0 pt-10 pb-4 font-poppins-light text-left">{system.name}</h2>
                 <h1 class=" text-lg font-medium text-gray-700 pb-10 font-poppins-light text-left">{system.description}</h1>
                 <div class="flex-row flex pb-2">
-                    <h1 class=" text-lg font-medium text-black font-poppins-light text-left">Vytvořil:</h1>
+                    <h1 class=" text-lg font-semibold text-black font-poppins-light text-left">Vytvořil:</h1>
                     <h1 class=" pl-2 text-lg font-medium text-gray-700 font-poppins-light text-left">{system.creatorName}</h1>
                 </div>
                 <div class="grid w-1/4 grid-cols-2 gap-2 rounded-3xl bg-gray-300 p-1">

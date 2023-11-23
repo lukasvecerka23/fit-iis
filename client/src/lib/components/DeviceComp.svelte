@@ -29,8 +29,8 @@
     }
   </script>
   
-<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700 cursor-pointer" on:click={() => MoveToDetail(device.id)}>
-    <td class="py-4 px-6 text-left font-semibold text-base text-gray-300">{device.userAlias}</td>
+<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700">
+    <td class="py-4 px-6 text-left font-semibold text-base text-gray-300 hover:cursor-pointer hover:underline" on:click={() => MoveToDetail(device.id)}>{device.userAlias}</td>
     <td class="py-4 px-6">{device.deviceTypeId}</td>
     <td class="py-4 px-6">
       <div class="flex-row flex items-center justify-center">
@@ -47,12 +47,12 @@
       </div>
     </td>
     <td class="py-4 px-0">
-      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>deleteDevice(device.id)}>
+      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded">
         <img src={Edit} alt="Trash Bin" class="w-6 h-6" />
       </button>
     </td>
     <td class="py-4 px-0">
-      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded">
+      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>deleteDevice(device.id)}>
         <img src={TrashBin} alt="Trash Bin" class="w-6 h-6" />
       </button>
     </td>
