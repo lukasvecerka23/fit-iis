@@ -59,6 +59,6 @@ public class SystemFacade: FacadeBase<SystemEntity, SystemListModel, SystemDetai
     {
         $"{nameof(SystemEntity.Devices)}",
         $"{nameof(SystemEntity.UsersInSystem)}",
-        $"{nameof(SystemEntity.Creator)}"
+        $"{nameof(SystemEntity.Creator)}",
     };
 }
