@@ -1,6 +1,6 @@
 <script>
     import TrashBin from "../../assets/trash.svg";
-    import {systems} from "../../store.js";
+    import {devices} from "../../store.js";
     import { Link, navigate } from "svelte-routing";
     import Users from "../../assets/users.svg";
     import Devices from "../../assets/device.svg";
@@ -15,12 +15,12 @@
 
             if (response.ok) {
                 // Remove the system from the local array
-                systems.update(currentDevices => { return currentDevices.filter(device => device.id !== id)});
+                devices.update(currentDevices => { return currentDevices.filter(device => device.id !== id)});
             } else {
-                console.error('Error deleting system:', await response.text());
+                console.error('Error deleting device:', await response.text());
             }
         } catch (error) {
-            console.error('Error deleting system:', error);
+            console.error('Error deleting device:', error);
         }
     }
 
@@ -31,18 +31,18 @@
   
 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700">
     <td class="py-4 px-6 text-left font-semibold text-base text-gray-300 hover:cursor-pointer hover:underline" on:click={() => MoveToDetail(device.id)}>{device.userAlias}</td>
-    <td class="py-4 px-6">{device.deviceTypeId}</td>
+    <td class="py-4 px-6">{device.deviceTypeName}</td>
     <td class="py-4 px-6">
       <div class="flex-row flex items-center justify-center">
         <div class="">
-            {device.systemId}
+            {device.systemName}
         </div>
       </div>
     </td>
     <td class="py-4 px-6">
       <div class="flex-row flex items-center justify-center">
         <div class="">
-          CreatorName
+          {device.creatorName}
         </div>
       </div>
     </td>

@@ -26,11 +26,11 @@
   
 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
     <td class="py-4 px-6 text-left font-semibold text-base">{device.userAlias}</td>
-    <td class="py-4 px-6">{device.deviceTypeId}</td>
+    <td class="py-4 px-6">{device.deviceTypeName}</td>
     <td class="py-4 px-6">
       <div class="flex-row flex items-center justify-center">
         <div class="">
-          CreatorName
+          {device.creatorName}
         </div>
       </div>
     </td>

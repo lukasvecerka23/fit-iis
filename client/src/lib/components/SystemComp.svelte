@@ -26,7 +26,7 @@
     }
 
     function MoveToDetail(systemId){
-      navigate(`/systems/${systemId}`);
+      navigate(`/systems/${systemId}`);   
     }
 
 

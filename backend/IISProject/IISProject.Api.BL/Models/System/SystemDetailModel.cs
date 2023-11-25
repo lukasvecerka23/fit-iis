@@ -9,6 +9,7 @@ public record SystemDetailModel : IModel
     public required string Name { get; set; }
     public string? Description { get; set; }
     public required Guid CreatorId { get; set; }
+    public string CreatorName { get; set; } = null!;
     
     public ICollection<UserInSystemListModel> Users { get; set; } = new List<UserInSystemListModel>();
     public ICollection<DeviceListModel> Devices { get; set; } = new List<DeviceListModel>();

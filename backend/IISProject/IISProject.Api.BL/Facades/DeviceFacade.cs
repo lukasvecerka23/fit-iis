@@ -54,4 +54,11 @@ public class DeviceFacade: FacadeBase<DeviceEntity, DeviceListModel, DeviceDetai
 
         return result;
     }
+    
+    public override List<string> NavigationPathDetails => new()
+    {
+        $"{nameof(DeviceEntity.DeviceType)}",
+        $"{nameof(DeviceEntity.Creator)}",
+        $"{nameof(DeviceEntity.System)}"
+    };
 }

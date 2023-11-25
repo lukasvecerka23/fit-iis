@@ -70,16 +70,16 @@
                 <h1 class=" text-lg font-medium text-gray-700 pb-10 font-poppins-light text-left">{device.description}</h1>
                 <div class="flex-row flex pb-2">
                     <h1 class=" text-lg text-black font-poppins-light text-left font-semibold">Vytvořil:</h1>
-                    <h1 class=" pl-2 text-lg font-medium text-gray-700 font-poppins-light text-left">CreatorName</h1>
+                    <h1 class=" pl-2 text-lg font-medium text-gray-700 font-poppins-light text-left">{device.creatorName}</h1>
                 </div>
                 <div class="flex-row flex pb-2">
                     <h1 class=" text-lg font-semibold text-black font-poppins-light text-left">Typ zařízení:</h1>
-                    <h1 class=" pl-2 text-lg font-medium text-gray-700 font-poppins-light text-left">{device.deviceTypeId}</h1>
+                    <h1 class=" pl-2 text-lg font-medium text-gray-700 font-poppins-light text-left">{device.deviceTypeName}</h1>
                 </div>
                     <div class="flex-row flex pb-4 items-center">
                         <h1 class=" text-lg font-semibold text-black font-poppins-light text-left">V systému:</h1>
                         {#if device.systemId != undefined}
-                        <h1 class=" pl-2 text-lg font-medium text-gray-700 font-poppins-light text-left">{device.systemId}</h1>
+                        <h1 class=" pl-2 text-lg font-medium text-gray-700 font-poppins-light text-left">{device.systemName}</h1>
                         <div class="pl-2 rounded-xl">
                             <button class=" bg-slate-300 hover:bg-slate-200  text-white font-medium rounded-3xl">
                                 <img src={Remove} alt="New" class="w-6 h-6 font-poppins-light">
