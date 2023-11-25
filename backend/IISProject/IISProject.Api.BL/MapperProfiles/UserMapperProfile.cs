@@ -1,5 +1,6 @@
 using AutoMapper;
 using IISProject.Api.BL.Extensions;
+using IISProject.Api.BL.Models.Auth;
 using IISProject.Api.BL.Models.Responses;
 using IISProject.Api.DAL.Entities;
 using IISProject.Api.BL.Models.User;
@@ -15,6 +16,16 @@ public class UserMapperProfile: Profile
 
         CreateMap<UserEntity, UserDetailModel>()
             .MapMember(dst => dst.RoleName, src => src.Role!.Name);
+        
+        CreateMap<RegisterModel, UserEntity>()
+            .Ignore(dst => dst.Id)
+            .Ignore(dst => dst.Devices)
+            .Ignore(dst => dst.RoleId)
+            .Ignore(dst => dst.Role)
+            .Ignore(dst => dst.Kpis)
+            .Ignore(dst => dst.UserInSystems)
+            .Ignore(dst => dst.Measurements)
+            .Ignore(dst => dst.PasswordHash);
 
         CreateMap<UserCreateUpdateModel, UserEntity>()
             .Ignore(dst => dst.Id)

@@ -7,6 +7,7 @@
     import DeviceDetail from './pages/devices/DeviceDetail.svelte';
     import LoginPage from './pages/auth/LoginPage.svelte';
     import RegisterPage from './pages/auth/RegisterPage.svelte';
+    import Users from './pages/auth/Users.svelte';
 </script>
 
 <Router>
@@ -20,4 +21,5 @@
     </Route>
     <Route path="/login" component={LoginPage} />
     <Route path="/signup" component={RegisterPage} />
+    <Route path="/users" component={Users} />
 </Router>

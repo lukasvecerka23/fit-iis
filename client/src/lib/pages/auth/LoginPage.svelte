@@ -19,8 +19,9 @@
     });
 
     if (response.ok) {
-        await loadUser();
-        navigate('/');
+        loadUser().then(() => {
+            navigate('/', { replace: true });
+        })
     } else {
       // Handle login error
     }

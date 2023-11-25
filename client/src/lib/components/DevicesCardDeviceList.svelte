@@ -1,7 +1,7 @@
 <!-- DevicesCard.svelte -->
 <script>
     import DeviceCompSystemDetail from './DeviceCompSystemDetail.svelte';
-    export let devices;
+    import {devices} from '../../store.js';
   </script>
   
 <div class="w-full">
@@ -16,7 +16,7 @@
             </tr>
         </thead>
         <tbody>
-            {#each devices as device (device.id)}
+            {#each $devices as device (device.id)}
             <DeviceCompSystemDetail device={device}/>
             {/each}
         </tbody>

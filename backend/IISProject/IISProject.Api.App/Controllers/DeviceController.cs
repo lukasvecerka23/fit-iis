@@ -63,7 +63,7 @@ public class DeviceController : ControllerBase
     {
         var result = await _deviceFacade.DeleteAsync(id);
         
-        if (result)
+        if (!result)
         {
             return NotFound(new ErrorModel {Error = $"Device with id {id} not found"});
         }

@@ -1,6 +1,6 @@
 <script>
     import NavButton from "./NavButton.svelte";
-    import { Link} from "svelte-routing";
+    import { Link , navigate} from "svelte-routing";
     import {user} from "../../store.js";
     $: activepage = location;
 
@@ -18,14 +18,14 @@
         });
         if (response.ok) {
             user.set(null);
-            navigate('/');
+            navigate('/', { replace: true });
         } else {
             // Handle login error
         }
     }
 </script> 
 
-<nav class=" bg-slate-500 w-full h-10 text-white flex justify-between items-center px-4 border-b border-black shadow-sm">
+<nav class=" bg-slate-500 w-full h-10 text-white flex justify-between items-center px-4 border-b border-gray-800 shadow-sm">
     <div class="flex space-x-4 ml-auto">
         {#if $user}
             <button class="{isActivePage('/login') ? 'text-blue-500' : ''}" on:click={async () => await handleLogout()}>Odhlásit</button>

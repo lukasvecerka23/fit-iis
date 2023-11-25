@@ -12,6 +12,7 @@
     import DeviceType from '../../../assets/device_type.svg';
     import DeviceTypeDark from '../../../assets/device_type_dark.svg';
     import DeviceTypesCardDeviceList from '../../components/DeviceTypesCardDeviceList.svelte';
+    import DevicesCardDeviceList from '../../components/DevicesCardDeviceList.svelte';
   
     let searchTerm = '';
     let currentPageIndex = 0;
@@ -19,6 +20,7 @@
     let totalPages = 0;
     let activeCard = 'devices';
     let isSmallScreen = false;
+    let isLoading = true;
 
     async function fetchDevices() {
         const params = new URLSearchParams({
@@ -29,25 +31,37 @@
             params.append('q', searchTerm);
         }
 
-        const resp = await fetch(`https://localhost:7246/api/devices/search?${params}`);
-        const data = await resp.json();
-        devices.set(data.devices);
-        totalPages = data.totalPages; // Update this based on your API response
+        try {
+            const resp = await fetch(`https://localhost:7246/api/devices/search?${params}`);
+            if (resp.ok){
+                const data = await resp.json();
+                devices.set(data.devices);
+                totalPages = data.totalPages; // Update this based on your API response
+            }
+        } finally {
+            isLoading = false;
+        }
     }
 
     async function fetchDeviceTypes() {
-        const params = new URLSearchParams({
-            p: currentPageIndex,
-            size: pageSize,
-        });
-        if (searchTerm.length >= 3) {
-            params.append('q', searchTerm);
+        // const params = new URLSearchParams({
+        //     p: currentPageIndex,
+        //     size: pageSize,
+        // });
+        // if (searchTerm.length >= 3) {
+        //     params.append('q', searchTerm);
+        // }
+    
+        try {
+            const resp = await fetch(`https://localhost:7246/api/deviceTypes`);
+            if (resp.ok){
+                const data = await resp.json();
+                deviceTypes.set(data);
+                totalPages = data.totalPages; // Update this based on your API response
+            }
+        } finally {
+            isLoading = false;
         }
-
-        const resp = await fetch(`https://localhost:7246/api/deviceTypes`);
-        const data = await resp.json();
-        deviceTypes.set(data);
-        totalPages = data.totalPages; // Update this based on your API response
     }
 
         //for devices and users buttons description
@@ -66,18 +80,36 @@
         };
     });
 
-  onMount(fetchDeviceTypes);
-  onMount(fetchDevices);
+    async function loadData() {
+        isLoading = true;
+        switch (activeCard) {
+            case 'devices':
+                await fetchDevices();
+                break;
+            case 'devicetypes':
+                await fetchDeviceTypes();
+                break;
+        }
+    }
+
+    async function switchCard(card) {
+        activeCard = card;
+        await loadData();
+    }
+
+    onMount(() => {
+        loadData();
+    });
 
 
   $: if (searchTerm.length >= 3 || searchTerm.length === 0) {
         currentPageIndex = 0;
-        fetchDevices();
+        loadData();
     }
 
     function goToPage(page) {
         currentPageIndex = page;
-        fetchDevices();
+        loadData();
     }
 
 </script>
@@ -112,7 +144,7 @@
                 <div class="flex-row items-start w-1/3">
                     <div class="grid w-full grid-cols-2 gap-2 rounded-3xl bg-gray-300 p-1">
                         <div>
-                            <input type="radio" name="option" id="1" value="1" class=" peer hidden" checked on:click={() => (activeCard = 'devices')}/>
+                            <input type="radio" name="option" id="1" value="1" class=" peer hidden" checked on:click={async () => await switchCard('devices')}/>
                             <label for="1" class="{activeCard === 'devices' ? 'bg-gray-800 text-white' : 'bg-gray-300 hover:bg-gray-400'} radio-label block cursor-pointer select-none rounded-3xl p-1 text-center ">
                                 <div class="flex-row flex justify-center">
                                     {#if activeCard === 'devices'}
@@ -128,7 +160,7 @@
                         </div>
                 
                         <div>
-                            <input type="radio" name="option" id="2" value="2" class="peer hidden" on:click={() => (activeCard = 'devicetypes')}/>
+                            <input type="radio" name="option" id="2" value="2" class="peer hidden" on:click={async () => await switchCard('devicetypes')}/>
                             <label for="2" class="{activeCard === 'devicetypes' ? 'bg-gray-800 text-white' : 'bg-gray-300 hover:bg-gray-400' } radio-label block cursor-pointer select-none rounded-3xl p-1 text-center ">
                                 <div class="flex-row flex justify-center">
                                     {#if activeCard === 'devicetypes'}
@@ -148,23 +180,14 @@
         
             
             <div class="w-full pt-4">
-              <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400 rounded-xl overflow-hidden">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="py-3 px-6 text-left">Název</th>
-                        <th scope="col" class="py-3 px-6">Typ zařízení</th>
-                        <th scope="col" class="py-3 px-6">Systém</th>
-                        <th scope="col" class="py-3 px-6">Vytvořil</th>
-                        <th scope="col" class="py-3 px-6"></th>
-                        <th scope="col" class="py-3 px-6"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {#if activeCard === 'devices'}
-                    <DeviceTypesCardDeviceList deviceTypes={deviceTypes}/>
-                    {/if}
-                </tbody>
-            </table>
+            {#if !isLoading}
+                {#if activeCard === 'devicetypes'}
+                    <DeviceTypesCardDeviceList/>
+                {:else}
+                    <DevicesCardDeviceList/>
+                {/if}
+            {/if}
+
             <!-- Pagination Controls -->
             <div class="flex justify-between items-center my-4">
               <button 

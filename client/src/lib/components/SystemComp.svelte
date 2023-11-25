@@ -11,7 +11,8 @@
     async function deleteSystem(id) {
         try {
             const response = await fetch(`https://localhost:7246/api/systems/${id}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                credentials: 'include',
             });
 
             if (response.ok) {

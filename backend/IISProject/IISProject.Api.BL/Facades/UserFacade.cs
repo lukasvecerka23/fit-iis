@@ -1,11 +1,13 @@
 using AutoMapper;
 using IISProject.Api.BL.Facades.Interfaces;
+using IISProject.Api.BL.Models.Auth;
 using IISProject.Api.BL.Models.User;
 using IISProject.Api.DAL.Entities;
 using IISProject.Api.DAL.Seeds;
 using IISProject.Api.DAL.UnitOfWork;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 
 namespace IISProject.Api.BL.Facades;
@@ -39,7 +41,7 @@ public class UserFacade: FacadeBase<UserEntity, UserListModel, UserDetailModel, 
         return Mapper.Map<UserDetailModel>(user);
     }
     
-    public async Task<UserDetailModel?> RegisterAsync(UserCreateUpdateModel userCreateUpdateModel)
+    public async Task<UserDetailModel?> RegisterAsync(RegisterModel registerModel)
     { 
         var uow = UnitOfWorkFactory.Create();
         
@@ -47,15 +49,15 @@ public class UserFacade: FacadeBase<UserEntity, UserListModel, UserDetailModel, 
         
         var users = repository.GetAll();
         
-        var user = await users.SingleOrDefaultAsync(x => x.Username == userCreateUpdateModel.Username);
+        var user = await users.SingleOrDefaultAsync(x => x.Username == registerModel.Username);
 
         if (user != null)
         {
             return null;
         }
 
-        var newUser = Mapper.Map<UserEntity>(userCreateUpdateModel);
-        newUser.PasswordHash = HashPassword(newUser, userCreateUpdateModel.Password);
+        var newUser = Mapper.Map<UserEntity>(registerModel);
+        newUser.PasswordHash = HashPassword(newUser, registerModel.Password);
         newUser.RoleId = RoleSeeds.UserRole.Id;
         var createdUser = await repository.InsertAsync(newUser);
         await uow.CommitAsync();
@@ -70,6 +72,48 @@ public class UserFacade: FacadeBase<UserEntity, UserListModel, UserDetailModel, 
     public bool VerifyPassword(UserEntity user, string hashedPassword, string providedPassword)
     {
         return _passwordHasher.VerifyHashedPassword(user, hashedPassword, providedPassword) != PasswordVerificationResult.Failed;
+    }
+    
+    public async Task<UserSearchModel> SearchAsync(string query, int index, int size)
+    {
+        var uow = UnitOfWorkFactory.Create();
+        var repository = uow.GetRepository<UserEntity>();
+        var userQuery = repository.GetAll();
+        IncludeNavigationPathDetails(ref userQuery);
+        
+        IEnumerable<UserEntity> filteredUsers;
+        if (query.IsNullOrEmpty())
+        {
+            filteredUsers = userQuery.OrderBy(x => x.Name);
+        }
+        else
+        {
+            filteredUsers = userQuery
+                .Where(x => 
+                    x.Username.ToLower().Contains(query.ToLower()) ||
+                    x.Name.ToLower().Contains(query.ToLower()) || 
+                    x.Surname.ToLower().Contains(query.ToLower())
+                    );
+        }
+
+        var users = filteredUsers
+            .Skip(index * size)
+            .Take(size).ToList();
+        
+        var totalCount = filteredUsers.Count();
+        var totalPages = (int)Math.Ceiling((double)totalCount / size);
+
+
+        var result = new UserSearchModel
+        {
+            PageIndex = index,
+            PageSize = size,
+            TotalCount = totalCount,
+            TotalPages = totalPages,
+            Users = Mapper.Map<IEnumerable<UserListModel>>(users)
+        };
+        
+        return result;
     }
     
     public override List<string> NavigationPathDetails => new()

@@ -66,4 +66,20 @@ public class UserController : ControllerBase
 
         return Ok();
     }
+    
+    [HttpGet("search")]
+    public async Task<ActionResult<UserSearchModel>> Search([FromQuery] SearchUserParams searchParams)
+    {
+        var result = await _userFacade.SearchAsync(searchParams.Query, searchParams.PageIndex, searchParams.PageSize);
+        return result;
+    }
+}
+
+public class SearchUserParams
+{
+    [FromQuery(Name = "q")] public string Query { get; set; } = "";
+
+    [FromQuery(Name = "p")] public int PageIndex { get; set; } = 0;
+
+    [FromQuery(Name = "size")] public int PageSize { get; set; } = 10;
 }

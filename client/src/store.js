@@ -3,6 +3,7 @@ import { writable } from "svelte/store";
 export const systems = writable([]);
 export const devices = writable([]);
 export const deviceTypes = writable([]);
+export const users = writable([]);
 export const user = writable(null);
 
 export async function loadUser() {

@@ -25,7 +25,7 @@ public class AuthController: ControllerBase
     }
     
     [HttpPost("register")]
-    public async Task<ActionResult> Register(UserCreateUpdateModel registerModel)
+    public async Task<ActionResult> Register(RegisterModel registerModel)
     {
         var user = await _userFacade.RegisterAsync(registerModel);
         if (user == null)

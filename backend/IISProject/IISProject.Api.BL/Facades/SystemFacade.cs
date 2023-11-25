@@ -1,10 +1,8 @@
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using IISProject.Api.BL.Facades.Interfaces;
 using IISProject.Api.BL.Models.System;
 using IISProject.Api.DAL.Entities;
 using IISProject.Api.DAL.UnitOfWork;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace IISProject.Api.BL.Facades;

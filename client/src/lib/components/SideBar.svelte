@@ -2,6 +2,7 @@
     import SystemLogo from "../../assets/system.svg";
     import DevicesLogo from "../../assets/devices.svg";
     import LogoutLogo from  "../../assets/log_out.svg";
+    import UsersLogo from "../../assets/users_white.svg";
     import NavButton from "./NavButton.svelte";
     import { Link} from "svelte-routing";
     import {user} from "../../store.js";
@@ -26,6 +27,13 @@
             logoUrl={DevicesLogo}
             classBackgroundColor={isActivePage("/devices") ? "bg-slate-600" : ""}
             />
+                {#if $user.role === "Admin"}
+                <NavButton linkPath="/users"
+                text="Uživatelé"
+                logoUrl={UsersLogo}
+                classBackgroundColor={isActivePage("/users") ? "bg-slate-600" : ""}
+                />
+                {/if}
             {/if}
         </div>
   </nav>
