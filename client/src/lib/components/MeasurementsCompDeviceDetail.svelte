@@ -18,10 +18,10 @@
         <p>{measurement.parameterName}</p>
       </button>
     </td>
-    <td class="py-4 px-6 text-center">
+    <td class="py-4 px-6 text-center w-1/6">
       <p>{measurement.timeStamp}</p>
     </td>
-    <td class="py-4 px-6 text-center">
+    <td class="py-4 px-6 text-center w-1/6">
       <p>{measurement.value}</p>
     </td>
 </tr>

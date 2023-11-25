@@ -64,7 +64,8 @@
         activeCard = card;
     }
 
-  </script>
+
+</script>
 
 {#if isLoading}
 <div class="flex flex-col w-full h-screen bg-slate-400">
@@ -169,6 +170,9 @@
                     {:else if activeCard === 'measurements'}
                         <MeasurementsCard/>
                     {/if}
+
+ 
+
                 </div>
             </div>
         </div>

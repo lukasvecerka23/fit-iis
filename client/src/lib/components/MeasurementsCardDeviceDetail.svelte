@@ -30,6 +30,12 @@
     onMount(() => {
         selectedParameterId.subscribe(value => {
             fetchMeasurements(value); })});
+
+    
+    function goToPage(page) {
+        currentPageIndex = page;
+        fetchMeasurements();
+    }
   </script>
   
   {#if isLoading}
@@ -42,9 +48,8 @@
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="py-3 px-6 text-left">Parametr</th>
-                <th scope="col" class="py-3 px-6 text-center">Čas</th>
-                <th scope="col" class="py-3 px-6 text-center">Hodnota</th>
-                <!-- <th scope="col" class="py-3 px-6 text-center">Status</th> -->
+                <th scope="col" class="py-3 px-6 text-center w-1/6">Čas</th>
+                <th scope="col" class="py-3 px-6 text-center w-1/6">Hodnota</th>
             </tr>
         </thead>
         <tbody>
@@ -56,6 +61,21 @@
         </tbody>
     </table>
   
+    <!-- Pagination Controls -->
+    <div class="flex gap-2 items-center my-4">
+        <button 
+            class="px-4 py-2 rounded-xl bg-slate-500 hover:bg-slate-600 disabled:hover:bg-slate-500 text-white disabled:text-gray-300" 
+            on:click={goToPage(currentPageIndex - 1)} 
+            disabled={currentPageIndex === 0}>
+            Zpět
+        </button>
+        <button 
+            class="px-4 py-2 rounded-xl bg-slate-500 hover:bg-slate-600 text-white disabled:hover:bg-slate-500 disabled:text-gray-300" 
+            on:click={goToPage(currentPageIndex + 1)} 
+            disabled={!totalPages ? true : currentPageIndex === totalPages - 1}>
+            Další
+        </button>
+    </div>
   </div>
   {/if}
   
