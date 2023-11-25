@@ -1,6 +1,6 @@
 <script>
     import TrashBin from "../../assets/trash.svg";
-    import {systems} from "../../store.js";
+    import {devices} from "../../store.js";
     import Users from "../../assets/users.svg";
     import Devices from "../../assets/device.svg";
     import Edit from "../../assets/edit.svg";
@@ -9,12 +9,13 @@
     async function deleteDevice(id) {
         try {
             const response = await fetch(`https://localhost:7246/api/devices/${id}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                credentials: 'include',
             });
 
             if (response.ok) {
                 // Remove the system from the local array
-                systems.update(currentDevices => { return currentDevices.filter(device => device.id !== id)});
+                devices.update(currentDevices => { return currentDevices.filter(device => device.id !== id)});
             } else {
                 console.error('Error deleting system:', await response.text());
             }

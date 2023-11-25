@@ -8,7 +8,8 @@
     async function deleteDeviceType(id) {
         try {
             const response = await fetch(`https://localhost:7246/api/deviceTypes/${id}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                credentials: 'include',
             });
 
             if (response.ok) {
