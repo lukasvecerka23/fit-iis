@@ -5,8 +5,8 @@
     import { navigate, useLocation } from 'svelte-routing';
     import Sidebar from '../../components/SideBar.svelte';
     import TopBar from '../../components/TopBar.svelte';
-    import UsersCard from '../../components/UsersCard.svelte';
-    import DevicesCard from '../../components/DevicesCard.svelte';
+    import UsersCard from '../../components/UsersCardSystemDetail.svelte';
+    import DevicesCard from '../../components/DevicesCardSystemDetail.svelte';
     import Users from '../../../assets/users.svg'
     import Device from '../../../assets/device.svg';
     import DeviceDark from '../../../assets/device_dark.svg';

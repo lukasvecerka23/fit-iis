@@ -12,7 +12,6 @@
 <Router>
     <Route path="/" component={Systems} />
     <Route path="/devices" component={Devices} />
-    <Route path="/systems" component={SystemDetail} />
     <Route path="/systems/:id" let:params>
         <SystemDetail id={params.id}/>
     </Route>
