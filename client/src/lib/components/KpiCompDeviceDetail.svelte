@@ -7,25 +7,26 @@
     import StatusOk from '../../assets/status_ok.svg';
     import StatusWarning from '../../assets/status_warning.svg';
     import StatusBad from '../../assets/status_bad.svg';
+    export let kpi;
     export let parameter;
 
 
-    function MoveToDetail(parameterId){
-      navigate(`/parameters/${parameterId}`);
+    function MoveToDetail(kpiId){
+      navigate(`/parameters/${kpiId}`);
     }
   </script>
   
 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700">
     <td class="py-4 px-6 text-left font-semibold text-gray-300 text-base">
-      <button class="hover:cursor-pointer hover:underline" on:click={() => MoveToDetail(parameter.id)}>
+      <button class="hover:cursor-pointer hover:underline" on:click={() => MoveToDetail(kpi.id)}>
         <p>{parameter.name}</p>
       </button>
     </td>
     <td class="py-4 px-6 text-center">
-      <p>{parameter.lowerLimit}</p>
+      <p>{kpi.id}</p>
     </td>
     <td class="py-4 px-6 text-center">
-      <p>{parameter.upperLimit}</p>
+      <p>hodnota</p>
     </td>
     <td class="py-4 px-0 flex-row flex justify-center">
       <div class="bg-green-600 text-white font-semibold w-6 h-6 py-1 px-1 rounded-3xl">

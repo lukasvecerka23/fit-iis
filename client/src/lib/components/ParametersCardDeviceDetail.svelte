@@ -9,8 +9,8 @@
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="py-3 px-6 text-left">Jméno</th>
-                <th scope="col" class="py-3 px-6 text-left">Min</th>
-                <th scope="col" class="py-3 px-6 text-left">Max</th>
+                <th scope="col" class="py-3 px-6 text-center">Min</th>
+                <th scope="col" class="py-3 px-6 text-center">Max</th>
                 <th scope="col" class="py-3 px-6 text-center">Status</th>
             </tr>
         </thead>
