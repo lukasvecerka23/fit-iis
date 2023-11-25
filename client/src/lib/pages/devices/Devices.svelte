@@ -133,7 +133,7 @@
                         />
                     </div>
                     <div class="pb-4 ml-auto rounded-xl">
-                        <button class="bg-slate-500 hover:bg-slate-300  text-white font-semibold py-2 px-4 rounded-xl">
+                        <button class="bg-slate-500 hover:bg-slate-600  text-white font-semibold py-2 px-4 rounded-xl">
                             <div class="flex flex-row">
                                 <img src={New} alt="New" class="w-6 h-6 mr-2 font-poppins-light">
                                 <span>Nové</span>
@@ -191,13 +191,13 @@
             <!-- Pagination Controls -->
             <div class="flex justify-between items-center my-4">
               <button 
-                  class="px-4 py-2 rounded-xl bg-slate-500 text-white disabled:text-gray-300" 
+                  class="px-4 py-2 rounded-xl bg-slate-500 hover:bg-slate-600 disabled:hover:bg-slate-500 text-white disabled:text-gray-300" 
                   on:click={goToPage(currentPageIndex - 1)} 
                   disabled={currentPageIndex === 0}>
                   Zpět
               </button>
               <button 
-                  class="px-4 py-2 rounded-xl bg-slate-500 text-white disabled:text-gray-300" 
+                  class="px-4 py-2 rounded-xl bg-slate-500 hover:bg-slate-600 text-white disabled:hover:bg-slate-500 disabled:text-gray-300" 
                   on:click={goToPage(currentPageIndex + 1)} 
                   disabled={currentPageIndex === totalPages - 1}>
                   Další
