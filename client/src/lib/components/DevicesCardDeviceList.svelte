@@ -1,6 +1,6 @@
 <!-- DevicesCard.svelte -->
 <script>
-    import DeviceCompSystemDetail from './DeviceCompSystemDetail.svelte';
+    import DeviceCompDeviceDetail from './DeviceCompDeviceList.svelte';
     import {devices} from '../../store.js';
   </script>
   
@@ -10,6 +10,7 @@
             <tr>
                 <th scope="col" class="py-3 px-6 text-left">Název</th>
                 <th scope="col" class="py-3 px-6">Typ zařízení</th>
+                <th scope="col" class="py-3 px-6">Systém</th>
                 <th scope="col" class="py-3 px-6">Vytvořil</th>
                 <th scope="col" class="py-3 px-6"></th>
                 <th scope="col" class="py-3 px-6"></th>
@@ -17,7 +18,7 @@
         </thead>
         <tbody>
             {#each $devices as device (device.id)}
-            <DeviceCompSystemDetail device={device}/>
+            <DeviceCompDeviceDetail device={device}/>
             {/each}
         </tbody>
     </table>
