@@ -29,7 +29,11 @@
   </script>
   
 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700">
-    <td class="py-4 px-6 text-left font-semibold text-base text-gray-300 hover:cursor-pointer hover:underline" on:click={() => MoveToDetail(deviceType.id)}>{deviceType.name}</td>
+    <td class="py-4 px-6 text-left font-semibold text-base text-gray-300">
+      <button class="hover:cursor-pointer hover:underline" on:click={() => MoveToDetail(deviceType.id)}>
+        <p>{deviceType.name}</p>
+      </button>
+    </td>
     <td class="py-4 px-0">
       <button class="bg-transparent text-white font-semibold py-2 px-4 rounded">
         <img src={Edit} alt="Trash Bin" class="w-6 h-6" />

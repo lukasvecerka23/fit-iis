@@ -31,7 +31,11 @@
   </script>
   
 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700">
-    <td class="py-4 px-6 text-left font-semibold text-base text-gray-300 hover:cursor-pointer hover:underline" on:click={() => MoveToDetail(device.id)}>{device.userAlias}</td>
+    <td class="py-4 px-6 text-left font-semibold text-base text-gray-300">
+      <button class="hover:cursor-pointer hover:underline" on:click={() => MoveToDetail(device.id)}>
+        <p>{device.userAlias}</p>
+      </button>
+    </td>
     <td class="py-4 px-6">{device.deviceTypeName}</td>
     <td class="py-4 px-6">
       <div class="flex-row flex items-center justify-center">

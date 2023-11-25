@@ -35,8 +35,8 @@
     }
 </script>
   
-<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-    <td class="py-4 px-6 text-left font-semibold text-base">{user.username}</td>
+<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
+    <td class="py-4 px-6 text-left font-semibold text-base hover:bg-gray-700">{user.username}</td>
     <td class="py-4 px-6 font-semibold text-base">{`${user.name} ${user.surname}`}</td>
     <td class="py-4 px-6 font-semibold text-base">
         <select 

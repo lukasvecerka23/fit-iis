@@ -3,6 +3,7 @@ using IISProject.Api.BL.Extensions;
 using IISProject.Api.BL.Models.Device;
 using IISProject.Api.BL.Models.Responses;
 using IISProject.Api.DAL.Entities;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace IISProject.Api.BL.MapperProfiles;
 
@@ -18,7 +19,8 @@ public class DeviceMapperProfile: Profile
         CreateMap<DeviceEntity, DeviceDetailModel>()
             .MapMember(dst => dst.DeviceTypeName, src => src.DeviceType!.Name)
             .MapMember(dst => dst.CreatorName!, src => $"{src.Creator!.Name} {src.Creator.Surname}")
-            .MapMember(dst =>dst.SystemName!, src => src.System!.Name);
+            .MapMember(dst => dst.SystemName!, src => src.System!.Name)
+            .MapMember(dst => dst.Parameters, src => src.DeviceType!.Parameters);
         CreateMap<DeviceEntity, DeviceCreateUpdateModel>();
         
         CreateMap<DeviceCreateUpdateModel, DeviceEntity>()
