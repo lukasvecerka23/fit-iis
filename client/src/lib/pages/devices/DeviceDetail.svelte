@@ -14,14 +14,17 @@
     import Edit from '../../../assets/edit_black.svg';
     import Kpis from '../../../assets/kpis.svg';
     import KpisDark from '../../../assets/kpis_dark.svg';
+    import Measurement from '../../../assets/measurement.svg';
+    import MeasurementDark from '../../../assets/measurement_dark.svg';
     import ParametersCard from '../../components/ParametersCardDeviceDetail.svelte';
     import KpisCard from '../../components/KpisCardDeviceDetail.svelte';
+    import MeasurementsCard from '../../components/MeasurementsCardDeviceDetail.svelte';
   
     export let id;
 
     let device = null;
     let isLoading = true;
-    let activeCard = 'parameters';
+    let activeCard = 'kpi';
     let isSmallScreen = false;
 
     async function fetchDeviceDetail() {
@@ -56,6 +59,10 @@
     });
 
     onMount(fetchDeviceDetail);
+
+    function switchCard(card) {
+        activeCard = card;
+    }
 
   </script>
 
@@ -114,17 +121,54 @@
                         <img src={EyeDark} alt="EyeDark" class="w-8 h-8" />
                         <p class="pl-2 text-xl">Parametry</p>
                 </div>
-                <div class="pt-4">
-                    {#if activeCard === 'parameters'}
+                <div class="py-4">
                     <ParametersCard parameters={device.parameters} />
-                    {/if}
                 </div>
-                <div class="flex-row flex w-full items-center pt-4">
+                <!-- <div class="flex-row flex w-full items-center pt-4">
                     <img src={KpisDark} alt="KpisDark" class="w-8 h-8" />
                     <p class="pl-2 text-xl">Klíčové identifikátory výkonu</p>
+                </div> -->
+                <div class="flex-row items-start w-1/3">
+                    <div class="grid w-full grid-cols-2 gap-2 rounded-3xl bg-gray-300 p-1">
+                        <div>
+                            <input type="radio" name="option" id="1" value="1" class=" peer hidden" checked on:click={async () => await switchCard('kpi')}/>
+                            <label for="1" class="{activeCard === 'kpi' ? 'bg-gray-800 text-white' : 'bg-gray-300 hover:bg-gray-400'} radio-label block cursor-pointer select-none rounded-3xl p-1 text-center ">
+                                <div class="flex-row flex justify-center">
+                                    {#if activeCard === 'kpi'}
+                                    <img src={Kpis} alt="Device" class="w-6 h-6" />
+                                    {:else}
+                                    <img src={KpisDark} alt="DeviceDark" class="w-6 h-6" />
+                                    {/if}
+                                    {#if !isSmallScreen}
+                                        <p class="pl-2">KPI</p>
+                                    {/if}
+                                </div>
+                            </label>
+                        </div>
+                
+                        <div>
+                            <input type="radio" name="option" id="2" value="2" class="peer hidden" on:click={() => switchCard('measurements')}/>
+                            <label for="2" class="{activeCard === 'measurements' ? 'bg-gray-800 text-white' : 'bg-gray-300 hover:bg-gray-400' } radio-label block cursor-pointer select-none rounded-3xl p-1 text-center ">
+                                <div class="flex-row flex justify-center">
+                                    {#if activeCard === 'measurements'}
+                                    <img src={Measurement} alt="Measurements" class="w-6 h-6" />
+                                    {:else}
+                                    <img src={MeasurementDark} alt="MeasurementsDark" class="w-6 h-6" />
+                                    {/if}
+                                    {#if !isSmallScreen}
+                                        <p class="pl-2">Měření</p>
+                                    {/if}
+                                </div>
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <div class="pt-4">
-                    <KpisCard parameters={device.parameters} />
+                    {#if activeCard === 'kpi'}
+                        <KpisCard/>
+                    {:else if activeCard === 'measurements'}
+                        <MeasurementsCard/>
+                    {/if}
                 </div>
             </div>
         </div>

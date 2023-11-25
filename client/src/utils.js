@@ -14,8 +14,7 @@ export function mapKpiFunctionToString(value) {
         [KpiFunction.Equal]: "=",
         [KpiFunction.GreaterOrEqual]: ">=",
         [KpiFunction.Greater]: ">",
-        [KpiFunction.NotEqual]: "!="
+        [KpiFunction.NotEqual]: "≠"
     };
-    console.log(value);
     return mapping[value] || "-";
 }

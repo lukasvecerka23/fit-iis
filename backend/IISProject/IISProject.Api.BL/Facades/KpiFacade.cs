@@ -12,4 +12,47 @@ public class KpiFacade: FacadeBase<KpiEntity, KpiListModel, KpiDetailModel, KpiC
     {
         
     }
+    
+    public async Task<KpiSearchModel> SearchAsync(Guid parameterId, int index, int size)
+    {
+        var uow = UnitOfWorkFactory.Create();
+        var repository = uow.GetRepository<KpiEntity>();
+        var kpiQuery = repository.GetAll();
+        IncludeNavigationPathDetails(ref kpiQuery);
+        
+        IEnumerable<KpiEntity> filteredKpi;
+        if (parameterId == Guid.Empty)
+        {
+            filteredKpi = kpiQuery;
+        }
+        else
+        {
+            filteredKpi = kpiQuery
+                .Where(x => x.ParameterId == parameterId);
+        }
+
+        var kpis = filteredKpi
+            .Skip(index * size)
+            .Take(size).ToList();
+        
+        var totalCount = filteredKpi.Count();
+        var totalPages = (int)Math.Ceiling((double)totalCount / size);
+
+
+        var result = new KpiSearchModel
+        {
+            PageIndex = index,
+            PageSize = size,
+            TotalCount = totalCount,
+            TotalPages = totalPages,
+            Kpis = Mapper.Map<IEnumerable<KpiListModel>>(kpis)
+        };
+        
+        return result;
+    }
+    
+    public override List<string> NavigationPathDetails => new()
+    {
+        $"{nameof(KpiEntity.Parameter)}",
+    };
 }

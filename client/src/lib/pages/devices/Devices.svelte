@@ -20,7 +20,6 @@
     let totalPages = 0;
     let activeCard = 'devices';
     let isSmallScreen = false;
-    let isLoading = true;
 
     async function fetchDevices() {
         const params = new URLSearchParams({
@@ -39,28 +38,26 @@
                 totalPages = data.totalPages; // Update this based on your API response
             }
         } finally {
-            isLoading = false;
         }
     }
 
     async function fetchDeviceTypes() {
-        // const params = new URLSearchParams({
-        //     p: currentPageIndex,
-        //     size: pageSize,
-        // });
-        // if (searchTerm.length >= 3) {
-        //     params.append('q', searchTerm);
-        // }
+        const params = new URLSearchParams({
+            p: currentPageIndex,
+            size: pageSize,
+        });
+        if (searchTerm.length >= 3) {
+            params.append('q', searchTerm);
+        }
     
         try {
-            const resp = await fetch(`https://localhost:7246/api/deviceTypes`);
+            const resp = await fetch(`https://localhost:7246/api/deviceTypes/search?${params}`);
             if (resp.ok){
                 const data = await resp.json();
-                deviceTypes.set(data);
+                deviceTypes.set(data.deviceTypes);
                 totalPages = data.totalPages; // Update this based on your API response
             }
         } finally {
-            isLoading = false;
         }
     }
 
@@ -81,7 +78,6 @@
     });
 
     async function loadData() {
-        isLoading = true;
         switch (activeCard) {
             case 'devices':
                 await fetchDevices();
@@ -180,12 +176,10 @@
         
             
             <div class="w-full pt-4">
-            {#if !isLoading}
-                {#if activeCard === 'devicetypes'}
-                    <DeviceTypesCardDeviceList/>
-                {:else}
-                    <DevicesCardDeviceList/>
-                {/if}
+            {#if activeCard === 'devicetypes'}
+                <DeviceTypesCardDeviceList/>
+            {:else}
+                <DevicesCardDeviceList/>
             {/if}
 
             <!-- Pagination Controls -->
@@ -199,7 +193,7 @@
               <button 
                   class="px-4 py-2 rounded-xl bg-slate-500 hover:bg-slate-600 text-white disabled:hover:bg-slate-500 disabled:text-gray-300" 
                   on:click={goToPage(currentPageIndex + 1)} 
-                  disabled={currentPageIndex === totalPages - 1}>
+                  disabled={!totalPages ? true : currentPageIndex === totalPages - 1}>
                   Další
               </button>
           </div>

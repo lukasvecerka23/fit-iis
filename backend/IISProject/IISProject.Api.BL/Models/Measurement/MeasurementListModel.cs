@@ -8,4 +8,5 @@ public record MeasurementListModel : IModel
     
     public required Guid DeviceId { get; set; }
     public required Guid ParameterId { get; set; }
+    public required string ParameterName { get; set; }
 }

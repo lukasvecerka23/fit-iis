@@ -1,6 +1,6 @@
 <script>
     import TrashBin from "../../assets/trash.svg";
-    import {systems} from "../../store.js";
+    import {systems, selectedParameterId} from "../../store.js";
     import { Link, navigate } from "svelte-routing";
     import Users from "../../assets/users.svg";
     import Edit from "../../assets/edit.svg";
@@ -9,15 +9,16 @@
     import StatusBad from '../../assets/status_bad.svg';
     export let parameter;
 
+    function selectParameter(parameterId){
 
-    function MoveToDetail(parameterId){
-      navigate(`/parameters/${parameterId}`);
+      selectedParameterId.set(parameterId);
     }
+
   </script>
   
 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700">
     <td class="py-4 px-6 text-left font-semibold text-gray-300 text-base">
-      <button class="hover:cursor-pointer hover:underline" on:click={() => MoveToDetail(parameter.id)}>
+      <button class="hover:cursor-pointer hover:underline" on:click={() => selectParameter(parameter.id)}>
         <p>{parameter.name}</p>
       </button>
     </td>

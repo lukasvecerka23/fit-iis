@@ -4,6 +4,7 @@ using IISProject.Api.BL.Models.DeviceType;
 using IISProject.Api.DAL.Entities;
 using IISProject.Api.DAL.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace IISProject.Api.BL.Facades;
 
@@ -35,6 +36,44 @@ public class DeviceTypeFacade: FacadeBase<DeviceTypeEntity, DeviceTypeListModel,
         await uow.CommitAsync();
         
         return true;
+    }
+    
+    public async Task<DeviceTypeSearchModel> SearchAsync(string query, int index, int size)
+    {
+        var uow = UnitOfWorkFactory.Create();
+        var repository = uow.GetRepository<DeviceTypeEntity>();
+        var deviceTypeQuery = repository.GetAll();
+        IncludeNavigationPathDetails(ref deviceTypeQuery);
+        
+        IEnumerable<DeviceTypeEntity> filteredDeviceTypes;
+        if (query.IsNullOrEmpty())
+        {
+            filteredDeviceTypes = deviceTypeQuery.OrderBy(x => x.Name);
+        }
+        else
+        {
+            filteredDeviceTypes = deviceTypeQuery
+                .Where(x => x.Name.ToLower().Contains(query.ToLower()));
+        }
+
+        var deviceTypes = filteredDeviceTypes
+            .Skip(index * size)
+            .Take(size).ToList();
+        
+        var totalCount = filteredDeviceTypes.Count();
+        var totalPages = (int)Math.Ceiling((double)totalCount / size);
+
+
+        var result = new DeviceTypeSearchModel
+        {
+            PageIndex = index,
+            PageSize = size,
+            TotalCount = totalCount,
+            TotalPages = totalPages,
+            DeviceTypes = Mapper.Map<IEnumerable<DeviceTypeListModel>>(deviceTypes)
+        };
+        
+        return result;
     }
     
     public override List<string> NavigationPathDetails => new()

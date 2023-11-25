@@ -10,7 +10,9 @@ public class KpiMapperProfile: Profile
 {
     public KpiMapperProfile()
     {
-        CreateMap<KpiEntity, KpiListModel>();
+        CreateMap<KpiEntity, KpiListModel>()
+            .MapMember(dst => dst.ParameterName, src => src.Parameter!.Name);
+        
         CreateMap<KpiEntity, KpiDetailModel>();
         CreateMap<KpiCreateUpdateModel, KpiEntity>()
             .Ignore(dst => dst.Id)

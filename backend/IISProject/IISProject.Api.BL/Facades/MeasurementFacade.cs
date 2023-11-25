@@ -12,4 +12,47 @@ public class MeasurementFacade: FacadeBase<MeasurementEntity, MeasurementListMod
     {
         
     }
+    
+    public async Task<MeasurementSearchModel> SearchAsync(Guid parameterId, int index, int size)
+    {
+        var uow = UnitOfWorkFactory.Create();
+        var repository = uow.GetRepository<MeasurementEntity>();
+        var measurementQuery = repository.GetAll();
+        IncludeNavigationPathDetails(ref measurementQuery);
+        
+        IEnumerable<MeasurementEntity> filteredMeasurements;
+        if (parameterId == Guid.Empty)
+        {
+            filteredMeasurements = measurementQuery;
+        }
+        else
+        {
+            filteredMeasurements = measurementQuery
+                .Where(x => x.ParameterId == parameterId);
+        }
+
+        var kpis = filteredMeasurements
+            .Skip(index * size)
+            .Take(size).ToList();
+        
+        var totalCount = filteredMeasurements.Count();
+        var totalPages = (int)Math.Ceiling((double)totalCount / size);
+
+
+        var result = new MeasurementSearchModel
+        {
+            PageIndex = index,
+            PageSize = size,
+            TotalCount = totalCount,
+            TotalPages = totalPages,
+            Measurements = Mapper.Map<IEnumerable<MeasurementListModel>>(kpis)
+        };
+        
+        return result;
+    }
+    
+    public override List<string> NavigationPathDetails => new()
+    {
+        $"{nameof(MeasurementEntity.Parameter)}",
+    };
 }

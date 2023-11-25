@@ -65,4 +65,20 @@ public class DeviceTypeController : ControllerBase
 
         return Ok();
     }
+    
+    [HttpGet("search")]
+    public async Task<ActionResult<DeviceTypeSearchModel>> Search([FromQuery] SearchDeviceTypeParams searchParams)
+    {
+        var result = await _deviceTypeFacade.SearchAsync(searchParams.Query, searchParams.PageIndex, searchParams.PageSize);
+        return result;
+    }
+}
+
+public class SearchDeviceTypeParams
+{
+    [FromQuery(Name = "q")] public string Query { get; set; } = "";
+
+    [FromQuery(Name = "p")] public int PageIndex { get; set; } = 0;
+
+    [FromQuery(Name = "size")] public int PageSize { get; set; } = 10;
 }

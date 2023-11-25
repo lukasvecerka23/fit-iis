@@ -6,6 +6,8 @@ export const deviceTypes = writable([]);
 export const users = writable([]);
 export const user = writable(null);
 
+export const selectedParameterId = writable(null);
+
 export async function loadUser() {
     const response = await fetch('https://localhost:7246/api/auth/user', {
         method: 'GET',

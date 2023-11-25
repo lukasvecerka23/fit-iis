@@ -10,6 +10,8 @@ public record KpiEntity : IEntity
     public required KpiFunction Function { get; set; }
     public bool? Error { get; set; }
     
+    public required int Value { get; set; }
+    
     public required Guid CreatorId { get; set; }
     public required Guid DeviceId { get; set; }
     public required Guid ParameterId { get; set; }

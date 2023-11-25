@@ -10,7 +10,8 @@ public class MeasurementMapperProfile: Profile
 {
     public MeasurementMapperProfile()
     {
-        CreateMap<MeasurementEntity, MeasurementListModel>();
+        CreateMap<MeasurementEntity, MeasurementListModel>()
+            .MapMember(dst => dst.ParameterName, src => src.Parameter!.Name);
         CreateMap<MeasurementEntity, MeasurementDetailModel>();
         CreateMap<MeasurementCreateUpdateModel, MeasurementEntity>()
             .Ignore(dst => dst.Id)
