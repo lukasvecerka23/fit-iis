@@ -166,9 +166,9 @@
                 </div>
                 <div class="pt-4">
                     {#if activeCard === 'kpi'}
-                        <KpisCard/>
+                        <KpisCard deviceId={device.id}/>
                     {:else if activeCard === 'measurements'}
-                        <MeasurementsCard/>
+                        <MeasurementsCard deviceId={device.id}/>
                     {/if}
 
  

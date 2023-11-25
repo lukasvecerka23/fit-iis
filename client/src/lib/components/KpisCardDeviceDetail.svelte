@@ -3,17 +3,21 @@
     import KpiCompDeviceDetail from './KpiCompDeviceDetail.svelte';
     import {onMount} from 'svelte';
     import {selectedParameterId} from '../../store.js';
-    
+
+    export let deviceId;
+
     let currentPageIndex = 0;
     let isLoading = true;
     let totalPages = 0;
     const pageSize = 10;
     let kpis = null;
 
+
     async function fetchKpis(parameterId) {
         const params = new URLSearchParams({
             p: currentPageIndex,
             size: pageSize,
+            deviceId: deviceId
         });
         if (parameterId) {
             params.append('parameterId', parameterId);

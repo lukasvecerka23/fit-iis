@@ -13,7 +13,7 @@ public class MeasurementFacade: FacadeBase<MeasurementEntity, MeasurementListMod
         
     }
     
-    public async Task<MeasurementSearchModel> SearchAsync(Guid parameterId, int index, int size)
+    public async Task<MeasurementSearchModel> SearchAsync(Guid deviceId, Guid parameterId, int index, int size)
     {
         var uow = UnitOfWorkFactory.Create();
         var repository = uow.GetRepository<MeasurementEntity>();
@@ -23,15 +23,16 @@ public class MeasurementFacade: FacadeBase<MeasurementEntity, MeasurementListMod
         IEnumerable<MeasurementEntity> filteredMeasurements;
         if (parameterId == Guid.Empty)
         {
-            filteredMeasurements = measurementQuery;
+            filteredMeasurements = measurementQuery.Where(x => x.DeviceId == deviceId);
         }
         else
         {
             filteredMeasurements = measurementQuery
-                .Where(x => x.ParameterId == parameterId);
+                .Where(x => x.ParameterId == parameterId && x.DeviceId == deviceId);
         }
 
         var kpis = filteredMeasurements
+            .OrderByDescending(x => x.TimeStamp)
             .Skip(index * size)
             .Take(size).ToList();
         

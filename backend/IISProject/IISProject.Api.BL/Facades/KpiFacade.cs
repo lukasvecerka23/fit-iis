@@ -13,7 +13,7 @@ public class KpiFacade: FacadeBase<KpiEntity, KpiListModel, KpiDetailModel, KpiC
         
     }
     
-    public async Task<KpiSearchModel> SearchAsync(Guid parameterId, int index, int size)
+    public async Task<KpiSearchModel> SearchAsync(Guid deviceId, Guid parameterId, int index, int size)
     {
         var uow = UnitOfWorkFactory.Create();
         var repository = uow.GetRepository<KpiEntity>();
@@ -23,12 +23,12 @@ public class KpiFacade: FacadeBase<KpiEntity, KpiListModel, KpiDetailModel, KpiC
         IEnumerable<KpiEntity> filteredKpi;
         if (parameterId == Guid.Empty)
         {
-            filteredKpi = kpiQuery;
+            filteredKpi = kpiQuery.Where(x => x.DeviceId == deviceId);
         }
         else
         {
             filteredKpi = kpiQuery
-                .Where(x => x.ParameterId == parameterId);
+                .Where(x => x.ParameterId == parameterId && x.DeviceId == deviceId);
         }
 
         var kpis = filteredKpi

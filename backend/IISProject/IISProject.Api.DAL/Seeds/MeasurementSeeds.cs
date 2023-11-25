@@ -14,10 +14,20 @@ public static class MeasurementSeeds
         ParameterId = ParameterSeeds.DefaultParameter.Id
     };
     
+    public static readonly MeasurementEntity DefaultMeasurement2 = new()
+    {
+        Id = Guid.Parse("80BFCE67-DCF9-4844-978B-9B377948EC07"),
+        Value = 12.5,
+        TimeStamp = DateTime.Parse("2021-9-10T10:10:10.0000000"),
+        DeviceId = DeviceSeeds.DefaultDevice.Id,
+        ParameterId = ParameterSeeds.DefaultParameter.Id
+    };
+    
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<MeasurementEntity>().HasData(
-            DefaultMeasurement
+            DefaultMeasurement,
+            DefaultMeasurement2
         );
     }
 }

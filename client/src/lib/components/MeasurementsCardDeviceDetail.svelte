@@ -4,6 +4,8 @@
     import {onMount} from 'svelte';
     import {selectedParameterId} from '../../store.js';
     
+    export let deviceId;
+
     let currentPageIndex = 0;
     let totalPages = 0;
     const pageSize = 10;
@@ -14,6 +16,7 @@
         const params = new URLSearchParams({
             p: currentPageIndex,
             size: pageSize,
+            deviceId: deviceId
         });
         if (parameterId) {
             params.append('parameterId', parameterId);

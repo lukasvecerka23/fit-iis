@@ -69,7 +69,7 @@ public class MeasurementController : ControllerBase
     [HttpGet("search")]
     public async Task<ActionResult<MeasurementSearchModel>> Search([FromQuery] SearchMeasurementParams searchParams)
     {
-        var result = await _measurementFacade.SearchAsync(searchParams.Query, searchParams.PageIndex, searchParams.PageSize);
+        var result = await _measurementFacade.SearchAsync(searchParams.DeviceId, searchParams.Query, searchParams.PageIndex, searchParams.PageSize);
         return result;
     }
 }
@@ -77,6 +77,8 @@ public class MeasurementController : ControllerBase
 public class SearchMeasurementParams
 {
     [FromQuery(Name = "parameterId")] public Guid Query { get; set; } = Guid.Empty;
+    
+    [FromQuery(Name = "deviceId")] public Guid DeviceId { get; set; } = Guid.Empty;
 
     [FromQuery(Name = "p")] public int PageIndex { get; set; } = 0;
 

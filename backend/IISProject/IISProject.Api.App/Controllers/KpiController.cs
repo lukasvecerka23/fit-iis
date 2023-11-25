@@ -70,7 +70,7 @@ public class KpiController : ControllerBase
     [HttpGet("search")]
     public async Task<ActionResult<KpiSearchModel>> Search([FromQuery] SearchKpiParams searchParams)
     {
-        var result = await _kpiFacade.SearchAsync(searchParams.Query, searchParams.PageIndex, searchParams.PageSize);
+        var result = await _kpiFacade.SearchAsync(searchParams.DeviceId, searchParams.Query, searchParams.PageIndex, searchParams.PageSize);
         return result;
     }
 }
@@ -78,6 +78,8 @@ public class KpiController : ControllerBase
 public class SearchKpiParams
 {
     [FromQuery(Name = "parameterId")] public Guid Query { get; set; } = Guid.Empty;
+    
+    [FromQuery(Name = "deviceId")] public Guid DeviceId { get; set; } = Guid.Empty;
 
     [FromQuery(Name = "p")] public int PageIndex { get; set; } = 0;
 
