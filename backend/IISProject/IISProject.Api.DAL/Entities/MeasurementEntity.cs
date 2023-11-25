@@ -9,11 +9,9 @@ public record MeasurementEntity : IEntity
     public required DateTime TimeStamp { get; set; }
 
     public required Guid DeviceId { get; set; }
-    public Guid? CreatorId { get; set; }
     public required Guid ParameterId { get; set; }
     
     public DeviceEntity? Device { get; init; }
-    public UserEntity? Creator { get; init; }
     public ParameterEntity? Parameter { get; init; }
     
     public class MeasurementEntityProfile : Profile

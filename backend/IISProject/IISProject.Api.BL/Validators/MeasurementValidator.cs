@@ -17,8 +17,6 @@ public class MeasurementValidator: AbstractValidator<MeasurementCreateUpdateMode
             .WithMessage(x => $"Question with Id = {x.DeviceId} doesn't exist!");
         RuleFor(x => x.ParameterId).Must(ParameterExists)
             .WithMessage(x => $"System with Id = {x.ParameterId} doesn't exist!");
-        RuleFor(x => x.CreatorId).Must(CreatorExists)
-            .WithMessage(x => $"User with Id = {x.CreatorId} doesn't exist!");
     }
     
     private bool DeviceExists(Guid id)

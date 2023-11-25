@@ -81,7 +81,7 @@ where TCreateUpdateModel : class
         return result;
     }
     
-    public async Task<IdModel?> UpdateAsync(TCreateUpdateModel model, Guid id)
+    public virtual async Task<IdModel?> UpdateAsync(TCreateUpdateModel model, Guid id)
     {
         var entity = Mapper.Map<TEntity>(model);
 

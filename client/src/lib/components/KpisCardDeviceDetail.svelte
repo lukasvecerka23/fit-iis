@@ -40,7 +40,7 @@
         </thead>
         <tbody>
             {#each parameters as parameter (parameter.id)}
-                {fetchParameterDetail(parameter.id)}
+                <!-- {fetchParameterDetail(parameter.id)} -->
                 {#each param.kpis as kpi (kpi.id)}
                     <KpiCompDeviceDetail kpi={kpi}, parameter={parameter}/>
                 {/each}

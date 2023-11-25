@@ -80,15 +80,11 @@ public class IISProjectDbContext : DbContext
             entity.HasMany(i => i.Devices)
                 .WithOne(i => i.System)
                 .OnDelete(DeleteBehavior.SetNull);
-
+            
         });
         
         modelBuilder.Entity<UserEntity>(entity =>
         {
-            entity.HasMany(i => i.Measurements)
-                .WithOne(i => i.Creator)
-                .OnDelete(DeleteBehavior.SetNull);
-
             entity.HasMany(i => i.Kpis)
                 .WithOne(i => i.Creator)
                 .OnDelete(DeleteBehavior.Cascade);

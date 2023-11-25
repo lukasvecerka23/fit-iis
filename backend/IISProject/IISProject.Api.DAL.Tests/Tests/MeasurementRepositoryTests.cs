@@ -36,7 +36,6 @@ public class MeasurementRepositoryTests: DALTestsBase
             Value = 10.0,
             TimeStamp = DateTime.Parse("2021-10-10T10:10:10.0000000"),
             DeviceId = DeviceSeeds.DefaultDevice.Id,
-            CreatorId = UserSeeds.DefaultUser.Id,
             ParameterId = ParameterSeeds.DefaultParameter.Id
         };
         

@@ -2,6 +2,10 @@
 <script>
     import DeviceCompSystemDetail from './DeviceCompSystemDetail.svelte';
     export let devices;
+
+    function deleteDevice(id) {
+        devices = devices.filter(device => device.id !== id);
+    }
   </script>
   
 <div class="w-full">
@@ -17,7 +21,7 @@
         </thead>
         <tbody>
             {#each devices as device (device.id)}
-            <DeviceCompSystemDetail device={device}/>
+            <DeviceCompSystemDetail device={device} on:deleteDevice={detail => deleteDevice(detail.detail.id)}/>
             {/each}
         </tbody>
     </table>

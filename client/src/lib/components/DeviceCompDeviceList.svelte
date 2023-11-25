@@ -40,7 +40,7 @@
     <td class="py-4 px-6">
       <div class="flex-row flex items-center justify-center">
         <div class="">
-            {device.systemName}
+            {device.systemName || "-"}
         </div>
       </div>
     </td>

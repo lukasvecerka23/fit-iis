@@ -99,7 +99,6 @@
     }
 
     function handleRoleChange(userId, newRoleId) {
-        console.log(userId, newRoleId);
         if ($users.find(u => u.id === userId).roleId !== newRoleId) {
             roleChanges[userId] = newRoleId;
         } else {

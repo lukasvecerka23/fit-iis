@@ -5,6 +5,10 @@
     import { Link, navigate } from "svelte-routing";
     import Devices from "../../assets/device.svg";
     import Edit from "../../assets/edit.svg";
+    import {createEventDispatcher} from "svelte";
+
+
+    const dispatch = createEventDispatcher();
     export let device;
 
     async function deleteDevice(id) {
@@ -15,8 +19,8 @@
             });
 
             if (response.ok) {
-                // Remove the system from the local array
-                systems.update(currentDevices => { return currentDevices.filter(device => device.id !== id)});
+                // Remove the device from the local array
+                dispatch('deleteDevice', { id: id });
             } else {
                 console.error('Error deleting system:', await response.text());
             }
@@ -45,12 +49,12 @@
       </div>
     </td>
     <td class="py-4 px-0">
-      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>deleteDevice(device.id)}>
+      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded">
         <img src={Edit} alt="Trash Bin" class="w-6 h-6" />
       </button>
     </td>
     <td class="py-4 px-0">
-      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded">
+      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>deleteDevice(device.id)}>
         <img src={TrashBin} alt="Trash Bin" class="w-6 h-6" />
       </button>
     </td>

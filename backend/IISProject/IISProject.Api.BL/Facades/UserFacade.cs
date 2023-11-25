@@ -117,7 +117,7 @@ public class UserFacade: FacadeBase<UserEntity, UserListModel, UserDetailModel, 
         return result;
     }
     
-    public new async  Task<IdModel?> UpdateAsync(UserCreateUpdateModel model, Guid id)
+    public override async  Task<IdModel?> UpdateAsync(UserCreateUpdateModel model, Guid id)
     {
         var entity = Mapper.Map<UserEntity>(model);
 
@@ -132,13 +132,38 @@ public class UserFacade: FacadeBase<UserEntity, UserListModel, UserDetailModel, 
         var existingUser = await repository.GetAll().SingleOrDefaultAsync(x => x.Id == id);
         
         entity.Id = id;
-        entity.PasswordHash = existingUser.PasswordHash;
+        entity.PasswordHash = existingUser!.PasswordHash;
         var updatedEntity = await repository.UpdateAsync(entity);
 
         await uow.CommitAsync();
 
         var result = Mapper.Map<IdModel>(updatedEntity);
         return result;
+    }
+    
+    public override async Task<bool> DeleteAsync(Guid id)
+    {
+        await using IUnitOfWork uow = UnitOfWorkFactory.Create();
+        
+        var userRepository = uow.GetRepository<UserEntity>();
+        
+        var systemRepository = uow.GetRepository<SystemEntity>();
+        
+        var deviceRepository = uow.GetRepository<DeviceEntity>();
+        
+        if (!await userRepository.ExistsAsync(id))
+        {
+            return false;
+        }
+        
+        await systemRepository.GetAll().Where(x => x.CreatorId == id).ExecuteDeleteAsync();
+        await deviceRepository.GetAll().Where(x => x.CreatorId == id).ExecuteDeleteAsync();
+        
+        await userRepository.DeleteAsync(id);
+        
+        await uow.CommitAsync();
+        
+        return true;
     }
     
     public override List<string> NavigationPathDetails => new()
