@@ -11,6 +11,7 @@
     import New from '../../../assets/new.svg';
     import Remove from '../../../assets/remove.svg';
     import Edit from '../../../assets/edit_black.svg';
+    import ParametersCard from '../../components/ParametersCardDeviceDetail.svelte';
   
     export let id;
 
@@ -117,6 +118,11 @@
                             <img src={Edit} alt="New" class="w-6 h-6 font-poppins-light">
                         </button>
                     </div>
+                </div>
+                <div class="pt-4">
+                    {#if activeCard === 'parameters'}
+                    <ParametersCard parameters={device.parameters} />
+                    {/if}
                 </div>
             </div>
         </div>

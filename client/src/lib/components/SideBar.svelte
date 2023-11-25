@@ -19,13 +19,13 @@
             <NavButton linkPath="/"
             text="Systémy"
             logoUrl={SystemLogo}
-            classBackgroundColor={(isActivePage("/") || activepage.pathname.includes("/systemDetail/")) ? "bg-slate-600" : ""}
+            classBackgroundColor={(isActivePage("/") || activepage.pathname.includes("/systems/")) ? "bg-slate-600" : ""}
             />
             {#if $user}
             <NavButton linkPath="/devices"
             text="Zařízení"
             logoUrl={DevicesLogo}
-            classBackgroundColor={isActivePage("/devices") ? "bg-slate-600" : ""}
+            classBackgroundColor={(isActivePage("/devices") || activepage.pathname.includes("/devices/")) ? "bg-slate-600" : ""}
             />
                 {#if $user.role === "Admin"}
                 <NavButton linkPath="/users"

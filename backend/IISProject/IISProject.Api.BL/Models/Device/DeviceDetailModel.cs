@@ -1,3 +1,5 @@
+using IISProject.Api.BL.Models.Parameter;
+
 namespace IISProject.Api.BL.Models.Device;
 
 public record DeviceDetailModel : IModel
@@ -10,4 +12,5 @@ public record DeviceDetailModel : IModel
     public required string DeviceTypeName { get; set; }
     public string? SystemName { get; set; }
     public string? CreatorName { get; set; }
+    public ICollection<ParameterListModel> Parameters { get; set; } = new List<ParameterListModel>();
 }
