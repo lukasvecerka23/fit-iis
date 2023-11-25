@@ -25,7 +25,6 @@ public class TestingDbContext: IISProjectDbContext
             MeasurementSeeds.Seed(modelBuilder);
             ParameterSeeds.Seed(modelBuilder);
             RoleSeeds.Seed(modelBuilder);
-            RoleOfUserSeeds.Seed(modelBuilder);
             SystemSeeds.Seed(modelBuilder);
             UserSeeds.Seed(modelBuilder);
             UserInSystemSeeds.Seed(modelBuilder);

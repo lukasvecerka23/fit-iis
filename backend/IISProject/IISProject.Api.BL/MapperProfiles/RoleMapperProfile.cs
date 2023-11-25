@@ -13,11 +13,11 @@ public class RoleMapperProfile: Profile
         CreateMap<RoleEntity, RoleListModel>();
         
         CreateMap<RoleEntity, RoleDetailModel>()
-            .MapMember(src => src.RoleOfUsers, dst => dst.RoleOfUsers);
+            .MapMember(dst => dst.Users, src => src.Users);
 
         CreateMap<RoleCreateUpdateModel, RoleEntity>()
             .Ignore(dst => dst.Id)
-            .Ignore(src => src.RoleOfUsers);
+            .Ignore(dst => dst.Users);
         
         CreateMap<RoleEntity, IdModel>();
     }

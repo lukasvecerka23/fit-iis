@@ -12,7 +12,8 @@ public static class UserSeeds
         Name = "John",
         Surname = "Doe",
         Username = "johndoe",
-        PasswordHash = GeneratePasswordHash("test123")
+        PasswordHash = GeneratePasswordHash("test123"),
+        RoleId = RoleSeeds.DefaultRole.Id
     };
     
     private static string GeneratePasswordHash(string password)
@@ -29,9 +30,9 @@ public static class UserSeeds
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserEntity>().HasData(
-            DefaultUser with {Roles = Array.Empty<RoleOfUserEntity>(), UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>()},
-            UserToDelete with {Roles = Array.Empty<RoleOfUserEntity>(), UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>()},
-            UserToUpdate with {Roles = Array.Empty<RoleOfUserEntity>(), UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>()}
+            DefaultUser with {UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>()},
+            UserToDelete with {UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>()},
+            UserToUpdate with {UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>()}
         );
     }
 }

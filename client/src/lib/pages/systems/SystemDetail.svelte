@@ -20,7 +20,14 @@
 
     async function fetchSystemDetail() {
         try {
-            const resp = await fetch(`https://localhost:7246/api/systems/${id}`);
+            const resp = await fetch(`https://localhost:7246/api/systems/${id}`, 
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+            });
             if (resp.ok){
                 system = await resp.json();
             } else {

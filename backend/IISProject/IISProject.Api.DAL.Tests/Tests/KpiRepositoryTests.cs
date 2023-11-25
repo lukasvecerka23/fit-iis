@@ -1,3 +1,4 @@
+using IISProject.Api.Common.Enum;
 using IISProject.Api.DAL.Tests.Seeds;
 using IISProject.Api.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -33,7 +34,7 @@ public class KpiRepositoryTests: DALTestsBase
         var kpi = new KpiEntity
         {
             Id = Guid.NewGuid(),
-            Function = "New Kpi",
+            Function = KpiFunction.Greater,
             DeviceId = DeviceSeeds.DefaultDevice.Id,
             CreatorId = UserSeeds.DefaultUser.Id,
             ParameterId = ParameterSeeds.DefaultParameter.Id,
@@ -54,7 +55,7 @@ public class KpiRepositoryTests: DALTestsBase
     {
         // arrange
         var repository = UnitOfWork.GetRepository<KpiEntity>();
-        var kpi = KpiSeeds.KpiToUpdate with { Function = "Updated Kpi" };
+        var kpi = KpiSeeds.KpiToUpdate with { Function = KpiFunction.Less };
         
         // act
         var updatedKpi = await repository.UpdateAsync(kpi);

@@ -20,7 +20,6 @@ public class IISProjectDbContext : DbContext
     public DbSet<MeasurementEntity> Measurements => Set<MeasurementEntity>();
     public DbSet<ParameterEntity> Parameters => Set<ParameterEntity>();
     public DbSet<RoleEntity> Roles => Set<RoleEntity>();
-    public DbSet<RoleOfUserEntity> RoleOfUsers => Set<RoleOfUserEntity>();
     public DbSet<SystemEntity> Systems => Set<SystemEntity>();
     public DbSet<UserEntity> Users => Set<UserEntity>();
     public DbSet<UserInSystemEntity> UserInSystems => Set<UserInSystemEntity>();
@@ -66,7 +65,7 @@ public class IISProjectDbContext : DbContext
         
         modelBuilder.Entity<RoleEntity>(entity =>
         {
-            entity.HasMany(i => i.RoleOfUsers)
+            entity.HasMany(i => i.Users)
                 .WithOne(i => i.Role)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -94,10 +93,6 @@ public class IISProjectDbContext : DbContext
                 .WithOne(i => i.Creator)
                 .OnDelete(DeleteBehavior.Cascade);
             
-            entity.HasMany(i => i.Roles)
-                .WithOne(i => i.User)
-                .OnDelete(DeleteBehavior.Cascade);
-            
             entity.HasMany(i => i.UserInSystems)
                 .WithOne(i => i.User)
                 .OnDelete(DeleteBehavior.Cascade);
@@ -111,7 +106,6 @@ public class IISProjectDbContext : DbContext
             MeasurementSeeds.Seed(modelBuilder);
             ParameterSeeds.Seed(modelBuilder);
             RoleSeeds.Seed(modelBuilder);
-            RoleOfUserSeeds.Seed(modelBuilder);
             SystemSeeds.Seed(modelBuilder);
             UserSeeds.Seed(modelBuilder);
             UserInSystemSeeds.Seed(modelBuilder);

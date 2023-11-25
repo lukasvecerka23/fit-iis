@@ -1,6 +1,7 @@
 using IISProject.Api.BL.Facades;
 using IISProject.Api.BL.Models.Responses;
 using IISProject.Api.BL.Models.System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IISProject.Controllers;
@@ -24,6 +25,7 @@ public class SystemController : ControllerBase
         return await _systemFacade.GetAllAsync();
     }
 
+    [Authorize]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<SystemDetailModel>> GetSystemById(Guid id)
     {
@@ -35,6 +37,7 @@ public class SystemController : ControllerBase
         return result;
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<IdModel>> CreateSystem(SystemCreateUpdateModel system)
     {
@@ -42,6 +45,7 @@ public class SystemController : ControllerBase
         return Created($"/api/systems/{result.Id}", result);
     }
     
+    [Authorize]
     [HttpPut("{id:guid}")]
     public async Task<ActionResult<IdModel>> UpdateSystem(Guid id, SystemCreateUpdateModel system)
     {
@@ -54,6 +58,7 @@ public class SystemController : ControllerBase
         return result;
     }
 
+    [Authorize]
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult> DeleteSystem(Guid id)
     {

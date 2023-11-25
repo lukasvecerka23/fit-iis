@@ -6,4 +6,6 @@ public record UserListModel : IModel
     public required string Name { get; set; }
     public required string Surname { get; set; }
     public required string Username { get; set; }
+    public required Guid RoleId { get; set; }
+    public required string RoleName { get; set; }
 }

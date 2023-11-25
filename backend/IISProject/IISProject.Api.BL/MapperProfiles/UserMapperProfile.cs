@@ -10,18 +10,16 @@ public class UserMapperProfile: Profile
 {
     public UserMapperProfile()
     {
-        CreateMap<UserEntity, UserListModel>();
-        
+        CreateMap<UserEntity, UserListModel>()
+            .MapMember(dst => dst.RoleName, src => src.Role!.Name);
+
         CreateMap<UserEntity, UserDetailModel>()
-            .MapMember(dst => dst.Devices, src => src.Devices)
-            .MapMember(dst => dst.RoleOfUsers, src => src.Roles)
-            .MapMember(dst => dst.Kpis, src => src.Kpis)
-            .MapMember(dst => dst.Systems, src => src.UserInSystems);
+            .MapMember(dst => dst.RoleName, src => src.Role!.Name);
 
         CreateMap<UserCreateUpdateModel, UserEntity>()
             .Ignore(dst => dst.Id)
             .Ignore(dst => dst.Devices)
-            .Ignore(dst => dst.Roles)
+            .Ignore(dst => dst.Role)
             .Ignore(dst => dst.Kpis)
             .Ignore(dst => dst.UserInSystems)
             .Ignore(dst => dst.Measurements)

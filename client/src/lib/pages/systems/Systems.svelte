@@ -3,7 +3,7 @@
     import Sidebar from '../../components/SideBar.svelte';
     import TopBar from '../../components/TopBar.svelte';
     import SystemComp from '../../components/SystemComp.svelte';
-    import {systems} from '../../../store.js';
+    import {systems, user} from '../../../store.js';
     import New from '../../../assets/new.svg';
   
     let searchTerm = '';
@@ -53,19 +53,21 @@
                     <div class="pb-4 w-1/3 self-start">
                         <input
                         type="text"
-                        class="p-2 border border-gray-300 rounded-xl w-full"
+                        class="p-2 border border-gray-300 rounded-xl w-full focus:ring-slate-700"
                         bind:value={searchTerm}
                         placeholder="Filtrovat systémy..."
                         />
                     </div>
-                    <div class="pb-4 ml-auto rounded-xl">
-                        <button class="bg-slate-500 hover:bg-slate-300  text-white font-semibold py-2 px-4 rounded-xl">
-                            <div class="flex flex-row">
-                                <img src={New} alt="New" class="w-6 h-6 mr-2 font-poppins-light">
-                                <span>Nový</span>
-                            </div>
-                        </button>
-                    </div>
+                    {#if $user}
+                        <div class="pb-4 ml-auto rounded-xl">
+                            <button class="bg-slate-500 hover:bg-slate-300  text-white font-semibold py-2 px-4 rounded-xl">
+                                <div class="flex flex-row">
+                                    <img src={New} alt="New" class="w-6 h-6 mr-2 font-poppins-light">
+                                    <span>Nový</span>
+                                </div>
+                            </button>
+                        </div>
+                    {/if}
                 </div>
             </div>
             <div class="w-full">
@@ -98,7 +100,7 @@
                 <button 
                     class="px-4 py-2 rounded-xl bg-slate-500 text-white disabled:text-gray-300" 
                     on:click={goToPage(currentPageIndex + 1)} 
-                    disabled={currentPageIndex === totalPages - 1}>
+                    disabled={!totalPages ? true : currentPageIndex === totalPages - 1}>
                     Další
                 </button>
             </div>

@@ -4,6 +4,8 @@ using System.Text;
 using IISProject.Api.BL.Facades;
 using IISProject.Api.BL.Models.Auth;
 using IISProject.Api.BL.Models.User;
+using IISProject.Api.DAL.Seeds;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -15,13 +17,11 @@ public class AuthController: ControllerBase
 {
     private readonly UserFacade _userFacade;
     private readonly IConfiguration _configuration;
-    private readonly RoleOfUserFacade _roleOfUserFacade;
 
-    public AuthController(UserFacade userFacade, IConfiguration configuration, RoleOfUserFacade roleOfUserFacade)
+    public AuthController(UserFacade userFacade, IConfiguration configuration)
     {
         _userFacade = userFacade;
         _configuration = configuration;
-        _roleOfUserFacade = roleOfUserFacade;
     }
     
     [HttpPost("register")]
@@ -44,7 +44,7 @@ public class AuthController: ControllerBase
         };
 
         Response.Cookies.Append("jwt", token, cookieOptions);
-        return Ok(new { Token = token });
+        return Ok(new {Token = token});
     }
     
     [HttpPost("login")]
@@ -67,31 +67,26 @@ public class AuthController: ControllerBase
         };
 
         Response.Cookies.Append("jwt", token, cookieOptions);
-        return Ok(new { Token = token });
+        return Ok(new {Token = token});
     }
     
     private string GenerateJwtToken(UserDetailModel user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_configuration["JwtConfig:Secret"]);
+        var key = Encoding.ASCII.GetBytes(_configuration["JwtConfig:Secret"]!);
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.Username)
-            // Add more claims as needed
+            new Claim(ClaimTypes.Name, user.Username),
+            new Claim(ClaimTypes.Role, user.RoleName)
         };
-
-        // Add role claims
-        var userRoles = _roleOfUserFacade.GetByUserIdAsync(user.Id);
-        foreach (var role in userRoles)
-        {
-            claims.Add(new Claim(ClaimTypes.Role, role.RoleName));
-        }
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddHours(6), // Or any time frame you see fit
+            Issuer = _configuration["JwtConfig:Issuer"],
+            Audience = _configuration["JwtConfig:Audience"],
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 
@@ -112,5 +107,23 @@ public class AuthController: ControllerBase
 
         Response.Cookies.Delete("jwt", cookieOptions);
         return Ok();
+    }
+    
+    [HttpGet("user")]
+    [Authorize]
+    public async Task<IActionResult> GetUserInfo()
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var username = User.FindFirst(ClaimTypes.Name)?.Value;
+        var role = User.FindFirst(ClaimTypes.Role)?.Value;
+
+        var userInfo = new
+        {
+            UserId = userId,
+            Username = username,
+            Role = role // or detailedRoles
+        };
+
+        return Ok(userInfo);
     }
 }

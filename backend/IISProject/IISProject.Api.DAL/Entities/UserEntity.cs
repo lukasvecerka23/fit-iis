@@ -10,7 +10,10 @@ public record UserEntity : IEntity
     public required string Username { get; set; }
     public required string PasswordHash { get; set; }
 
-    public ICollection<RoleOfUserEntity> Roles { get; set; } = new List<RoleOfUserEntity>();
+    public required Guid RoleId { get; set; }
+    
+    public RoleEntity? Role { get; set; }
+    
     public ICollection<UserInSystemEntity> UserInSystems { get; set; } = new List<UserInSystemEntity>();
     public ICollection<DeviceEntity> Devices { get; set; } = new List<DeviceEntity>();
     public ICollection<MeasurementEntity> Measurements { get; set; } = new List<MeasurementEntity>();

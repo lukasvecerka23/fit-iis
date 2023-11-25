@@ -19,9 +19,9 @@ public static class RoleSeeds
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<RoleEntity>().HasData(
-            DefaultRole with { RoleOfUsers = Array.Empty<RoleOfUserEntity>() },
-            RoleToDelete with { RoleOfUsers = Array.Empty<RoleOfUserEntity>() },
-            RoleToUpdate with { RoleOfUsers = Array.Empty<RoleOfUserEntity>() }
+            DefaultRole with {Users = Array.Empty<UserEntity>()},
+            RoleToDelete with {Users = Array.Empty<UserEntity>()},
+            RoleToUpdate with {Users = Array.Empty<UserEntity>()}
         );
     }
 }

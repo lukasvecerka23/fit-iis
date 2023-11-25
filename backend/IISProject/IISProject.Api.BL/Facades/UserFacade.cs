@@ -2,6 +2,7 @@ using AutoMapper;
 using IISProject.Api.BL.Facades.Interfaces;
 using IISProject.Api.BL.Models.User;
 using IISProject.Api.DAL.Entities;
+using IISProject.Api.DAL.Seeds;
 using IISProject.Api.DAL.UnitOfWork;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,8 @@ public class UserFacade: FacadeBase<UserEntity, UserListModel, UserDetailModel, 
         var repository = uow.GetRepository<UserEntity>();
         
         var users = repository.GetAll();
+        
+        IncludeNavigationPathDetails(ref users);
         
         var user = await users.SingleOrDefaultAsync(x => x.Username == username);
         
@@ -53,6 +56,7 @@ public class UserFacade: FacadeBase<UserEntity, UserListModel, UserDetailModel, 
 
         var newUser = Mapper.Map<UserEntity>(userCreateUpdateModel);
         newUser.PasswordHash = HashPassword(newUser, userCreateUpdateModel.Password);
+        newUser.RoleId = RoleSeeds.UserRole.Id;
         var createdUser = await repository.InsertAsync(newUser);
         await uow.CommitAsync();
         return Mapper.Map<UserDetailModel>(createdUser);
@@ -70,9 +74,6 @@ public class UserFacade: FacadeBase<UserEntity, UserListModel, UserDetailModel, 
     
     public override List<string> NavigationPathDetails => new()
     {
-        $"{nameof(UserEntity.Roles)}",
-        $"{nameof(UserEntity.UserInSystems)}",
-        $"{nameof(UserEntity.Kpis)}",
-        $"{nameof(UserEntity.Devices)}"
+        $"{nameof(UserEntity.Role)}",
     };
 }

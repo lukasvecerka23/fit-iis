@@ -26,7 +26,6 @@ public class DALTestsBase : IAsyncLifetime
             cfg.AddProfile<MeasurementEntity.MeasurementEntityProfile>();
             cfg.AddProfile<ParameterEntity.ParameterEntityProfile>();
             cfg.AddProfile<RoleEntity.RoleEntityProfile>();
-            cfg.AddProfile<RoleOfUserEntity.RoleOfUserEntityProfile>();
             cfg.AddProfile<SystemEntity.SystemEntityProfile>();
             cfg.AddProfile<UserEntity.UserEntityProfile>();
             cfg.AddProfile<UserInSystemEntity.UserInSystemEntityProfile>();
