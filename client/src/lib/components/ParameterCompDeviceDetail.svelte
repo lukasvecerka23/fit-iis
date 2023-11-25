@@ -21,13 +21,13 @@
         <p>{parameter.name}</p>
       </button>
     </td>
-    <td class="py-4 px-6 text-center">
+    <td class="py-4 px-6 text-center w-1/6">
       <p>{parameter.lowerLimit}</p>
     </td>
-    <td class="py-4 px-6 text-center">
+    <td class="py-4 px-6 text-center w-1/6">
       <p>{parameter.upperLimit}</p>
     </td>
-    <td class="py-4 px-0 flex-row flex justify-center">
+    <td class="py-4 px-0 flex-row flex justify-center ">
       <div class="bg-green-600 text-white font-semibold w-6 h-6 py-1 px-1 rounded-3xl">
         <img src={StatusOk} alt="StatusOk" class="" />
       </div>

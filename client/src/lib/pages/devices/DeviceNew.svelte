@@ -2,19 +2,8 @@
 
 <script>
     import { onMount } from 'svelte';
-    import { navigate, useLocation } from 'svelte-routing';
     import Sidebar from '../../components/SideBar.svelte';
     import TopBar from '../../components/TopBar.svelte';
-    import Eye from '../../../assets/eye.svg';
-    import EyeDark from '../../../assets/eye_dark.svg';
-    import UserCompSystemDetail from '../../components/UserCompSystemDetail.svelte';
-    import New from '../../../assets/new.svg';
-    import Remove from '../../../assets/remove.svg';
-    import Edit from '../../../assets/edit_black.svg';
-    import Kpis from '../../../assets/kpis.svg';
-    import KpisDark from '../../../assets/kpis_dark.svg';
-    import ParametersCard from '../../components/ParametersCardDeviceDetail.svelte';
-    import KpisCard from '../../components/KpisCardDeviceDetail.svelte';
     import QuestionMark from '../../../assets/question_mark.svg';
 
     let isLoading = true;
@@ -131,6 +120,7 @@
                     <label for="system" class="block mb-1 text-lg font-medium text-gray-700">Systém</label>
                     <select 
                         class="border border-gray-300 rounded-xl p-2 w-full hover:cursor-pointer" >
+                        <option>Žádný systém</option>
                         {#each systems as system (system.id)}
                             <option value={system.id}>{system.name}</option>
                         {/each}
