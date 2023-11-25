@@ -11,6 +11,9 @@
     const pageSize = 10;
     let totalPages = 0;
 
+    let roles = [];
+    let roleChanges = {};
+
     async function fetchUsers() {
         const params = new URLSearchParams({
             p: currentPageIndex,
@@ -26,7 +29,64 @@
         totalPages = data.totalPages; // Update this based on your API response
     }
 
-  onMount(fetchUsers);
+    async function getRoles(){
+        try {
+            const response = await fetch(`https://localhost:7246/api/roles`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                roles = await response.json();
+            } else {
+                console.error('Error getting roles:', await response.text());
+            }
+        } catch (error) {
+            console.error('Error getting roles:', error);
+        }
+    }
+
+    async function updateUserRole(userId, newRoleId){
+        const updatedUser = $users.find(u => u.id === userId);
+        try {
+            const resp = await fetch(`https://localhost:7246/api/users/${updatedUser.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    name: updatedUser.name, 
+                    surname: updatedUser.surname, 
+                    username: updatedUser.username, 
+                    roleId: newRoleId
+                }),
+                credentials: 'include',
+            });
+            if (resp.ok) {
+                // Remove the system from the local array
+                users.update(currentUsers => {
+                    return currentUsers.map(user => 
+                        user.id === updatedUser.id ? { ...user, roleId: newRoleId } : user
+                )});
+            } else {
+                console.error('Error updating user:', await resp.text());
+            }
+        } catch (error) {
+            console.error('Error updating user:', error);
+        }
+    }
+
+    // Function to save changes
+    async function saveAllChanges() {
+        for (const [userId, newRoleId] of Object.entries(roleChanges)) {
+            await updateUserRole(userId, newRoleId);
+        }
+
+        roleChanges = {};
+    }
+
+  onMount(() => {
+    fetchUsers();
+    getRoles();
+  });
 
   $: if (searchTerm.length >= 3 || searchTerm.length === 0) {
         currentPageIndex = 0;
@@ -36,6 +96,15 @@
     function goToPage(page) {
         currentPageIndex = page;
         fetchUsers();
+    }
+
+    function handleRoleChange(userId, newRoleId) {
+        console.log(userId, newRoleId);
+        if ($users.find(u => u.id === userId).roleId !== newRoleId) {
+            roleChanges[userId] = newRoleId;
+        } else {
+            delete roleChanges[userId];
+        }
     }
 
 </script>
@@ -81,25 +150,35 @@
                 </thead>
                 <tbody>
                     {#each $users as user (user.id)}
-                      <UserComp user={user}/>
+                      <UserComp user={user} roles={roles} on:roleChange={detail => handleRoleChange(user.id, detail.detail.newId)}/>
                     {/each}
                 </tbody>
             </table>
             <!-- Pagination Controls -->
-            <div class="flex justify-between items-center my-4">
-              <button 
-                  class="px-4 py-2 rounded-xl bg-slate-500 text-white disabled:text-gray-300" 
-                  on:click={goToPage(currentPageIndex - 1)} 
-                  disabled={currentPageIndex === 0}>
-                  Zpět
-              </button>
-              <button 
-                  class="px-4 py-2 rounded-xl bg-slate-500 text-white disabled:text-gray-300" 
-                  on:click={goToPage(currentPageIndex + 1)} 
-                  disabled={currentPageIndex === totalPages - 1}>
-                  Další
-              </button>
-          </div>
+            <div class="flex justify-between">
+                <div class="flex gap-2 items-center my-4">
+                    <button 
+                        class="px-4 py-2 rounded-xl bg-slate-500 text-white disabled:text-gray-300" 
+                        on:click={goToPage(currentPageIndex - 1)} 
+                        disabled={currentPageIndex === 0}>
+                        Zpět
+                    </button>
+                    <button 
+                        class="px-4 py-2 rounded-xl bg-slate-500 text-white disabled:text-gray-300" 
+                        on:click={goToPage(currentPageIndex + 1)} 
+                        disabled={currentPageIndex === totalPages - 1}>
+                        Další
+                    </button>
+                </div>
+                <div class="flex gap-2 items-center my-4">
+                    <button 
+                        class="px-4 py-2 rounded-xl bg-slate-500 text-white disabled:text-gray-300" 
+                        on:click={() => saveAllChanges()}>
+                        Uložit
+                    </button>
+                </div>
+            </div>
+
 
             </div>
         </div>

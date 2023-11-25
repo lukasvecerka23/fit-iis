@@ -36,7 +36,8 @@ public class UserRepositoryTests: DALTestsBase
             Name = "Poe",
             Surname = "Poe",
             Username = "poepoe",
-            PasswordHash = "TESTHASH"
+            PasswordHash = "TESTHASH",
+            RoleId = RoleSeeds.DefaultRole.Id
         };
 
         // act

@@ -1,6 +1,7 @@
 using AutoMapper;
 using IISProject.Api.BL.Facades.Interfaces;
 using IISProject.Api.BL.Models.Auth;
+using IISProject.Api.BL.Models.Responses;
 using IISProject.Api.BL.Models.User;
 using IISProject.Api.DAL.Entities;
 using IISProject.Api.DAL.Seeds;
@@ -113,6 +114,30 @@ public class UserFacade: FacadeBase<UserEntity, UserListModel, UserDetailModel, 
             Users = Mapper.Map<IEnumerable<UserListModel>>(users)
         };
         
+        return result;
+    }
+    
+    public new async  Task<IdModel?> UpdateAsync(UserCreateUpdateModel model, Guid id)
+    {
+        var entity = Mapper.Map<UserEntity>(model);
+
+        await using var uow = UnitOfWorkFactory.Create();
+        var repository = uow.GetRepository<UserEntity>();
+
+        if (!await repository.ExistsAsync(id))
+        {
+            return null;
+        }
+        
+        var existingUser = await repository.GetAll().SingleOrDefaultAsync(x => x.Id == id);
+        
+        entity.Id = id;
+        entity.PasswordHash = existingUser.PasswordHash;
+        var updatedEntity = await repository.UpdateAsync(entity);
+
+        await uow.CommitAsync();
+
+        var result = Mapper.Map<IdModel>(updatedEntity);
         return result;
     }
     

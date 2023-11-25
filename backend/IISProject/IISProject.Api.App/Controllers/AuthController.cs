@@ -116,6 +116,19 @@ public class AuthController: ControllerBase
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var username = User.FindFirst(ClaimTypes.Name)?.Value;
         var role = User.FindFirst(ClaimTypes.Role)?.Value;
+        
+        var user = await _userFacade.GetByIdAsync(Guid.Parse(userId!));
+        
+        if (user == null)
+        {
+            return Unauthorized();
+        }
+
+        if (user.RoleName != role)
+        {
+            return Unauthorized();
+        }
+        
 
         var userInfo = new
         {
