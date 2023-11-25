@@ -13,6 +13,7 @@
     import DeviceTypeDark from '../../../assets/device_type_dark.svg';
     import DeviceTypesCardDeviceList from '../../components/DeviceTypesCardDeviceList.svelte';
     import DevicesCardDeviceList from '../../components/DevicesCardDeviceList.svelte';
+    import { Link, navigate } from "svelte-routing";
   
     let searchTerm = '';
     let currentPageIndex = 0;
@@ -108,6 +109,10 @@
         loadData();
     }
 
+    function MoveToNew(){
+      navigate(`/devices/new`);
+    }
+
 </script>
 
 <div class="flex flex-col w-full h-screen bg-slate-400">
@@ -129,7 +134,7 @@
                         />
                     </div>
                     <div class="pb-4 ml-auto rounded-xl">
-                        <button class="bg-slate-500 hover:bg-slate-600  text-white font-semibold py-2 px-4 rounded-xl">
+                        <button class="bg-slate-500 hover:bg-slate-600  text-white font-semibold py-2 px-4 rounded-xl" on:click={() => MoveToNew()}>
                             <div class="flex flex-row">
                                 <img src={New} alt="New" class="w-6 h-6 mr-2 font-poppins-light">
                                 <span>Nové</span>

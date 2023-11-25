@@ -8,6 +8,8 @@
     import LoginPage from './pages/auth/LoginPage.svelte';
     import RegisterPage from './pages/auth/RegisterPage.svelte';
     import Users from './pages/auth/Users.svelte';
+    import DeviceNew from './pages/devices/DeviceNew.svelte';
+    import SystemNew from './pages/systems/SystemNew.svelte';
 </script>
 
 <Router>
@@ -22,4 +24,6 @@
     <Route path="/login" component={LoginPage} />
     <Route path="/signup" component={RegisterPage} />
     <Route path="/users" component={Users} />
+    <Route path="/devices/new" component={DeviceNew}/>
+    <Route path="/systems/new" component={SystemNew} />
 </Router>

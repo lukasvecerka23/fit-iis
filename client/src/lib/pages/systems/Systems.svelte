@@ -5,6 +5,7 @@
     import SystemComp from '../../components/SystemComp.svelte';
     import {systems, user} from '../../../store.js';
     import New from '../../../assets/new.svg';
+    import { Link, navigate } from "svelte-routing";
   
     let searchTerm = '';
     let currentPageIndex = 0;
@@ -38,6 +39,10 @@
         fetchSystems();
     }
 
+    function MoveToNew(){
+      navigate(`/systems/new`);
+    }
+
 </script>
 
 <div class="flex flex-col w-full h-screen bg-slate-400">
@@ -60,7 +65,7 @@
                     </div>
                     {#if $user}
                         <div class="pb-4 ml-auto rounded-xl">
-                            <button class="bg-slate-500 hover:bg-slate-600  text-white font-semibold py-2 px-4 rounded-xl">
+                            <button class="bg-slate-500 hover:bg-slate-600  text-white font-semibold py-2 px-4 rounded-xl" on:click={() => MoveToNew()}>
                                 <div class="flex flex-row">
                                     <img src={New} alt="New" class="w-6 h-6 mr-2 font-poppins-light">
                                     <span>Nový</span>
