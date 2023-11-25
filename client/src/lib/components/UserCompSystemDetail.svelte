@@ -15,7 +15,7 @@
 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700">
     <td class="py-4 px-6 text-left font-semibold text-gray-300 text-base">
       <button class="hover:cursor-pointer hover:underline" on:click={() => MoveToDetail(user.id)}>
-        <p>{user.username}</p>
+        <p>{user.userFullname}</p>
       </button>
     </td>
     <td class="py-4 px-0">

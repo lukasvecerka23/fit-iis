@@ -10,8 +10,11 @@ public class UserInSystemMapperProfile: Profile
 {
     public UserInSystemMapperProfile()
     {
-        CreateMap<UserInSystemEntity, UserInSystemListModel>();
+        CreateMap<UserInSystemEntity, UserInSystemListModel>()
+            .MapMember(dst => dst.UserFullname, src => $"{src.User!.Name} {src.User.Surname}");
+        
         CreateMap<UserInSystemEntity, UserInSystemDetailModel>();
+        
         CreateMap<UserInSystemCreateUpdateModel, UserInSystemEntity>()
             .Ignore(dst => dst.Id)
             .Ignore(dst => dst.User)
