@@ -7,6 +7,7 @@
     import StatusOk from '../../assets/status_ok.svg';
     import StatusWarning from '../../assets/status_warning.svg';
     import StatusBad from '../../assets/status_bad.svg';
+    import {mapKpiFunctionToString} from '../../utils.js';
     export let kpi;
     export let parameter;
 
@@ -23,7 +24,7 @@
       </button>
     </td>
     <td class="py-4 px-6 text-center">
-      <p>{kpi.id}</p>
+      <p>{mapKpiFunctionToString(kpi.function)}</p>
     </td>
     <td class="py-4 px-6 text-center">
       <p>hodnota</p>

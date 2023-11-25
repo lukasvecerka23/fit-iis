@@ -127,7 +127,7 @@
                         />
                     </div>
                     <div class="pb-4 ml-auto rounded-xl">
-                        <button class="bg-slate-500 hover:bg-slate-300  text-white font-semibold py-2 px-4 rounded-xl">
+                        <button class="bg-slate-500 hover:bg-slate-700  text-white font-semibold py-2 px-4 rounded-xl">
                             <div class="flex flex-row">
                                 <img src={New} alt="New" class="w-6 h-6 mr-2 font-poppins-light">
                                 <span>Nový</span>
@@ -171,7 +171,7 @@
                 </div>
                 <div class="flex gap-2 items-center my-4">
                     <button 
-                        class="px-4 py-2 rounded-xl bg-slate-500 text-white disabled:text-gray-300" 
+                        class="px-4 py-2 rounded-xl bg-slate-500 hover:bg-slate-700 text-white"
                         on:click={() => saveAllChanges()}>
                         Uložit
                     </button>

@@ -26,12 +26,12 @@
 </script> 
 
 <nav class=" bg-slate-500 w-full h-10 text-white flex justify-between items-center px-4 border-b border-gray-800 shadow-sm">
-    <div class="flex space-x-4 ml-auto">
+    <div class="flex space-x-4 ml-auto ">
         {#if $user}
-            <button class="{isActivePage('/login') ? 'text-blue-500' : ''}" on:click={async () => await handleLogout()}>Odhlásit</button>
+            <button class="hover:bg-slate-400 rounded-xl p-1" on:click={async () => await handleLogout()}>Odhlásit</button>
         {:else}
-            <Link to="/login" class="{isActivePage('/login') ? 'text-blue-500' : ''}">Přihlásit se</Link>
-            <Link to="/signup" class="{isActivePage('/signup') ? 'text-blue-500' : ''}">Registrace</Link>
+            <Link to="/login" class="hover:bg-slate-400 rounded-xl p-1">Přihlásit se</Link>
+            <Link to="/signup" class="hover:bg-slate-400 rounded-xl p-1">Registrace</Link>
         {/if}
 
     </div>
