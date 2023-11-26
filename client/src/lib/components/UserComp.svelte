@@ -40,10 +40,10 @@
     <td class="py-4 px-6 font-semibold text-base">{`${user.name} ${user.surname}`}</td>
     <td class="py-4 px-6 font-semibold text-base">
         <select 
-        class="border border-gray-300 rounded p-2" 
+        class="border border-gray-300 font-normal text-sm text-black rounded-lg p-1" 
         bind:value={selectedRoleId} on:change={onRoleChange}>
         {#each roles as role (role.id)}
-            <option value={role.id}>{role.name}</option>
+            <option  class="font-normal text-" value={role.id}>{role.name}</option>
         {/each}
     </select>
     </td>
