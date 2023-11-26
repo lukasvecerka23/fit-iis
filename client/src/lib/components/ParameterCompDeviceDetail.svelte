@@ -7,6 +7,7 @@
     import StatusOk from '../../assets/status_ok.svg';
     import StatusWarning from '../../assets/status_warning.svg';
     import StatusBad from '../../assets/status_bad.svg';
+    import {ParameterStatus} from '../../utils.js';
     export let parameter;
 
     let opacity = "";
@@ -42,8 +43,18 @@
       <p>{parameter.upperLimit}</p>
     </td>
     <td class="py-4 px-0 flex-row flex justify-center ">
-      <div class="bg-green-600 text-white font-semibold w-6 h-6 py-1 px-1 rounded-3xl">
-        <img src={StatusOk} alt="StatusOk" class="" />
-      </div>
+      {#if parameter.status === ParameterStatus.Okay}
+        <div class="bg-green-600 text-white font-semibold w-6 h-6 py-1 px-1 rounded-3xl">
+          <img src={StatusOk} alt="StatusOk" class="" />
+        </div>
+      {:else if parameter.status === ParameterStatus.Warning}
+        <div class="bg-orange-400 text-white font-semibold w-6 h-6 py-1 px-1 rounded-3xl">
+          <img src={StatusWarning} alt="StatusWarning" class="" />
+        </div>
+      {:else if parameter.status === ParameterStatus.Critical}
+        <div class="bg-red-600 text-white font-semibold w-6 h-6 py-1 px-1 rounded-3xl">
+          <img src={StatusBad} alt="StatusBad" class="" />
+        </div>
+      {/if}
     </td>
 </tr>

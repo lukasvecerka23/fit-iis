@@ -12,6 +12,9 @@ public class ParameterMapperProfile: Profile
     {
         CreateMap<ParameterEntity, ParameterListModel>();
         
+        CreateMap<ParameterEntity, ParameterStatusListModel>()
+            .Ignore(dst => dst.Status);
+        
         CreateMap<ParameterEntity, ParameterDetailModel>()
             .MapMember(src => src.Kpis, dst => dst.Kpis);
 

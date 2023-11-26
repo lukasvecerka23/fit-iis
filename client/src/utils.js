@@ -7,6 +7,12 @@ export const KpiFunction = {
     NotEqual: 5
 };
 
+export const ParameterStatus = {
+    Okay: 0,
+    Warning: 1,
+    Critical: 2
+}
+
 export function mapKpiFunctionToString(value) {
     const mapping = {
         [KpiFunction.Less]: "<",

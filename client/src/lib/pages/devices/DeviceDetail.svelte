@@ -1,7 +1,7 @@
 <!-- SystemDetail.svelte -->
 
 <script>
-    import { onMount } from 'svelte';
+    import { onMount, onDestroy } from 'svelte';
     import { navigate, useLocation } from 'svelte-routing';
     import Sidebar from '../../components/SideBar.svelte';
     import TopBar from '../../components/TopBar.svelte';
@@ -23,16 +23,19 @@
   
     export let id;
 
+    let intervalId;
     let device = null;
     let isLoading = true;
     let activeCard = 'kpi';
     let isSmallScreen = false;
+    let parameters = {};
 
     async function fetchDeviceDetail() {
         try {
             const resp = await fetch(`https://localhost:7246/api/devices/${id}`);
             if (resp.ok){
                 device = await resp.json();
+                await fetchParameters();
             } else {
                 throw new Error('Error')
             }
@@ -40,6 +43,18 @@
             console.log('Error')
         } finally {
             isLoading = false;
+        }
+    }
+
+    async function fetchParameters(){
+        
+        const params = new URLSearchParams({
+            deviceTypeId: device.deviceTypeId,
+            deviceId: device.id,
+        });
+        const resp = await fetch(`https://localhost:7246/api/parameters/status?${params}`)
+        if (resp.ok){
+            parameters = await resp.json();
         }
     }
 
@@ -62,7 +77,14 @@
     onMount( () => {
         selectedParameterId.set(null);
         fetchDeviceDetail()
+
+        intervalId = setInterval(fetchParameters, 5000);
+
     });
+
+    onDestroy( () => {
+        clearInterval(intervalId);
+    })
 
     function switchCard(card) {
         activeCard = card;
@@ -145,7 +167,7 @@
                         {/if}
                 </div>
                 <div class="py-4">
-                    <ParametersCard parameters={device.parameters} />
+                    <ParametersCard parameters={parameters} />
                 </div>
                 <!-- <div class="flex-row flex w-full items-center pt-4">
                     <img src={KpisDark} alt="KpisDark" class="w-8 h-8" />

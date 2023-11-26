@@ -65,4 +65,22 @@ public class ParameterController : ControllerBase
 
         return Ok();
     }
+    
+    [HttpGet("status")]
+    public async Task<ActionResult<IEnumerable<ParameterStatusListModel>>> GetParametersStatus([FromQuery] ParameterStatusParams parameters)
+    {
+        if (parameters.DeviceTypeId == Guid.Empty || parameters.DeviceId == Guid.Empty)
+        {
+            return BadRequest();
+        }
+        
+        return Ok(await _parameterFacade.GetParameterStatus(parameters.DeviceTypeId, parameters.DeviceId));
+    }
+}
+
+public class ParameterStatusParams
+{
+    [FromQuery(Name = "deviceTypeId")] public Guid DeviceTypeId { get; set; } = Guid.Empty;
+    
+    [FromQuery(Name = "deviceId")] public Guid DeviceId { get; set; } = Guid.Empty;
 }
