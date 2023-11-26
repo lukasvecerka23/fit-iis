@@ -10,6 +10,8 @@
     import Users from './pages/auth/Users.svelte';
     import DeviceNew from './pages/devices/DeviceNew.svelte';
     import SystemNew from './pages/systems/SystemNew.svelte';
+    import DeviceUpdate from './pages/devices/DeviceUpdate.svelte';
+    import SystemUpdate from './pages/systems/SystemUpdate.svelte';
 </script>
 
 <Router>
@@ -26,4 +28,10 @@
     <Route path="/users" component={Users} />
     <Route path="/devices/new" component={DeviceNew}/>
     <Route path="/systems/new" component={SystemNew} />
+    <Route path="/devices/:id/update" let:params>
+        <DeviceUpdate id={params.id} />
+    </Route>
+    <Route path="/systems/:id/update" let:params>
+        <SystemUpdate id={params.id} />
+    </Route>
 </Router>

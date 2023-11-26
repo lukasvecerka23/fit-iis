@@ -61,6 +61,10 @@
 
     onMount(fetchSystemDetail);
 
+    function MoveToUpdate(){
+      navigate(`/systems/${id}/update`);
+    }
+
   </script>
 
 {#if isLoading}
@@ -79,7 +83,7 @@
                     <h2 class="text-3xl font-bold mb-0 pt-10 pb-4 font-poppins-light text-left">{system.name}</h2>
                     <div class="">
                         <div class="pl-5">
-                            <button class=" hover:bg-slate-200 mt-6 p-1  text-white font-medium rounded-3xl">
+                            <button class=" hover:bg-slate-200 mt-6 p-1  text-white font-medium rounded-3xl" on:click={() => MoveToUpdate()}>
                                 <img src={Edit} alt="New" class="w-6 h-6 font-poppins-light">
                             </button>
                         </div>

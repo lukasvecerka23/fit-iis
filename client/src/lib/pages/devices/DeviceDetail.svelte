@@ -64,6 +64,10 @@
         activeCard = card;
     }
 
+    function MoveToUpdate(){
+      navigate(`/devices/${id}/update`);
+    }
+
 
 </script>
 
@@ -83,7 +87,7 @@
                     <h2 class="text-3xl font-bold font-poppins-light text-left">{device.userAlias}</h2>
                     <div class="">
                         <div class="pl-5">
-                            <button class=" hover:bg-slate-200 p-1  text-white font-medium rounded-3xl">
+                            <button class=" hover:bg-slate-200 p-1  text-white font-medium rounded-3xl" on:click={() => MoveToUpdate()}>
                                 <img src={Edit} alt="New" class="w-6 h-6 font-poppins-light">
                             </button>
                         </div>
