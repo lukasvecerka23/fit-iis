@@ -4,7 +4,7 @@
     import TopBar from '../../components/TopBar.svelte';
     import DeviceComp from '../../components/DeviceCompDeviceList.svelte';
     import DeviceTypeComp from '../../components/DeviceTypeComp.svelte';
-    import {devices} from '../../../store.js';
+    import {devices, user} from '../../../store.js';
     import {deviceTypes} from '../../../store.js';
     import New from '../../../assets/new.svg';
     import Device from '../../../assets/device.svg';
@@ -110,7 +110,13 @@
     }
 
     function MoveToNew(){
-      navigate(`/devices/new`);
+        if (activeCard === "devices")
+        {
+            navigate(`/devices/new`);
+        } else if (activeCard === "devicetypes")
+        {
+            navigate(`/deviceTypes/new`);
+        }
     }
 
 </script>
@@ -123,25 +129,7 @@
         <!-- Pole pro filtraci nad seznamem devices -->
         <div class="flex-col flex w-4/5 items-center">
             <div class = "flex-col flex w-full">
-                <h2 class="text-3xl font-bold mb-0 pt-10 pb-6 font-poppins-light text-left">Zařízení</h2>
-                <div class="flex flex-row">
-                    <div class="pb-4 w-1/3 self-start">
-                        <input
-                        type="text"
-                        class="p-2 border border-gray-300 rounded-xl w-full"
-                        bind:value={searchTerm}
-                        placeholder="Filtrovat zařízení..."
-                        />
-                    </div>
-                    <div class="pb-4 ml-auto rounded-xl">
-                        <button class="bg-slate-500 hover:bg-slate-600  text-white font-semibold py-2 px-4 rounded-xl" on:click={() => MoveToNew()}>
-                            <div class="flex flex-row">
-                                <img src={New} alt="New" class="w-6 h-6 mr-2 font-poppins-light">
-                                <span>Nové</span>
-                            </div>
-                        </button>
-                    </div>
-                </div>
+                <h2 class="text-3xl font-bold mb-0 pt-10 pb-6 font-poppins-light text-left">{activeCard === 'devices'? "Zařízení" : "Typy zařízení"}</h2>
                 <div class="flex-row items-start w-1/3">
                     <div class="grid w-full grid-cols-2 gap-2 rounded-3xl bg-gray-300 p-1">
                         <div>
@@ -176,6 +164,26 @@
                             </label>
                         </div>
                     </div>
+                </div>
+                <div class="flex flex-row">
+                    <div class="pt-4 w-1/3 self-start">
+                        <input
+                        type="text"
+                        class="p-2 border border-gray-300 rounded-xl w-full"
+                        bind:value={searchTerm}
+                        placeholder={activeCard === 'devices'? "Filtrovat zařízení..." : "Filtrovat typy zařízení..."}
+                        />
+                    </div>
+                    {#if $user && (activeCard === 'devicetypes' && $user.role === 'Admin') || activeCard === 'devices'}
+                    <div class="pt-4 ml-auto rounded-xl">
+                        <button class="bg-slate-500 hover:bg-slate-600  text-white font-semibold py-2 px-4 rounded-xl" on:click={() => MoveToNew()}>
+                            <div class="flex flex-row">
+                                <img src={New} alt="New" class="w-6 h-6 mr-2 font-poppins-light">
+                                <span>{activeCard === 'devices'? "Nové" : "Nový"}</span>
+                            </div>
+                        </button>
+                    </div>
+                    {/if}
                 </div>
             </div>
         

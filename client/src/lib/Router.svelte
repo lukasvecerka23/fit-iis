@@ -14,6 +14,7 @@
     import BrokerDetail from './pages/broker/BrokerDetail.svelte';
     import DeviceUpdate from './pages/devices/DeviceUpdate.svelte';
     import SystemUpdate from './pages/systems/SystemUpdate.svelte';
+    import DeviceTypeNew from './pages/devices/DeviceTypeNew.svelte';
 </script>
 
 <Router>
@@ -30,6 +31,7 @@
     <Route path="/users" component={Users} />
     <Route path="/devices/new" component={DeviceNew}/>
     <Route path="/systems/new" component={SystemNew} />
+    <Route path="/deviceTypes/new" component={DeviceTypeNew} />
 
     <Route path="/broker" component={Broker} />
     <Route path="/broker/:id" let:params>
