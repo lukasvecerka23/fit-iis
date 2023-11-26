@@ -11,7 +11,8 @@ public class KpiMapperProfile: Profile
     public KpiMapperProfile()
     {
         CreateMap<KpiEntity, KpiListModel>()
-            .MapMember(dst => dst.ParameterName, src => src.Parameter!.Name);
+            .MapMember(dst => dst.ParameterName, src => src.Parameter!.Name)
+            .Ignore(dst => dst.LastMeasurement);
         
         CreateMap<KpiEntity, KpiDetailModel>();
         CreateMap<KpiCreateUpdateModel, KpiEntity>()

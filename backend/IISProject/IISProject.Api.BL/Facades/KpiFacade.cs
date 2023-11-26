@@ -85,6 +85,9 @@ public class KpiFacade: FacadeBase<KpiEntity, KpiListModel, KpiDetailModel, KpiC
         var totalCount = filteredKpi.Count();
         var totalPages = (int)Math.Ceiling((double)totalCount / size);
 
+        var kpiModels = Mapper.Map<IEnumerable<KpiListModel>>(kpis);
+        
+        kpiModels = EnrichKpiModelsWithLastMeasurement(kpiModels);
 
         var result = new KpiSearchModel
         {
@@ -92,9 +95,30 @@ public class KpiFacade: FacadeBase<KpiEntity, KpiListModel, KpiDetailModel, KpiC
             PageSize = size,
             TotalCount = totalCount,
             TotalPages = totalPages,
-            Kpis = Mapper.Map<IEnumerable<KpiListModel>>(kpis)
+            Kpis = kpiModels
         };
         
+        return result;
+    }
+
+    private IEnumerable<KpiListModel> EnrichKpiModelsWithLastMeasurement(IEnumerable<KpiListModel> kpis)
+    { 
+        var uow = UnitOfWorkFactory.Create();
+        var repository = uow.GetRepository<MeasurementEntity>();
+        var measurementQuery = repository.GetAll();
+        
+        var result = new List<KpiListModel>();
+        foreach (var kpi in kpis)
+        {
+            var lastMeasurement = measurementQuery.Where(x => x.DeviceId == kpi.DeviceId && x.ParameterId == kpi.ParameterId)
+                .OrderByDescending(x => x.TimeStamp).FirstOrDefault();
+            if (lastMeasurement != null)
+            {
+                kpi.LastMeasurement = lastMeasurement.Value;
+            }
+            result.Add(kpi);
+        }
+
         return result;
     }
     
