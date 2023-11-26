@@ -8,7 +8,7 @@
     import Eye from '../../../assets/eye.svg';
     import EyeDark from '../../../assets/eye_dark.svg';
     import UserCompSystemDetail from '../../components/UserCompSystemDetail.svelte';
-    import { systems } from '../../../store';
+    import { systems, selectedParameterId } from '../../../store';
     import New from '../../../assets/new.svg';
     import Remove from '../../../assets/remove.svg';
     import Edit from '../../../assets/edit_black.svg';
@@ -58,7 +58,10 @@
     };
     });
 
-    onMount(fetchDeviceDetail);
+    onMount( () => {
+        selectedParameterId.set(null);
+        fetchDeviceDetail()
+    });
 
     function switchCard(card) {
         activeCard = card;

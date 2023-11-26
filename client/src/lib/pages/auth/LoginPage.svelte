@@ -20,7 +20,11 @@
 
     if (response.ok) {
         loadUser().then(() => {
-            navigate('/', { replace: true });
+            if ($user.role === 'Broker') {
+                navigate('/broker', { replace: true });
+            } else {
+                navigate('/', { replace: true });
+            }
         })
     } else {
       // Handle login error

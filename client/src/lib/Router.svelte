@@ -10,6 +10,8 @@
     import Users from './pages/auth/Users.svelte';
     import DeviceNew from './pages/devices/DeviceNew.svelte';
     import SystemNew from './pages/systems/SystemNew.svelte';
+    import Broker from './pages/broker/Broker.svelte';
+    import BrokerDetail from './pages/broker/BrokerDetail.svelte';
 </script>
 
 <Router>
@@ -26,4 +28,10 @@
     <Route path="/users" component={Users} />
     <Route path="/devices/new" component={DeviceNew}/>
     <Route path="/systems/new" component={SystemNew} />
+
+    <Route path="/broker" component={Broker} />
+    <Route path="/broker/:id" let:params>
+        <BrokerDetail id={params.id}/>
+    </Route>
+
 </Router>
