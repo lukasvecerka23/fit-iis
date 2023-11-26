@@ -1,6 +1,6 @@
 <script>
     import SystemLogo from "../../assets/system.svg";
-    import DevicesLogo from "../../assets/devices.svg";
+    import DevicesLogo from "../../assets/device_white.svg";
     import LogoutLogo from  "../../assets/log_out.svg";
     import UsersLogo from "../../assets/users_white.svg";
     import BrokerLogo from "../../assets/broker.svg";
@@ -43,7 +43,7 @@
                 <NavButton linkPath="/users"
                 text="Uživatelé"
                 logoUrl={UsersLogo}
-                classBackgroundColor={isActivePage("/users") ? "bg-slate-600" : ""}
+                classBackgroundColor={(isActivePage("/users")  || activepage.pathname.includes("/users/"))? "bg-slate-600" : ""}
                 />
                 {/if}
 
