@@ -152,7 +152,7 @@
                 <div class="flex  w-1/3 justify-end">
                     <button 
                         class="px-10 py-2 rounded-xl bg-slate-500 hover:bg-slate-700 text-white">
-                        Vytvořit
+                        Uložit
                     </button>
                 </div>
 

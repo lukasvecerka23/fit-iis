@@ -12,6 +12,7 @@
     import MeasurementDark from '../../../assets/measurement_dark.svg';
     import ParametersCard from './ParametersCardBroker.svelte';
     import MeasurementsCard from '../../components/MeasurementsCardDeviceDetail.svelte';
+    import Save from '../../../assets/save.svg';
   
     export let id;
 
@@ -112,25 +113,24 @@
 
                 <div class="pt-4">
                     <form on:submit|preventDefault={createMeasurement} class="flex py-4 justify-start w-1/2">
-                        <div class="mr-4 w-1/4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="parameter">
-                                Parametr
-                            </label>
-                            <select bind:value={selectedParameter} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        <div class="font-semibold text-base mr-4 w-1/4">
+                            <label for="parameter" class="block mb-1 text-lg font-medium text-gray-700">Parametr</label>
+                            <select 
+                                bind:value={selectedParameter}
+                                class="border border-gray-300 rounded-xl p-2 w-full hover:cursor-pointer" >
+                                <option value={{}}>Vyberte...</option>
                                 {#each device.parameters as parameter (parameter.id)}
                                     <option value={parameter}>{parameter.name}</option>
                                 {/each}
                             </select>
                         </div>
-                        <div class="mr-4 w-1/4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="value">
-                                Hodnota
-                            </label>
-                            <input type="number" min={selectedParameter.lowerLimit} max={selectedParameter.upperLimit} bind:value={measurementValue} required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                        <div class="font-semibold text-base mr-4 w-1/4">
+                            <label for="value" class="block mb-1 text-lg font-medium text-gray-700">Hodnota</label>
+                            <input type="number" min={selectedParameter.lowerLimit} max={selectedParameter.upperLimit} bind:value={measurementValue} required class="border border-gray-300 rounded-xl p-2 w-full hover:cursor-pointer" />
                         </div>
-                        <div class="flex justify-center items-end">
-                            <button type="submit" class="w-1/2 h-1/2 rounded-full bg-gray-500 hover:bg-gray-700 text-white font-bold p-5 focus:outline-none focus:shadow-outline flex justify-center items-center">
-                                <img src={New} alt="Eye" class="w-20" />
+                        <div class="flex items-end mr-4">
+                            <button type="submit" class="w-1/2 h-1/2 rounded-full bg-slate-500 hover:bg-slate-600 text-white font-bold p-5 focus:outline-none focus:shadow-outline flex justify-center items-center">
+                                <img src={Save} alt="Save" class="w-20" />
                             </button>
                         </div>
                     </form>

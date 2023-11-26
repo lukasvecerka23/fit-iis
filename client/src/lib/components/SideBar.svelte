@@ -52,7 +52,7 @@
                 <NavButton linkPath="/broker"
                 text="Měření"
                 logoUrl={BrokerLogo}
-                classBackgroundColor={isActivePage("/broker") ? "bg-slate-600" : ""}
+                classBackgroundColor={(isActivePage("/broker") || activepage.pathname.includes("/broker/"))? "bg-slate-600" : ""}
                 />
                 {/if}
                 <!-- Unregistered -->
