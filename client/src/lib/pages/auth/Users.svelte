@@ -5,11 +5,13 @@
     import UserComp from '../../components/UserComp.svelte';
     import {users} from '../../../store.js';
     import New from '../../../assets/new.svg';
+    import { Link, navigate } from "svelte-routing";
   
     let searchTerm = '';
     let currentPageIndex = 0;
     const pageSize = 10;
     let totalPages = 0;
+    let updatedRole = false;
 
     let roles = [];
     let roleChanges = {};
@@ -81,6 +83,7 @@
         }
 
         roleChanges = {};
+        updatedRole = false;
     }
 
   onMount(() => {
@@ -98,12 +101,17 @@
         fetchUsers();
     }
 
+    function MoveToNew(){
+        navigate(`/users/new`);
+    }
+
     function handleRoleChange(userId, newRoleId) {
         if ($users.find(u => u.id === userId).roleId !== newRoleId) {
             roleChanges[userId] = newRoleId;
         } else {
             delete roleChanges[userId];
         }
+        updatedRole = true;
     }
 
 </script>
@@ -127,7 +135,7 @@
                         />
                     </div>
                     <div class="pb-4 ml-auto rounded-xl">
-                        <button class="bg-slate-500 hover:bg-slate-700  text-white font-semibold py-2 px-4 rounded-xl">
+                        <button class="bg-slate-500 hover:bg-slate-700  text-white font-semibold py-2 px-4 rounded-xl" on:click={() => MoveToNew()}>
                             <div class="flex flex-row">
                                 <img src={New} alt="New" class="w-6 h-6 mr-2 font-poppins-light">
                                 <span>Nový</span>
@@ -157,13 +165,13 @@
             <div class="flex justify-between">
                 <div class="flex gap-2 items-center my-4">
                     <button 
-                        class="px-4 py-2 rounded-xl bg-slate-500 text-white disabled:text-gray-300" 
+                        class="px-4 py-2 rounded-xl bg-slate-500 text-white disabled:hidden" 
                         on:click={goToPage(currentPageIndex - 1)} 
                         disabled={currentPageIndex === 0}>
                         Zpět
                     </button>
                     <button 
-                        class="px-4 py-2 rounded-xl bg-slate-500 text-white disabled:text-gray-300" 
+                        class="px-4 py-2 rounded-xl bg-slate-500 text-white disabled:hidden" 
                         on:click={goToPage(currentPageIndex + 1)} 
                         disabled={!totalPages ? true : currentPageIndex === totalPages - 1}>
                         Další
@@ -171,7 +179,8 @@
                 </div>
                 <div class="flex gap-2 items-center my-4">
                     <button 
-                        class="px-4 py-2 rounded-xl bg-slate-500 hover:bg-slate-700 text-white"
+                        class="px-4 py-2 rounded-xl bg-slate-500 hover:bg-slate-700 text-white disabled:hidden"
+                        disabled={!updatedRole}
                         on:click={() => saveAllChanges()}>
                         Uložit
                     </button>
