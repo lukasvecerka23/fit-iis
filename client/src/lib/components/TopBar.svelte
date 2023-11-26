@@ -17,8 +17,8 @@
             credentials: 'include',
         });
         if (response.ok) {
-            user.set(null);
             navigate('/', { replace: true });
+            user.set(null);
         } else {
             // Handle login error
         }

@@ -1,9 +1,6 @@
 <script>
-    import TrashBin from "../../assets/trash.svg";
-    import {systems} from "../../store.js";
-    import Users from "../../assets/users.svg";
-    import { Link, navigate } from "svelte-routing";
-    import Devices from "../../assets/device.svg";
+    import Remove from "../../assets/remove.svg";
+    import { navigate } from "svelte-routing";
     import Edit from "../../assets/edit.svg";
     import {createEventDispatcher} from "svelte";
 
@@ -32,6 +29,10 @@
     function MoveToDetail(deviceId){
       navigate(`/devices/${deviceId}`);
     }
+
+    function MoveToUpdate(deviceId){
+      navigate(`/devices/${deviceId}/update`)
+    }
   </script>
   
 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700">
@@ -49,13 +50,13 @@
       </div>
     </td>
     <td class="py-4 px-0">
-      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded">
+      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>MoveToUpdate(device.id)}>
         <img src={Edit} alt="Trash Bin" class="w-6 h-6" />
       </button>
     </td>
     <td class="py-4 px-0">
       <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>deleteDevice(device.id)}>
-        <img src={TrashBin} alt="Trash Bin" class="w-6 h-6" />
+        <img src={Remove} alt="Remove" class="w-6 h-6" />
       </button>
     </td>
 </tr>

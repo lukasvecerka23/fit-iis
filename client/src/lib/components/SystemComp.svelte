@@ -30,6 +30,10 @@
       navigate(`/systems/${systemId}`);   
     }
 
+    function MoveToUpdate(systemId){
+      navigate(`/systems/${systemId}/update`);   
+    }
+
 
   </script>
 
@@ -67,7 +71,7 @@
         </button>
       </td>
       <td class="py-4 px-0">
-        <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>deleteSystem(system.id)}>
+        <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>MoveToUpdate(system.id)}>
           <img src={Edit} alt="Trash Bin" class="w-6 h-6" />
         </button>
       </td>

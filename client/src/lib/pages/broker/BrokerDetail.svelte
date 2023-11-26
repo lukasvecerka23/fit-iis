@@ -13,6 +13,8 @@
     import ParametersCard from './ParametersCardBroker.svelte';
     import MeasurementsCard from '../../components/MeasurementsCardDeviceDetail.svelte';
     import Save from '../../../assets/save.svg';
+    import RemoveChoice from '../../../assets/status_bad.svg';
+  
   
     export let id;
 
@@ -41,6 +43,10 @@
         selectedParameterId.set(null);
         fetchDeviceDetail()
     });
+
+    function SetChoiceNull(){
+        selectedParameterId.set(null);
+    }
 
     async function createMeasurement() {
         const resp = await fetch(`https://localhost:7246/api/measurements`, {
@@ -101,6 +107,16 @@
                 <div class="flex-row flex w-full items-center pt-6">
                         <img src={EyeDark} alt="EyeDark" class="w-8 h-8" />
                         <p class="pl-2 text-xl">Parametry</p>
+                        {#if $selectedParameterId !== null}
+                        <div class=" ml-auto rounded-xl">
+                            <button class="bg-slate-500 hover:bg-slate-600  text-white font-normal text-sm py-1  px-2 rounded-xl" on:click={() => SetChoiceNull()}>
+                                <div class="flex flex-row">
+                                    <img src={RemoveChoice} alt="New" class="w-5 h-5 mr-2 font-poppins-light">
+                                    <span>Zrušit výběr</span>
+                                </div>
+                            </button>
+                        </div>
+                        {/if}
                 </div>
                 <div class="py-4">
                     <ParametersCard parameters={device.parameters} />
