@@ -8,22 +8,27 @@
     const dispatch = createEventDispatcher();
     export let device;
 
-    async function deleteDevice(id) {
-        try {
-            const response = await fetch(`https://localhost:7246/api/devices/${id}`, {
-                method: 'DELETE',
-                credentials: 'include',
-            });
+    // async function DeleteDevice(id) {
+    //     try {
+    //         const response = await fetch(`https://localhost:7246/api/devices/${id}`, {
+    //             method: 'DELETE',
+    //             credentials: 'include',
+    //         });
 
-            if (response.ok) {
-                // Remove the device from the local array
-                dispatch('deleteDevice', { id: id });
-            } else {
-                console.error('Error deleting system:', await response.text());
-            }
-        } catch (error) {
-            console.error('Error deleting system:', error);
-        }
+    //         if (response.ok) {
+    //             // Remove the device from the local array
+    //             dispatch('deleteDevice', { id: id });
+    //         } else {
+    //             console.error('Error deleting system:', await response.text());
+    //         }
+    //     } catch (error) {
+    //         console.error('Error deleting system:', error);
+    //     }
+    // }
+
+    function RemoveDeviceFromSystem(id)
+    {
+
     }
 
     function MoveToDetail(deviceId){
@@ -55,7 +60,7 @@
       </button>
     </td>
     <td class="py-4 px-0">
-      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>deleteDevice(device.id)}>
+      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>RemoveDeviceFromSystem(device.id)}>
         <img src={Remove} alt="Remove" class="w-6 h-6" />
       </button>
     </td>
