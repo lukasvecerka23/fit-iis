@@ -13,7 +13,8 @@ public static class KpiSeeds
         Error = false,
         CreatorId = UserSeeds.DefaultUser.Id,
         DeviceId = DeviceSeeds.DefaultDevice.Id,
-        ParameterId = ParameterSeeds.DefaultParameter.Id
+        ParameterId = ParameterSeeds.DefaultParameter.Id,
+        Value = 10
     };
     
     public static readonly KpiEntity KpiToDelete =

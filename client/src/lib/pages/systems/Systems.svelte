@@ -1,5 +1,5 @@
 <script>
-    import {onMount} from 'svelte'
+    import {onMount, onDestroy} from 'svelte'
     import Sidebar from '../../components/SideBar.svelte';
     import TopBar from '../../components/TopBar.svelte';
     import SystemComp from '../../components/SystemComp.svelte';
@@ -7,6 +7,7 @@
     import New from '../../../assets/new.svg';
     import { Link, navigate } from "svelte-routing";
   
+    let intervalId;
     let searchTerm = '';
     let currentPageIndex = 0;
     const pageSize = 10;
@@ -27,7 +28,11 @@
         totalPages = data.totalPages; // Update this based on your API response
     }
 
-    onMount(fetchSystems);
+    onMount(() => {
+        intervalId = setInterval(() => {
+            fetchSystems();
+        }, 5000);
+    });
 
     $: if (searchTerm.length >= 3 || searchTerm.length === 0) {
         currentPageIndex = 0;
@@ -42,6 +47,10 @@
     function MoveToNew(){
       navigate(`/systems/new`);
     }
+
+    onDestroy(() => {
+        clearInterval(intervalId);
+    });
 
 </script>
 
@@ -83,6 +92,7 @@
                         <th scope="col" class="py-3 px-6">Počet zařízení</th>
                         <th scope="col" class="py-3 px-6">Počet lidí v systému</th>
                         <th scope="col" class="py-3 px-6">Správce</th>
+                        <th scope="col" class="py-3 px-6">Status</th>
                         <th scope="col" class="py-3 px-6"></th>
                         <th scope="col" class="py-3 px-6"></th>
                         <th scope="col" class="py-3 px-6"></th>

@@ -1,5 +1,5 @@
 <script>
-    import {onMount} from 'svelte'
+    import {onMount, onDestroy} from 'svelte'
     import Sidebar from '../../components/SideBar.svelte';
     import TopBar from '../../components/TopBar.svelte';
     import DeviceComp from '../../components/DeviceCompDeviceList.svelte';
@@ -15,6 +15,7 @@
     import DevicesCardDeviceList from '../../components/DevicesCardDeviceList.svelte';
     import { Link, navigate } from "svelte-routing";
   
+    let intervalId;
     let searchTerm = '';
     let currentPageIndex = 0;
     const pageSize = 10;
@@ -94,12 +95,32 @@
         await loadData();
     }
 
+
+    function startPolling() {
+        if (activeCard === 'devices') {
+            intervalId = setInterval(fetchDevices, 5000);
+        }
+    }
+
+    function stopPolling() {
+        console.log('stopPolling')
+        if (intervalId) {
+            clearInterval(intervalId);
+            intervalId = null;
+        }
+    }
+
+    $: if (activeCard) {
+        stopPolling(); // Stop any existing polling
+        startPolling(); // Start new polling based on activeCard
+    }
+
     onMount(() => {
         loadData();
     });
 
 
-  $: if (searchTerm.length >= 3 || searchTerm.length === 0) {
+    $: if (searchTerm.length >= 3 || searchTerm.length === 0) {
         currentPageIndex = 0;
         loadData();
     }
@@ -118,6 +139,10 @@
             navigate(`/deviceTypes/new`);
         }
     }
+
+    onDestroy(() => {
+        stopPolling(); // Make sure to clear the interval when the component is destroyed
+    });
 
 </script>
 

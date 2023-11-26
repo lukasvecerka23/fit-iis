@@ -64,6 +64,7 @@
                 <th scope="col" class="py-3 px-6 text-left">Parametr</th>
                 <th scope="col" class="py-3 px-6 text-center w-1/6">Funkce</th>
                 <th scope="col" class="py-3 px-6 text-center w-1/6">Hodnota</th>
+                <th scope="col" class="py-3 px-6 text-center w-1/6">Naměřeno</th>
                 <th scope="col" class="py-3 px-6 text-center w-1/6">Status</th>
             </tr>
         </thead>

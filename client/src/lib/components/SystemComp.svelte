@@ -6,6 +6,10 @@
     import Devices from "../../assets/device.svg";
     import Edit from "../../assets/edit.svg";
     import {user} from "../../store.js";
+    import StatusOk from '../../assets/status_ok.svg';
+    import StatusWarning from '../../assets/status_warning.svg';
+    import StatusBad from '../../assets/status_bad.svg';
+    import {SystemStatus} from '../../utils.js';
     export let system;
 
     async function deleteSystem(id) {
@@ -64,6 +68,23 @@
       </div>
     </td>
     <td class="py-4 px-6">{system.creatorName}</td>
+    <td class="py-4 px-0">
+      <div class="flex-row flex justify-center">
+        {#if system.status === SystemStatus.Okay}
+        <div class="bg-green-600 text-white font-semibold w-6 h-6 py-1 px-1 rounded-3xl">
+          <img src={StatusOk} alt="StatusOk" class="" />
+        </div>
+      {:else if system.status === SystemStatus.Warning}
+        <div class="bg-orange-400 text-white font-semibold w-6 h-6 py-1 px-1 rounded-3xl">
+          <img src={StatusWarning} alt="StatusWarning" class="" />
+        </div>
+      {:else if system.status === SystemStatus.Critical}
+        <div class="bg-red-600 text-white font-semibold w-6 h-6 py-1 px-1 rounded-3xl">
+          <img src={StatusBad} alt="StatusBad" class="" />
+        </div>
+      {/if}
+      </div>
+    </td>
     {#if $user}
       <td class="py-4 px-0">
         <button class="bg-gray-500 hover:bg-gray-400 text-white font-poppins-light py-2 px-4 rounded">

@@ -1,5 +1,7 @@
 using AutoMapper;
+using IISProject.Api.BL.Enums;
 using IISProject.Api.BL.Facades.Interfaces;
+using IISProject.Api.BL.Models.Device;
 using IISProject.Api.BL.Models.System;
 using IISProject.Api.DAL.Entities;
 using IISProject.Api.DAL.UnitOfWork;
@@ -9,12 +11,14 @@ namespace IISProject.Api.BL.Facades;
 
 public class SystemFacade: FacadeBase<SystemEntity, SystemListModel, SystemDetailModel, SystemCreateUpdateModel>, ISystemFacade
 {
-    public SystemFacade(IUnitOfWorkFactory unitOfWorkFactory, IMapper mapper) : base(unitOfWorkFactory, mapper)
+    private readonly DeviceFacade _deviceFacade;
+
+    public SystemFacade(IUnitOfWorkFactory unitOfWorkFactory, IMapper mapper, DeviceFacade deviceFacade) : base(unitOfWorkFactory, mapper)
     {
-        
+        _deviceFacade = deviceFacade;
     }
     
-    public async Task<SystemSearchModel> SearchAsync(string query, int index, int size)
+    public async Task<SystemSearchModel> SearchAsync(SearchSystemParams parameters)
     {
         var uow = UnitOfWorkFactory.Create();
         var repository = uow.GetRepository<SystemEntity>();
@@ -22,35 +26,82 @@ public class SystemFacade: FacadeBase<SystemEntity, SystemListModel, SystemDetai
         IncludeNavigationPathDetails(ref systemQuery);
         
         IEnumerable<SystemEntity> filteredSystems;
-        if (query.IsNullOrEmpty())
+        if (parameters.Query.IsNullOrEmpty())
         {
             filteredSystems = systemQuery.OrderBy(x => x.Name);
         }
         else
         {
             filteredSystems = systemQuery
-                .Where(x => x.Name.ToLower().Contains(query.ToLower()) ||
-                            x.Description.ToLower().Contains(query.ToLower()));
+                .Where(x => x.Name.ToLower().Contains(parameters.Query.ToLower()) ||
+                            x.Description.ToLower().Contains(parameters.Query.ToLower()));
         }
 
         var systems = filteredSystems
-            .Skip(index * size)
-            .Take(size).ToList();
+            .Skip(parameters.PageIndex * parameters.PageSize)
+            .Take(parameters.PageSize).ToList();
         
         var totalCount = filteredSystems.Count();
-        var totalPages = (int)Math.Ceiling((double)totalCount / size);
+        var totalPages = (int)Math.Ceiling((double)totalCount / parameters.PageSize);
+
+        var systemModels = Mapper.Map<IEnumerable<SystemListModel>>(systems);
+        
+        systemModels = GetSystemsStatus(systemModels.ToList());
 
 
         var result = new SystemSearchModel
         {
-            PageIndex = index,
-            PageSize = size,
+            PageIndex = parameters.PageIndex,
+            PageSize = parameters.PageSize,
             TotalCount = totalCount,
             TotalPages = totalPages,
-            Systems = Mapper.Map<IEnumerable<SystemListModel>>(systems)
+            Systems = systemModels
         };
         
         return result;
+    }
+
+    private IEnumerable<SystemListModel> GetSystemsStatus(List<SystemListModel> systems)
+    {
+        var uow = UnitOfWorkFactory.Create();
+        var repository = uow.GetRepository<DeviceEntity>();
+        var deviceQuery = repository.GetAll();
+
+        var result = new List<SystemListModel>();
+        foreach (var system in systems)
+        {
+            var devicesInSystem = deviceQuery.Where(x => x.SystemId == system.Id).ToList();
+            var devicesWithStatus = _deviceFacade.GetDevicesWithStatus(devicesInSystem);
+            var systemStatus = CheckSystemStatus(devicesWithStatus.ToList());
+            var systemModel = Mapper.Map<SystemListModel>(system);
+            systemModel.Status = systemStatus;
+            result.Add(systemModel);
+        }
+
+        return result;   
+    }
+    
+    private SystemStatus CheckSystemStatus(List<DeviceStatusListModel> devices)
+    {
+        if (devices.Count == 0)
+        {
+            return SystemStatus.Okay;
+        }
+        
+        bool hasError = devices.Any(x => x.Status == DeviceStatus.Critical || x.Status == DeviceStatus.Warning);
+        bool allError = devices.All(x => x.Status == DeviceStatus.Critical);
+
+        if (allError)
+        {
+            return SystemStatus.Critical;
+        } 
+        
+        if (hasError)
+        {
+            return SystemStatus.Warning;
+        }
+
+        return SystemStatus.Okay;
     }
     
     public override List<string> NavigationPathDetails => new()

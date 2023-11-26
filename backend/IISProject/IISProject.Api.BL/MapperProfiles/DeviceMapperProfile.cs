@@ -15,7 +15,15 @@ public class DeviceMapperProfile: Profile
             .MapMember(dst => dst.DeviceTypeName, src => src.DeviceType!.Name)
             .MapMember(dst => dst.CreatorName!, src => $"{src.Creator!.Name} {src.Creator.Surname}")
             .MapMember(dst =>dst.SystemName!, src => src.System!.Name)
+            .MapMember(dst =>dst.SystemName!, src => src.System!.Name)
             .MapMember(dst => dst.CreatorId, src => src.CreatorId);
+        
+        CreateMap<DeviceEntity, DeviceStatusListModel>()
+            .MapMember(dst => dst.DeviceTypeName, src => src.DeviceType!.Name)
+            .MapMember(dst => dst.CreatorName!, src => $"{src.Creator!.Name} {src.Creator.Surname}")
+            .MapMember(dst =>dst.SystemName!, src => src.System!.Name)
+            .Ignore(dst => dst.Status);
+            
 
         CreateMap<DeviceEntity, DeviceDetailModel>()
             .MapMember(dst => dst.DeviceTypeName, src => src.DeviceType!.Name)

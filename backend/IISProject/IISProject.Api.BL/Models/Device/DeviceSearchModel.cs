@@ -6,5 +6,5 @@ public record DeviceSearchModel
     public int PageSize { get; set; }
     public int TotalPages { get; set; }
     public int TotalCount { get; set; }
-    public IEnumerable<DeviceListModel> Devices { get; set; } = new List<DeviceListModel>();
+    public IEnumerable<DeviceStatusListModel> Devices { get; set; } = new List<DeviceStatusListModel>();
 }

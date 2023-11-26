@@ -1,7 +1,7 @@
 <!-- SystemDetail.svelte -->
 
 <script>
-    import { onMount } from 'svelte';
+    import { onMount, onDestroy } from 'svelte';
     import { navigate, useLocation } from 'svelte-routing';
     import Sidebar from '../../components/SideBar.svelte';
     import TopBar from '../../components/TopBar.svelte';
@@ -18,6 +18,33 @@
     let system = null;
     let isLoading = true;
     let activeCard = 'devices';
+    let intervalId;
+    let searchTerm = '';
+    let currentPageIndex = 0;
+    const pageSize = 10;
+    let totalPages = 0;
+    let devices = [];
+
+    async function fetchDevices() {
+        const params = new URLSearchParams({
+            p: currentPageIndex,
+            size: pageSize,
+            systemId: id
+        });
+        if (searchTerm.length >= 3) {
+            params.append('q', searchTerm);
+        }
+
+        try {
+            const resp = await fetch(`https://localhost:7246/api/devices/search?${params}`);
+            if (resp.ok){
+                const data = await resp.json();
+                devices = data.devices;
+                totalPages = data.totalPages; // Update this based on your API response
+            }
+        } finally {
+        }
+    }
 
     async function fetchSystemDetail() {
         try {
@@ -31,6 +58,7 @@
             });
             if (resp.ok){
                 system = await resp.json();
+                await fetchDevices();
             } else {
                 throw new Error('Error')
             }
@@ -64,6 +92,35 @@
     function MoveToUpdate(){
       navigate(`/systems/${id}/update`);
     }
+
+    function goToPage(page) {
+        currentPageIndex = page;
+        if (activeCard === 'devices'){
+            fetchDevices();
+        }
+    }
+
+    function startPolling() {
+        if (activeCard === 'devices') {
+            intervalId = setInterval(fetchDevices, 5000);
+        }
+    }
+
+    function stopPolling() {
+        if (intervalId) {
+            clearInterval(intervalId);
+            intervalId = null;
+        }
+    }
+
+    $: if (activeCard) {
+        stopPolling(); // Stop any existing polling
+        startPolling(); // Start new polling based on activeCard
+    }
+
+    onDestroy(() => {
+        stopPolling(); // Make sure to clear the interval when the component is destroyed
+    });
 
   </script>
 
@@ -129,7 +186,7 @@
                 </div>
                 <div class="pt-4">
                     {#if activeCard === 'devices'}
-                    <DevicesCard devices={system.devices} />
+                    <DevicesCard devices={devices} />
                     {:else}
                     <UsersCard users={system.users} />
                     {/if}

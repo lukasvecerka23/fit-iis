@@ -25,7 +25,7 @@
     }
 </script> 
 
-<nav class=" bg-slate-500 w-full h-10 text-white flex justify-between items-center px-4 border-b border-gray-800 shadow-sm">
+<nav class=" bg-gray-800 w-full h-10 text-white flex justify-between items-center px-4 border-b border-gray-500 shadow-sm">
     <div class="flex space-x-4 ml-auto ">
         {#if $user}
             <button class="hover:bg-slate-400 rounded-xl p-1" on:click={async () => await handleLogout()}>Odhlásit</button>

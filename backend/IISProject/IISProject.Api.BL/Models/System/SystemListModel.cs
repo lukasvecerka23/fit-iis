@@ -1,3 +1,5 @@
+using IISProject.Api.BL.Enums;
+
 namespace IISProject.Api.BL.Models.System;
 
 public record SystemListModel : IModel
@@ -9,4 +11,6 @@ public record SystemListModel : IModel
     public string CreatorName { get; set; } = null!;
     public int UsersCount { get; set; }
     public int DevicesCount { get; set; }
+    
+    public SystemStatus Status { get; set; }
 }

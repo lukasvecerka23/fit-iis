@@ -24,6 +24,9 @@
     <td class="py-4 px-6 text-center">
       <p>{kpi.value}</p>
     </td>
+    <td class="py-4 px-6 text-center">
+      <p>{kpi.lastMeasurement || "-"}</p>
+    </td>
     <td class="py-4 px-0 flex-row flex justify-center">
       <div class="{kpi.error ? "bg-red-600" :"bg-green-600"} text-white font-semibold w-6 h-6 py-1 px-1 rounded-3xl">
         <img src={kpi.error ? StatusBad : StatusOk} alt="StatusOk" class="" />

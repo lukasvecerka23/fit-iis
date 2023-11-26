@@ -13,7 +13,8 @@ public class SystemMapperProfile: Profile
         CreateMap<SystemEntity, SystemListModel>()
             .MapMember(dst => dst.CreatorName, src => $"{src.Creator!.Name} {src.Creator.Surname}")
             .MapMember(dst => dst.UsersCount, src => src.UsersInSystem.Count)
-            .MapMember(dst => dst.DevicesCount, src => src.Devices.Count);
+            .MapMember(dst => dst.DevicesCount, src => src.Devices.Count)
+            .Ignore(dst => dst.Status);
         
         CreateMap<SystemEntity, SystemDetailModel>()
             .MapMember(dst => dst.Devices, src => src.Devices)

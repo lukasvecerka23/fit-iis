@@ -15,7 +15,7 @@
     }
 </script> 
 
-<nav class="bg-slate-500 w-20 text-white flex flex-col ">
+<nav class="bg-gray-800 w-20 text-white flex flex-col ">
         <div class="flex-col">
 
             <!-- User is logged in -->

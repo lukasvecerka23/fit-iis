@@ -21,7 +21,7 @@ public static class KpiSeeds
     {
         Id = Guid.Parse("8DA3A5AC-9213-442A-996F-EA731E0F339E"),
         Function = KpiFunction.Less,
-        Error = true,
+        Error = false,
         CreatorId = UserSeeds.DefaultUser.Id,
         DeviceId = DeviceSeeds.DefaultDevice.Id,
         ParameterId = ParameterSeeds.DefaultParameter2.Id,
@@ -32,7 +32,7 @@ public static class KpiSeeds
     {
         Id = Guid.Parse("6E036326-4D39-4B3F-BD16-532177299A44"),
         Function = KpiFunction.NotEqual,
-        Error = true,
+        Error = false,
         CreatorId = UserSeeds.DefaultUser.Id,
         DeviceId = DeviceSeeds.DefaultDevice.Id,
         ParameterId = ParameterSeeds.DefaultParameter2.Id,

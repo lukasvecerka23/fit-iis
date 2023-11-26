@@ -38,7 +38,8 @@ public class KpiRepositoryTests: DALTestsBase
             DeviceId = DeviceSeeds.DefaultDevice.Id,
             CreatorId = UserSeeds.DefaultUser.Id,
             ParameterId = ParameterSeeds.DefaultParameter.Id,
-            Error = true
+            Error = true,
+            Value = 10
         };
         
         // act
