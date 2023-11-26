@@ -13,6 +13,20 @@ export const ParameterStatus = {
     Critical: 2
 }
 
+export const DeviceStatus = {
+    None: 0,
+    Okay: 1,
+    Warning: 2,
+    Critical: 3
+}
+
+export const SystemStatus = {
+    None: 0,
+    Okay: 1,
+    Warning: 2,
+    Critical: 3
+}
+
 export function mapKpiFunctionToString(value) {
     const mapping = {
         [KpiFunction.Less]: "<",
