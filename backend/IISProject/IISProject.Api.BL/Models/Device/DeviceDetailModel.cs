@@ -13,4 +13,5 @@ public record DeviceDetailModel : IModel
     public string? SystemName { get; set; }
     public string? CreatorName { get; set; }
     public ICollection<ParameterListModel> Parameters { get; set; } = new List<ParameterListModel>();
+    public Guid CreatorId { get; set; }
 }

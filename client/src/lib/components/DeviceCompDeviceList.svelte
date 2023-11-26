@@ -1,11 +1,12 @@
 <script>
     import TrashBin from "../../assets/trash.svg";
-    import {devices} from "../../store.js";
+    import {devices, user} from "../../store.js";
     import { Link, navigate } from "svelte-routing";
     import Users from "../../assets/users.svg";
     import Devices from "../../assets/device.svg";
     import Edit from "../../assets/edit.svg";
     export let device;
+
 
     async function deleteDevice(id) {
         try {
@@ -55,14 +56,21 @@
         </div>
       </div>
     </td>
+    {#if $user}
     <td class="py-4 px-0">
-      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>MoveToUpdate(device.id)}>
+      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded disabled:hidden" on:click={()=>MoveToUpdate(device.id)}
+        disabled={!($user.role === "Admin" || $user.userId === device.creatorId)}>
         <img src={Edit} alt="Trash Bin" class="w-6 h-6" />
       </button>
     </td>
     <td class="py-4 px-0">
-      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>deleteDevice(device.id)}>
+      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded disabled:hidden" on:click={()=>deleteDevice(device.id)}
+        disabled={!($user.role === "Admin" || $user.userId === device.creatorId)}>
         <img src={TrashBin} alt="Trash Bin" class="w-6 h-6" />
       </button>
     </td>
+    {:else}
+    <td></td>
+    <td></td>
+    {/if}
 </tr>

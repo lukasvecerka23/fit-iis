@@ -10,7 +10,7 @@
     let isSmallScreen = false;
     let systems = [];
     let deviceTypes = [];
-    let greetings = [];
+    let parameters = [];
     let measurementValue = null;
 
     //for parameter button description
@@ -65,8 +65,8 @@
         isLoading = false;
     }
 
-    function addGreeting() {
-        greetings = [...greetings, 'Ahoj'];
+    function addParameter() {
+        parameters = [...parameters, 'Ahoj'];
     }
 
     onMount(getSystems);
@@ -99,7 +99,7 @@
                 </div>
                 <div class="mb-4 w-full">
                     <label for="parameters" class="block w-1/3 mb-1 text-lg font-medium text-gray-700">Parametry</label>
-                    {#each greetings as greeting}
+                    {#each parameters as parameter}
                     <div class="pb-2 flex-row flex items-center">
                         <input type="text" id="name" class="w-1/3 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700" placeholder="Název parametru"/>
                         <label for="min" class=" px-3 block mb-1 text-base font-medium text-gray-700">Min. hodnota:</label>
@@ -110,7 +110,7 @@
                     {/each}
                     <div class="flex  w-1/3 justify-start">
                         <button 
-                            on:click={addGreeting}
+                            on:click={addParameter}
                             class="px-2 py-2 rounded-3xl bg-slate-500 hover:bg-slate-700 text-white">
                             <img src={New} alt="New" class="h-5 w-5"/>
                         </button>

@@ -60,6 +60,6 @@ public class DeviceFacade: FacadeBase<DeviceEntity, DeviceListModel, DeviceDetai
         $"{nameof(DeviceEntity.DeviceType)}",
         $"{nameof(DeviceEntity.Creator)}",
         $"{nameof(DeviceEntity.System)}",
-        $"{nameof(DeviceEntity.DeviceType)}.{nameof(DeviceTypeEntity.Parameters)}"
+        $"{nameof(DeviceEntity.DeviceType)}.{nameof(DeviceTypeEntity.Parameters)}",
     };
 }

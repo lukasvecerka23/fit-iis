@@ -10,9 +10,9 @@ export const KpiFunction = {
 export function mapKpiFunctionToString(value) {
     const mapping = {
         [KpiFunction.Less]: "<",
-        [KpiFunction.LessOrEqual]: "<=",
+        [KpiFunction.LessOrEqual]: "≤",
         [KpiFunction.Equal]: "=",
-        [KpiFunction.GreaterOrEqual]: ">=",
+        [KpiFunction.GreaterOrEqual]: "≥",
         [KpiFunction.Greater]: ">",
         [KpiFunction.NotEqual]: "≠"
     };
