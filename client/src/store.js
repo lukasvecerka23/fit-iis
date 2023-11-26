@@ -5,6 +5,7 @@ export const devices = writable([]);
 export const deviceTypes = writable([]);
 export const users = writable([]);
 export const user = writable(null);
+export const selectedDevices = writable({});
 
 export const selectedParameterId = writable(null);
 

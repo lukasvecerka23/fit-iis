@@ -10,7 +10,8 @@
     import Users from '../../../assets/users.svg'
     import Device from '../../../assets/device.svg';
     import DeviceDark from '../../../assets/device_dark.svg';
-    import UsersDark from '../../../assets/users_dark.svg'
+    import UsersDark from '../../../assets/users_dark.svg';
+    import Edit from '../../../assets/edit_black.svg'
   
     export let id;
 
@@ -74,7 +75,16 @@
     <div class="flex flex-1 bg-primary-white justify-center overflow-auto">
         <div class="flex-col flex w-4/5 items-center">
             <div class = "flex-col flex w-full">
-                <h2 class="text-3xl font-bold mb-0 pt-10 pb-4 font-poppins-light text-left">{system.name}</h2>
+                <div class = "flex-row flex w-full items-center pt-10">
+                    <h2 class="text-3xl font-bold mb-0 pt-10 pb-4 font-poppins-light text-left">{system.name}</h2>
+                    <div class="">
+                        <div class="pl-5">
+                            <button class=" hover:bg-slate-200 mt-6 p-1  text-white font-medium rounded-3xl">
+                                <img src={Edit} alt="New" class="w-6 h-6 font-poppins-light">
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <h1 class=" text-lg font-medium text-gray-700 pb-10 font-poppins-light text-left">{system.description}</h1>
                 <div class="flex-row flex pb-2">
                     <h1 class=" text-lg font-semibold text-black font-poppins-light text-left">Vytvořil:</h1>
