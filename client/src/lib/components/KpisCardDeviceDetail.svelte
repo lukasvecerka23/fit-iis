@@ -1,11 +1,12 @@
 <!-- UsersCard.svelte -->
 <script>
     import KpiCompDeviceDetail from './KpiCompDeviceDetail.svelte';
-    import {onMount} from 'svelte';
+    import {onMount, onDestroy} from 'svelte';
     import {selectedParameterId} from '../../store.js';
 
     export let deviceId;
 
+    let intervalId;
     let currentPageIndex = 0;
     let isLoading = true;
     let totalPages = 0;
@@ -32,9 +33,22 @@
     }
 
     onMount(() => {
-        selectedParameterId.subscribe(value => {
+        const unsubscribe = selectedParameterId.subscribe(value => {
             fetchKpis(value);
         });
+
+        intervalId = setInterval(() => {
+            // Re-fetch KPIs with the current selected parameter
+            selectedParameterId.subscribe(value => {
+                fetchKpis(value);
+            })();
+        }, 5000);
+        
+        return unsubscribe;
+    });
+
+    onDestroy(() => {
+        clearInterval(intervalId);
     });
 
     function goToPage(page) {

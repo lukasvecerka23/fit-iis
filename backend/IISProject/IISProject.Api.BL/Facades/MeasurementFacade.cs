@@ -1,6 +1,8 @@
 using AutoMapper;
 using IISProject.Api.BL.Facades.Interfaces;
 using IISProject.Api.BL.Models.Measurement;
+using IISProject.Api.BL.Models.Responses;
+using IISProject.Api.Common.Enum;
 using IISProject.Api.DAL.Entities;
 using IISProject.Api.DAL.UnitOfWork;
 
@@ -8,9 +10,30 @@ namespace IISProject.Api.BL.Facades;
 
 public class MeasurementFacade: FacadeBase<MeasurementEntity, MeasurementListModel, MeasurementDetailModel, MeasurementCreateUpdateModel>, IMeasurementFacade
 {
-    public MeasurementFacade(IUnitOfWorkFactory unitOfWorkFactory, IMapper mapper) : base(unitOfWorkFactory, mapper)
+    private readonly KpiFacade _kpiFacade;
+
+    public MeasurementFacade(IUnitOfWorkFactory unitOfWorkFactory, IMapper mapper, KpiFacade kpiFacade) : base(unitOfWorkFactory, mapper)
     {
+        _kpiFacade = kpiFacade;
+    }
+    
+    public override async Task<IdModel> CreateAsync(MeasurementCreateUpdateModel model)
+    {
+        MeasurementEntity entity = Mapper.Map<MeasurementEntity>(model);
         
+        await using var uow = UnitOfWorkFactory.Create();
+        var repository = uow.GetRepository<MeasurementEntity>();
+        
+        entity.Id = Guid.NewGuid();
+        MeasurementEntity insertedEntity = await repository.InsertAsync(entity);
+        
+        await uow.CommitAsync();
+        
+        await _kpiFacade.UpdateKpisStatusAsync(insertedEntity.DeviceId, insertedEntity.ParameterId);
+        
+        var result = Mapper.Map<IdModel>(insertedEntity);
+        
+        return result;
     }
     
     public async Task<MeasurementSearchModel> SearchAsync(Guid deviceId, Guid parameterId, int index, int size)
