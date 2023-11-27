@@ -37,10 +37,18 @@
       </button>
     </td>
     <td class="py-4 px-6 text-center w-1/6">
-      <p>{parameter.lowerLimit}</p>
+      {#if parameter.lowerLimit == null}
+        <p>-</p>
+      {:else}
+        <p>{parameter.lowerLimit}</p>
+      {/if}
     </td>
     <td class="py-4 px-6 text-center w-1/6">
+      {#if parameter.upperLimit == null}
+      <p>-</p>
+    {:else}
       <p>{parameter.upperLimit}</p>
+    {/if}
     </td>
     <td class="py-4 px-0 flex-row flex justify-center ">
       {#if parameter.status === ParameterStatus.Okay}

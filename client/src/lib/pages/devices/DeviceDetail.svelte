@@ -20,6 +20,7 @@
     import KpisCard from '../../components/KpisCardDeviceDetail.svelte';
     import MeasurementsCard from '../../components/MeasurementsCardDeviceDetail.svelte';
     import RemoveChoice from '../../../assets/status_bad.svg';
+    import TrashBin from '../../../assets/trash.svg';
   
     export let id;
 
@@ -94,8 +95,29 @@
       navigate(`/devices/${id}/update`);
     }
 
+    function MoveToList(){
+        navigate(`/devices/`);
+    }
+
     function SetChoiceNull(){
         selectedParameterId.set(null);
+    }
+
+    async function deleteDevice(id) {
+        try {
+            const response = await fetch(`https://localhost:7246/api/devices/${id}`, {
+                method: 'DELETE',
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+            } else {
+                console.error('Error deleting device:', await response.text());
+            }
+        } catch (error) {
+            console.error('Error deleting device:', error);
+        }
+        MoveToList();
     }
 
 
@@ -119,6 +141,13 @@
                         <div class="pl-5">
                             <button class=" hover:bg-slate-200 p-1  text-white font-medium rounded-3xl" on:click={() => MoveToUpdate()}>
                                 <img src={Edit} alt="New" class="w-6 h-6 font-poppins-light">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="pl-5">
+                            <button class=" hover:bg-slate-200 p-1   text-white font-medium rounded-3xl" on:click={() => deleteDevice(id)}>
+                                <img src={TrashBin} alt="New" class="w-6 h-6 font-poppins-light">
                             </button>
                         </div>
                     </div>
