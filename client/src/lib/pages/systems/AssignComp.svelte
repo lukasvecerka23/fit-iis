@@ -2,13 +2,14 @@
     import { navigate } from "svelte-routing";
     import {createEventDispatcher} from "svelte";
     import {systemDetailActiveCard} from '../../../store.js';
+    import config from '../../../config.js';
 
     export let assign;
 
     const dispatch = createEventDispatcher();
 
     async function acceptAssign(){
-        const resp = await fetch(`https://localhost:7246/api/assignToSystem/${assign.id}/accept`, 
+        const resp = await fetch(`${config.apiUrl}/api/assignToSystem/${assign.id}/accept`, 
         {
             method: 'POST',
             headers: {
@@ -23,7 +24,7 @@
     }
 
     async function rejectAssign(){
-        const resp = await fetch(`https://localhost:7246/api/assignToSystem/${assign.id}`,
+        const resp = await fetch(`${config.apiUrl}/api/assignToSystem/${assign.id}`,
         {
             method: 'DELETE',
             headers: {

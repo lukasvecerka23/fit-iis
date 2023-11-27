@@ -8,6 +8,7 @@
     import DeviceDark from '../../../assets/device_dark.svg'
     import DevicesCardBroker from './DevicesCardBroker.svelte';
     import { Link, navigate } from "svelte-routing";
+    import config from "../../../config.js";
   
     let searchTerm = '';
     let currentPageIndex = 0;
@@ -24,7 +25,7 @@
         }
 
         try {
-            const resp = await fetch(`https://localhost:7246/api/devices/search?${params}`, {
+            const resp = await fetch(`${config.apiUrl}/api/devices/search?${params}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

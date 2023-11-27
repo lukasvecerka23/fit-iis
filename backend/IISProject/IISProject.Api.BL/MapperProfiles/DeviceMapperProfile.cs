@@ -16,12 +16,14 @@ public class DeviceMapperProfile: Profile
             .MapMember(dst => dst.CreatorName!, src => $"{src.Creator!.Name} {src.Creator.Surname}")
             .MapMember(dst =>dst.SystemName!, src => src.System!.Name)
             .MapMember(dst =>dst.SystemName!, src => src.System!.Name)
-            .MapMember(dst => dst.CreatorId, src => src.CreatorId);
+            .MapMember(dst => dst.CreatorId, src => src.CreatorId)
+            .MapMember(dst => dst.UserId, src => src.UserId);
         
         CreateMap<DeviceEntity, DeviceStatusListModel>()
             .MapMember(dst => dst.DeviceTypeName, src => src.DeviceType!.Name)
             .MapMember(dst => dst.CreatorName!, src => $"{src.Creator!.Name} {src.Creator.Surname}")
             .MapMember(dst =>dst.SystemName!, src => src.System!.Name)
+            .MapMember(dst => dst.UserId, src => src.UserId)
             .Ignore(dst => dst.Status);
             
 
@@ -30,7 +32,8 @@ public class DeviceMapperProfile: Profile
             .MapMember(dst => dst.CreatorName!, src => $"{src.Creator!.Name} {src.Creator.Surname}")
             .MapMember(dst => dst.SystemName!, src => src.System!.Name)
             .MapMember(dst => dst.Parameters, src => src.DeviceType!.Parameters)
-            .MapMember(dst => dst.CreatorId, src => src.CreatorId);
+            .MapMember(dst => dst.CreatorId, src => src.CreatorId)
+            .MapMember(dst => dst.UserId, src => src.UserId);
         CreateMap<DeviceEntity, DeviceCreateUpdateModel>();
         
         CreateMap<DeviceCreateUpdateModel, DeviceEntity>()

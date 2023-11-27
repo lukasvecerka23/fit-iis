@@ -8,6 +8,7 @@
     import New from '../../../assets/new.svg';
     import QuestionMark from '../../../assets/question_mark.svg';
     import TrashBin from '../../../assets/trash.svg';
+    import config from "../../../config.js";
 
     let isLoading = true;
     let isSmallScreen = false;
@@ -41,7 +42,7 @@
 
     async function getSystems(){
         try {
-            const response = await fetch(`https://localhost:7246/api/systems`, {
+            const response = await fetch(`${config.apiUrl}/api/systems`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -59,7 +60,7 @@
 
     async function getDeviceTypes(){
         try {
-            const response = await fetch(`https://localhost:7246/api/deviceTypes`, {
+            const response = await fetch(`${config.apiUrl}/api/deviceTypes`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -121,7 +122,7 @@
 
     async function CreateParameters()
     {
-        const url = 'https://localhost:7246/api/parameters';
+        const url = `${config.apiUrl}/api/parameters`;
 
         for (const parameter of parameters) {
             // Add the current deviceTypeId to the parameter
@@ -159,7 +160,7 @@
             return;
         }
 
-        const url = 'https://localhost:7246/api/deviceTypes';
+        const url = `${config.apiUrl}/api/deviceTypes`;
 
         try {
             const response = await fetch(url, {

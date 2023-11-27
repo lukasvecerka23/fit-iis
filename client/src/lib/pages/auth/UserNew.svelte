@@ -4,6 +4,7 @@
     import { onMount } from 'svelte';
     import Sidebar from '../../components/SideBar.svelte';
     import TopBar from '../../components/TopBar.svelte';
+    import config from "../../../config.js";
 
     let isLoading = true;
     let isSmallScreen = false;
@@ -27,7 +28,7 @@
 
     async function getRoles(){
         try {
-            const response = await fetch(`https://localhost:7246/api/roles`, {
+            const response = await fetch(`${config.apiUrl}/api/roles`, {
                 method: 'GET',
                 credentials: 'include',
             });

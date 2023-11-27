@@ -14,6 +14,7 @@
     import DeviceTypesCardDeviceList from '../../components/DeviceTypesCardDeviceList.svelte';
     import DevicesCardDeviceList from '../../components/DevicesCardDeviceList.svelte';
     import { Link, navigate } from "svelte-routing";
+    import config from '../../../config.js';
   
     let intervalId;
     let searchTerm = '';
@@ -33,7 +34,7 @@
         }
 
         try {
-            const resp = await fetch(`https://localhost:7246/api/devices/search?${params}`, {
+            const resp = await fetch(`${config.apiUrl}/api/devices/search?${params}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -59,7 +60,7 @@
         }
     
         try {
-            const resp = await fetch(`https://localhost:7246/api/deviceTypes/search?${params}`, {
+            const resp = await fetch(`${config.apiUrl}/api/deviceTypes/search?${params}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

@@ -3,6 +3,7 @@
     import KpiCompDeviceDetail from './KpiCompDeviceDetail.svelte';
     import {onMount, onDestroy} from 'svelte';
     import {selectedParameterId} from '../../store.js';
+    import config from '../../config.js';
 
     export let deviceId;
 
@@ -23,7 +24,13 @@
         if (parameterId) {
             params.append('parameterId', parameterId);
         }
-        const resp = await fetch(`https://localhost:7246/api/kpis/search?${params}`);
+        const resp = await fetch(`${config.apiUrl}/api/kpis/search?${params}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+        });
         if (resp.ok){
             const data = await resp.json();
             kpis = data.kpis;

@@ -14,6 +14,7 @@
     import MeasurementsCard from '../../components/MeasurementsCardDeviceDetail.svelte';
     import Save from '../../../assets/save.svg';
     import RemoveChoice from '../../../assets/status_bad.svg';
+    import config from "../../../config.js";
   
   
     export let id;
@@ -26,7 +27,7 @@
 
     async function fetchDeviceDetail() {
         try {
-            const resp = await fetch(`https://localhost:7246/api/devices/${id}`, {
+            const resp = await fetch(`${config.apiUrl}/api/devices/${id}`, {
                 method: 'GET',
                 credentials: 'include',
             
@@ -53,7 +54,7 @@
     }
 
     async function createMeasurement() {
-        const resp = await fetch(`https://localhost:7246/api/measurements`, {
+        const resp = await fetch(`${config.apiUrl}/api/measurements`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

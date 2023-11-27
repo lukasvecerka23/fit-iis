@@ -4,6 +4,7 @@
     import { navigate } from 'svelte-routing';
     import { user, loadUser } from '../../../store.js';
     import MainLogo from '../../../assets/mainlogo.svg';
+    import config from "../../../config.js";
   
     let username = '';
     let password = '';
@@ -11,7 +12,7 @@
     let surname = '';
   
     async function handleRegister() {
-      const response = await fetch('https://localhost:7246/api/auth/register', {
+      const response = await fetch(`${config.apiUrl}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

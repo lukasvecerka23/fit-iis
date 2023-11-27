@@ -5,6 +5,7 @@
     import UserComp from '../../components/UserComp.svelte';
     import {users} from '../../../store.js';
     import New from '../../../assets/new.svg';
+    import config from '../../../config.js';
     import { Link, navigate } from "svelte-routing";
   
     let searchTerm = '';
@@ -25,7 +26,7 @@
             params.append('q', searchTerm);
         }
 
-        const resp = await fetch(`https://localhost:7246/api/users/search?${params}`);
+        const resp = await fetch(`${config.apiUrl}/api/users/search?${params}`);
         const data = await resp.json();
         users.set(data.users);
         totalPages = data.totalPages; // Update this based on your API response
@@ -33,7 +34,7 @@
 
     async function getRoles(){
         try {
-            const response = await fetch(`https://localhost:7246/api/roles`, {
+            const response = await fetch(`${config.apiUrl}/api/roles`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -51,7 +52,7 @@
     async function updateUserRole(userId, newRoleId){
         const updatedUser = $users.find(u => u.id === userId);
         try {
-            const resp = await fetch(`https://localhost:7246/api/users/${updatedUser.id}`, {
+            const resp = await fetch(`${config.apiUrl}/api/users/${updatedUser.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 

@@ -10,11 +10,12 @@
     import StatusWarning from '../../assets/status_warning.svg';
     import StatusBad from '../../assets/status_bad.svg';
     import {SystemStatus, AssignStatus} from '../../utils.js';
+    import config from "../../config.js";
     export let system;
 
     async function deleteSystem(id) {
         try {
-            const response = await fetch(`https://localhost:7246/api/systems/${id}`, {
+            const response = await fetch(`${config.apiUrl}/api/systems/${id}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });
@@ -31,7 +32,7 @@
     }
 
     async function sendAssignment(systemId){
-      const response = await fetch(`https://localhost:7246/api/assignToSystem`, {
+      const response = await fetch(`${config.apiUrl}/api/assignToSystem`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -45,7 +46,7 @@
     }
 
     async function leaveSystem(systemId){
-      const response = await fetch(`https://localhost:7246/api/systems/${systemId}/leave`, {
+      const response = await fetch(`${config.apiUrl}/api/systems/${systemId}/leave`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
