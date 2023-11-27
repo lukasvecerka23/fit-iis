@@ -1,8 +1,6 @@
 <script>
     import TrashBin from "../../assets/trash.svg";
     import {users} from "../../store.js";
-    import Users from "../../assets/users.svg";
-    import Edit from "../../assets/edit.svg";
     import { onMount } from 'svelte';
     import { createEventDispatcher } from "svelte";
     import config from "../../config.js";
@@ -49,9 +47,6 @@
     </select>
     </td>
     <td class="py-4 px-0">
-      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded">
-        <img src={Edit} alt="Trash Bin" class="w-6 h-6" />
-      </button>
     </td>
     <td class="py-4 px-0">
       <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={async () => await deleteUser(user.id)}>
