@@ -65,6 +65,28 @@ public class UserFacade: FacadeBase<UserEntity, UserListModel, UserDetailModel, 
         return Mapper.Map<UserDetailModel>(createdUser);
     }
     
+    public override async Task<IdModel?> CreateAsync(UserCreateUpdateModel model)
+    { 
+        var uow = UnitOfWorkFactory.Create();
+        
+        var repository = uow.GetRepository<UserEntity>();
+        
+        var users = repository.GetAll();
+        
+        var user = await users.SingleOrDefaultAsync(x => x.Username == model.Username);
+
+        if (user != null)
+        {
+            return null;
+        }
+
+        var newUser = Mapper.Map<UserEntity>(model);
+        newUser.PasswordHash = HashPassword(newUser, model.Password);
+        var createdUser = await repository.InsertAsync(newUser);
+        await uow.CommitAsync();
+        return Mapper.Map<IdModel>(createdUser);
+    }
+    
     public string HashPassword(UserEntity user, string password)
     {
         return _passwordHasher.HashPassword(user, password);

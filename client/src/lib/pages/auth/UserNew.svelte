@@ -5,10 +5,20 @@
     import Sidebar from '../../components/SideBar.svelte';
     import TopBar from '../../components/TopBar.svelte';
     import config from "../../../config.js";
+    import { navigate, useLocation } from 'svelte-routing';
 
+    let userError = false;
     let isLoading = true;
     let isSmallScreen = false;
     let roles = [];
+    const user = {
+        username: null,
+        name: null,
+        surname: null,
+        roleId: null,
+        password: null,
+    }
+    let checkDone = false;
 
     //for parameter button description
     onMount(() => {
@@ -44,6 +54,44 @@
         isLoading = false;
     }
 
+    function checkMandatory()
+    {
+        if (user.name === null || user.roleId === null || user.surname === null || user.password === null || user.password === "" || user.username === "" || user.name === "" || user.surname === "")
+        {
+            checkDone = true;
+            return false;
+        }else
+        {
+            checkDone = true;
+            return true;
+        }
+    }
+
+    async function createNewUser(){
+        if (checkMandatory())
+        {
+            const response = await fetch(`${config.apiUrl}/api/users`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: user.username,
+                    name: user.name,
+                    surname: user.surname,
+                    roleId: user.roleId,
+                    password: user.password,
+                }),
+                credentials: 'include',
+            });
+            if (response.ok){
+                navigate(`/users`, {replace: true});
+            } else if (response.status === 400){
+                userError = true;
+            }
+        }
+    }
+
 
     onMount(getRoles);
 
@@ -66,34 +114,41 @@
                 </div>
                 <div class="mb-4 w-full">
                     <div class="flex-row flex">
-                        <label for="username" class="block mb-1 text-lg font-medium text-gray-700">Uživatelské jméno</label>
+                        <label for="username" class="block mb-1 text-lg font-medium text-gray-700">Uživatelské jméno *</label>
                     </div>
-                    <input type="text" id="username" class="w-1/3 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700"/>
+
+                    <input bind:value={user.username} type="text" id="username" class={`w-1/3 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700 ${checkDone && (user.username === null || user.username === "" || userError) ? 'border-red-500 border-2' : ''}`}/>
+                    {#if userError}
+                        <p class="text-red-500">Uživatelské jméno již existuje</p>
+                    {/if}
+                </div>
+
+                <div class="mb-4 w-1/3">
+                    <label for="pwd" class="block mb-1 text-lg font-medium text-gray-700">Heslo *</label>
+                    <input bind:value={user.password} type="password" id="pwd" class={`w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700 ${checkDone && (user.password === null || user.password === "") ? 'border-red-500 border-2' : ''}`}/>
                 </div>
                 <div class="mb-4 w-1/3">
-                    <label for="pwd" class="block mb-1 text-lg font-medium text-gray-700">Heslo</label>
-                    <input type="password" id="pwd" class="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700"/>
+                    <label for="name" class="block mb-1 text-lg font-medium text-gray-700">Jméno *</label>
+                    <input bind:value={user.name} type="text" id="name" class={`w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700 ${checkDone && (user.name === null || user.name === "") ? 'border-red-500 border-2' : ''}`}/>
                 </div>
                 <div class="mb-4 w-1/3">
-                    <label for="name" class="block mb-1 text-lg font-medium text-gray-700">Jméno</label>
-                    <input type="text" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700"/>
-                </div>
-                <div class="mb-4 w-1/3">
-                    <label for="surname" class="block mb-1 text-lg font-medium text-gray-700">Příjmení</label>
-                    <input type="text" id="surname" class="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700"/>
+                    <label for="surname" class="block mb-1 text-lg font-medium text-gray-700">Příjmení *</label>
+                    <input bind:value={user.surname}  type="text" id="surname" class={`w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700  ${checkDone && (user.surname === null || user.surname === "") ? 'border-red-500 border-2' : ''}`}/>
                 </div>
                 <div class="font-semibold text-base w-1/3 mb-4">
-                    <label for="role" class="block mb-1 text-lg font-medium text-gray-700">Role</label>
-                    <select 
+                    <label for="role" class="block mb-1 text-lg font-medium text-gray-700">Role *</label>
+                    <select
+                        bind:value={user.roleId} 
                         id="role"
-                        class="border border-gray-300 rounded-xl p-2 w-full hover:cursor-pointer" >
+                        class={`border border-gray-300 rounded-xl p-2 w-full hover:cursor-pointer ${checkDone && (user.roleId === null || user.roleId === "") ? 'border-red-500 border-2' : ''}`} >
+                        <option value = {null}>Vyberte roli...</option>
                         {#each roles as role (role.id)}
                             <option value={role.id}>{role.name}</option>
                         {/each}
                     </select>
                 </div>
                 <div class="flex  w-1/3 justify-end">
-                    <button 
+                    <button on:click={async () => await createNewUser()} 
                         class="px-10 py-2 rounded-xl bg-slate-500 hover:bg-slate-700 text-white">
                         Vytvořit
                     </button>

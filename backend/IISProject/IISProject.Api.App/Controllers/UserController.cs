@@ -39,6 +39,10 @@ public class UserController : ControllerBase
     public async Task<ActionResult<IdModel>> CreateUser(UserCreateUpdateModel user)
     {
         var result = await _userFacade.CreateAsync(user);
+        if (result == null)
+        {
+            return BadRequest(new ErrorModel {Error = "User with this username already exists"});
+        }
         return Created($"/api/users/{result.Id}", result);
     }
     

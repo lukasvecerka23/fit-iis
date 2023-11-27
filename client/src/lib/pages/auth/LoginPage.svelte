@@ -8,6 +8,7 @@
 
   let username = '';
   let password = '';
+  let wrongInput = false;
 
   async function handleLogin() {
     const response = await fetch(`${config.apiUrl}/api/auth/login`, {
@@ -28,6 +29,7 @@
             }
         })
     } else {
+      wrongInput = true;
       // Handle login error
     }
   }
@@ -38,6 +40,7 @@
     <img src={MainLogo} alt="Logo" class="w-1/3 mb-4"/>
     <h1 class="text-4xl font-bold mb-4 font-poppins-light">Přihlášení</h1>
   </div>
+  <p class="{wrongInput === true ? '' : 'hidden'} italic text-red-800 ">Špatné uživatelské jméno nebo heslo!</p>
   <form on:submit|preventDefault={handleLogin} class="w-1/3">
     <div class="mb-4">
       <label for="username" class="block mb-2 text-lg font-medium text-gray-700">Uživatelské jméno</label>
