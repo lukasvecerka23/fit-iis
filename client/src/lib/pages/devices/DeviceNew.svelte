@@ -86,9 +86,9 @@
 
     function checkMandatoryFields()
     {
-        if (device.userAlias === null || device.deviceTypeId === null)
+        if (device.userAlias === null || device.userAlias === "" || device.deviceTypeId === null)
         {
-            if(device.userAlias === null)
+            if(device.userAlias === null || device.userAlias === "")
             {
                 userAliasNull=true;
             }
@@ -158,7 +158,7 @@
                 </div>
                 <div class="mb-4 w-full">
                     <div class="flex-row flex">
-                        <label for="username" class="block mb-1 text-lg font-medium text-gray-700">Uživatelský alias</label>
+                        <label for="username" class="block mb-1 text-lg font-medium text-gray-700">Uživatelský alias *</label>
                         <img src="{QuestionMark}" alt="QuestionMark" class="pl-1 h-5 w-5" on:blur={toggleDescription} on:mouseover={toggleDescription} on:focus={toggleDescription} on:mouseout={toggleDescription}>
                         {#if showDescription === true}
                         <div class="pl-2 pr-2  rounded-xl text-sm text-gray-600">
@@ -175,11 +175,12 @@
                     <textarea bind:value={device.description} id="device-description" class="border border-gray-300 rounded-xl p-2 w-full h-40 resize-none" placeholder="Přidejte popis zařízení..."></textarea>
                 </div>
                 <div class="font-semibold text-base w-1/3 mb-4">
-                    <label for="deviceType" class="block mb-1 text-lg font-medium text-gray-700">Typ zařízení</label>
+                    <label for="deviceType" class="block mb-1 text-lg font-medium text-gray-700">Typ zařízení *</label>
                     <select 
                         bind:value={device.deviceTypeId}
                         required
                         class={`border border-gray-300 rounded-xl p-2 w-full hover:cursor-pointer ${deviceTypeIdNull ? 'border-red-500 border-2' : ''}`} >
+                        <option value={null}>Vyberte typ zařízení</option>
                         {#each deviceTypes as deviceType (deviceType.id)}
                             <option value={deviceType.id}>{deviceType.name}</option>
                         {/each}
