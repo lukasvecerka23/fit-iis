@@ -51,7 +51,7 @@
       <div class="flex-row flex justify-end">
         <div class="bg-green-600 text-white font-semibold py-2 px-4 rounded-3xl">
         <button on:click={async () => await acceptAssign()}>
-            Příjmout
+            Přijmout
         </button>
         </div>
       </div>

@@ -16,6 +16,7 @@
     import ParametersCard from '../../components/ParametersCardDeviceDetail.svelte';
     import KpisCard from '../../components/KpisCardDeviceDetail.svelte';
     import QuestionMark from '../../../assets/question_mark.svg';
+    import { user} from "../../../store.js";
 
     let isLoading = true;
     let isSmallScreen = false;
@@ -48,7 +49,7 @@
 
             if (response.ok) {
                 devices = await response.json();
-                devices = devices.filter(device => device.systemId == null);
+                devices = devices.filter(device => device.systemId == null && (device.creatorId === $user.userId || $user.role === "Admin"));
             } else {
                 console.error('Error getting roles:', await response.text());
             }

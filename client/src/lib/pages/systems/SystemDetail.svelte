@@ -14,7 +14,8 @@
     import UsersDark from '../../../assets/users_dark.svg';
     import Assign from '../../../assets/assign.svg';
     import AssignDark from '../../../assets/assign_dark.svg';
-    import Edit from '../../../assets/edit_black.svg'
+    import Edit from '../../../assets/edit_black.svg';
+    import TrashBin from '../../../assets/trash.svg';
     import { user, systemDetailActiveCard } from '../../../store.js';
   
     export let id;
@@ -71,6 +72,29 @@
             isLoading = false;
         }
     }
+
+    async function deleteSystem() {
+        // Add logic for deleting the system here
+        try {
+            const response = await fetch(`https://localhost:7246/api/systems/${id}`, {
+                method: 'DELETE',
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+            } else {
+                console.error('Error deleting device:', await response.text());
+            }
+        } catch (error) {
+            console.error('Error deleting device:', error);
+        }
+        MoveToList();
+    }
+
+    function MoveToList(){
+        navigate(`/`);
+    }
+
 
     let isSmallScreen = false;
 
@@ -148,11 +172,22 @@
         <div class="flex-col flex w-4/5 items-center">
             <div class = "flex-col flex w-full">
                 <div class = "flex-row flex w-full items-center pt-10">
-                    <h2 class="text-3xl font-bold mb-0 pt-10 pb-4 font-poppins-light text-left">{system.name}</h2>
+                    <h2 class="text-3xl font-bold mb-0 font-poppins-light text-left">{system.name}</h2>
                     <div class="">
                         <div class="pl-5">
-                            <button class=" hover:bg-slate-200 mt-6 p-1  text-white font-medium rounded-3xl" on:click={() => MoveToUpdate()}>
+                            <button class=" hover:bg-slate-200 p-1  text-white font-medium rounded-3xl disabled:hidden"
+                                disabled={!($user.role === "Admin" || $user.userId === system.creatorId)}
+                                on:click={() => MoveToUpdate()}>
                                 <img src={Edit} alt="New" class="w-6 h-6 font-poppins-light">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="pl-5">
+                            <button class=" hover:bg-slate-200 p-1   text-white font-medium rounded-3xl disabled:hidden" 
+                                disabled={!($user.role === "Admin" || $user.userId === system.creatorId)}
+                                on:click={() => deleteSystem()}>
+                                <img src={TrashBin} alt="New" class="w-6 h-6 font-poppins-light">
                             </button>
                         </div>
                     </div>

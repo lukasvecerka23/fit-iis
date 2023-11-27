@@ -124,15 +124,15 @@
     </td>
       <td class="py-4 px-0">
         {#if system.assignStatus === AssignStatus.CanAssign}
-        <button class="bg-gray-500 hover:bg-gray-400 text-white font-poppins-light py-2 px-4 rounded" on:click={() => handleAssign(system.assignStatus, system.id)}>
+        <button class="bg-gray-500 hover:bg-gray-400 w-full text-white font-poppins-light py-2 px-4 rounded" on:click={() => handleAssign(system.assignStatus, system.id)}>
             Zažádat správce o přístup
         </button>
         {:else if system.assignStatus === AssignStatus.Processing}
-        <button class="bg-orange-600 text-white font-poppins-light py-2 px-4 rounded cursor-default">
+        <button class="bg-orange-600 text-white font-poppins-light w-full py-2 px-4 rounded cursor-default">
             Čeká se na schválení...
         </button>
         {:else if system.assignStatus === AssignStatus.Leave}
-        <button class="bg-red-600 hover:bg-red-500 text-white font-poppins-light py-2 px-4 rounded" on:click={() => handleAssign(system.assignStatus, system.id)}>
+        <button class="bg-red-600 hover:bg-red-500 text-white w-full font-poppins-light py-2 px-4 rounded" on:click={() => handleAssign(system.assignStatus, system.id)}>
             Odejít ze systému
         </button>
         {/if}
