@@ -209,7 +209,7 @@
                 </div>
                 <div class="mb-4 w-full">
                     <div class="flex-row flex">
-                        <label for="username" class="block mb-1 text-lg font-medium text-gray-700">Jméno</label>
+                        <label for="username" class="block mb-1 text-lg font-medium text-gray-700">Jméno*</label>
                     </div>
                     <input bind:value={deviceType.name} type="text" id="username" class={`w-1/3 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700  ${deviceTypeNull ? 'border-red-500 border-2' : ''}`} placeholder="Přidejte jméno..."/>
                 </div>
@@ -227,7 +227,7 @@
                     </div>
                     {#each parameters as parameter, index}
                     <div class="pb-2 flex-row flex items-center">
-                        <input type="text" id="name" bind:value={parameter.name} class={`w-1/4 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700 ${checkDone && (parameter.name === null || parameter.name === "")  ? 'border-red-500 border-2' : ''}`} placeholder="Název parametru"/>
+                        <input type="text" id="name" bind:value={parameter.name} class={`w-1/4 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700 ${checkDone && (parameter.name === null || parameter.name === "")  ? 'border-red-500 border-2' : ''}`} placeholder="Název parametru*"/>
                         <label for="min" class=" px-3 w-1/4 block mb-1 text-base font-medium text-gray-700 text-right">Min. hodnota:</label>
                         <input type="number" bind:value={parameter.lowerLimit} required class={`border border-gray-300 rounded-xl p-2 w-1/5 hover:cursor-pointer ${parameter.lowerLimit != null && parameter.upperLimit != null && parameter.lowerLimit > parameter.upperLimit ? 'border-red-500 border-2' : ''} ${checkDone && (parameter.lowerLimit === null && parameter.upperLimit === null)  ? 'border-red-500 border-2' : ''}`} />
                         <label for="min" class=" px-3 w-1/4 block mb-1 text-base font-medium text-gray-700 text-right">Max. hodnota:</label>
