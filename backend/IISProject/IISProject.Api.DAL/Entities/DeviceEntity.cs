@@ -1,14 +1,18 @@
-﻿namespace IISProject.Api.DAL.Entities;
+﻿using AutoMapper;
+
+namespace IISProject.Api.DAL.Entities;
 
 public record DeviceEntity : IEntity
 {
-    public required Guid Id { get; set; } // Id nebo Designation?
-    public required string UserAlias { get; set; }
+    public required Guid Id { get; set; }
+    
+    public required string UserId { get; set; }
+    public string? UserAlias { get; set; }
     public string? Description { get; set; }
 
-    public required Guid CreatorId { get; set; }
-    public required Guid SystemId { get; set; }
-    public required Guid DeviceTypeId { get; set; }
+    public Guid? CreatorId { get; set; }
+    public Guid? SystemId { get; set; }
+    public Guid? DeviceTypeId { get; set; }
     
     public UserEntity? Creator { get; init; }
     public SystemEntity? System { get; init; }
@@ -16,4 +20,11 @@ public record DeviceEntity : IEntity
     public ICollection<MeasurementEntity> Measurements { get; set; } = new List<MeasurementEntity>();
     public ICollection<KpiEntity> Kpis { get; set; } = new List<KpiEntity>();
     
+    public class DeviceEntityProfile : Profile
+    {
+        public DeviceEntityProfile()
+        {
+            CreateMap<DeviceEntity, DeviceEntity>();
+        }
+    }
 }
