@@ -7,12 +7,13 @@
     import StatusWarning from '../../assets/status_warning.svg';
     import StatusBad from '../../assets/status_bad.svg';
     import {DeviceStatus} from '../../utils.js';
+    import config from "../../config.js";
     export let device;
 
 
     async function deleteDevice(id) {
         try {
-            const response = await fetch(`https://localhost:7246/api/devices/${id}`, {
+            const response = await fetch(`${config.apiUrl}/api/devices/${id}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });
@@ -43,6 +44,9 @@
       <button class="hover:cursor-pointer hover:underline" on:click={() => MoveToDetail(device.id)}>
         <p>{device.userAlias}</p>
       </button>
+    </td>
+    <td class="py-4 px-6 font-semibold">
+      <p>{device.userId}</p>
     </td>
     <td class="py-4 px-6">{device.deviceTypeName}</td>
     <td class="py-4 px-6">

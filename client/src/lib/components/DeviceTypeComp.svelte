@@ -3,11 +3,12 @@
     import {deviceTypes} from "../../store.js";
     import { Link, navigate } from "svelte-routing";
     import Edit from "../../assets/edit.svg";
+    import config from "../../config.js";
     export let deviceType;
 
     async function deleteDeviceType(id) {
         try {
-            const response = await fetch(`https://localhost:7246/api/deviceTypes/${id}`, {
+            const response = await fetch(`${config.apiUrl}/api/deviceTypes/${id}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });

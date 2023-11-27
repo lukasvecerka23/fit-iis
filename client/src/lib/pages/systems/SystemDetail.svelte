@@ -17,6 +17,7 @@
     import Edit from '../../../assets/edit_black.svg';
     import TrashBin from '../../../assets/trash.svg';
     import { user, systemDetailActiveCard, reloadSystemDetail } from '../../../store.js';
+    import config from '../../../config.js';
   
     export let id;
 
@@ -39,26 +40,20 @@
             params.append('q', searchTerm);
         }
 
-        try {
-            const resp = await fetch(`https://localhost:7246/api/devices/search?${params}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-            });
-            if (resp.ok){
-                const data = await resp.json();
-                devices = data.devices;
-                totalPages = data.totalPages; // Update this based on your API response
-            }
-        } finally {
+        const resp = await fetch(`${config.apiUrl}/api/devices/search?${params}`, {
+            method: 'GET',
+            credentials: 'include',
+        });
+        if (resp.ok){
+            const data = await resp.json();
+            devices = data.devices;
+            totalPages = data.totalPages; // Update this based on your API response
         }
     }
 
     async function fetchSystemDetail() {
         try {
-            const resp = await fetch(`https://localhost:7246/api/systems/${id}`, 
+            const resp = await fetch(`${config.apiUrl}/api/systems/${id}`, 
             {
                 method: 'GET',
                 headers: {
@@ -82,7 +77,7 @@
     async function deleteSystem() {
         // Add logic for deleting the system here
         try {
-            const response = await fetch(`https://localhost:7246/api/systems/${id}`, {
+            const response = await fetch(`${config.apiUrl}/api/systems/${id}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });

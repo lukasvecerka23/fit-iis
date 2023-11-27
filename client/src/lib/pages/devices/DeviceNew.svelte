@@ -7,14 +7,17 @@
     import {user} from "../../../store";
     import { navigate, useLocation } from 'svelte-routing';
     import QuestionMark from '../../../assets/question_mark.svg';
+    import config from "../../../config.js";
 
     let isLoading = true;
     let activeCard = 'parameters';
     let isSmallScreen = false;
     let systems = [];
     let deviceTypes = [];
+    let errorId = false;
     let showDescription = false;
     const device = {
+        userId: null,
         userAlias: null,
         description: null,
         systemId: null,
@@ -42,7 +45,7 @@
 
     async function getSystems(){
         try {
-            const response = await fetch(`https://localhost:7246/api/systems`, {
+            const response = await fetch(`${config.apiUrl}/api/systems`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -61,7 +64,7 @@
 
     async function getDeviceTypes(){
         try {
-            const response = await fetch(`https://localhost:7246/api/deviceTypes`, {
+            const response = await fetch(`${config.apiUrl}/api/deviceTypes`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -87,9 +90,9 @@
 
     function checkMandatoryFields()
     {
-        if (device.userAlias === null || device.userAlias === "" || device.deviceTypeId === null)
+        if (device.userId === null || device.userId === "" || device.deviceTypeId === null)
         {
-            if(device.userAlias === null || device.userAlias === "")
+            if(device.userId === null || device.userId === "")
             {
                 userAliasNull=true;
             }
@@ -107,9 +110,13 @@
         {
             return;
         }
+        if (device.userAlias === null || device.userAlias === "")
+        {
+            device.userAlias = "Bez názvu";
+        }
 
         device.creatorId = $user.userId;
-            const url = 'https://localhost:7246/api/devices';
+            const url = `${config.apiUrl}/api/devices`;
 
         try {
             const response = await fetch(url, {
@@ -122,7 +129,8 @@
             });
 
             if (!response.ok) {
-                throw new Error('Failed to create device');
+                errorId = true;
+                return;
             }
 
             const result = await response.json();
@@ -158,9 +166,21 @@
                 <div class = "flex-row flex w-full items-center pt-10">
                     <h2 class="text-3xl font-bold font-poppins-light text-left pb-10">Nové zařízení</h2>
                 </div>
+
                 <div class="mb-4 w-full">
                     <div class="flex-row flex">
-                        <label for="username" class="block mb-1 text-lg font-medium text-gray-700">Uživatelský alias *</label>
+                        <label for="username" class="block mb-1 text-lg font-medium text-gray-700">Identifikátor *</label>
+                    </div>
+                    <input 
+                    bind:value={device.userId}
+                    required type="text" id="username" class={`w-1/3 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700 ${userAliasNull || errorId ? 'border-red-500 border-2' : ''}`} placeholder="Přidejte uživatelský alias..."/>
+                </div>
+                {#if errorId}
+                    <p class="text-red-500">Zařízení s tímto identifikátorem již existuje.</p>
+                {/if}
+                <div class="mb-4 w-full">
+                    <div class="flex-row flex">
+                        <label for="username" class="block mb-1 text-lg font-medium text-gray-700">Uživatelský alias</label>
                         <img src="{QuestionMark}" alt="QuestionMark" class="pl-1 h-5 w-5" on:blur={toggleDescription} on:mouseover={toggleDescription} on:focus={toggleDescription} on:mouseout={toggleDescription}>
                         {#if showDescription === true}
                         <div class="pl-2 pr-2  rounded-xl text-sm text-gray-600">
@@ -170,7 +190,7 @@
                     </div>
                     <input 
                     bind:value={device.userAlias}
-                    required type="text" id="username" class={`w-1/3 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700 ${userAliasNull ? 'border-red-500 border-2' : ''}`} placeholder="Přidejte uživatelský alias..."/>
+                    required type="text" id="username" class={`w-1/3 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700`} placeholder="Přidejte uživatelský alias..."/>
                 </div>
                 <div class="mb-4 w-1/3">
                     <label for="device-description" class="block mb-1 text-lg font-medium text-gray-700">Popis</label>

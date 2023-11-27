@@ -1,6 +1,7 @@
 <script>
     import AssignComp from './AssignComp.svelte';
     import {onMount} from 'svelte';
+    import config from "../../../config.js";
     export let systemId;
 
     let assigns = [];
@@ -10,7 +11,7 @@
             systemId: systemId
         });
 
-        const resp = await fetch(`https://localhost:7246/api/assignToSystem?${params}`);
+        const resp = await fetch(`${config.apiUrl}/api/assignToSystem?${params}`);
         if (resp.ok){
             const data = await resp.json();
             assigns = data;

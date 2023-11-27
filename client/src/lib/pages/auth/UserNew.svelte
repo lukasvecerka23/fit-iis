@@ -4,7 +4,10 @@
     import { onMount } from 'svelte';
     import Sidebar from '../../components/SideBar.svelte';
     import TopBar from '../../components/TopBar.svelte';
+    import config from "../../../config.js";
+    import { navigate, useLocation } from 'svelte-routing';
 
+    let userError = false;
     let isLoading = true;
     let isSmallScreen = false;
     let roles = [];
@@ -35,7 +38,7 @@
 
     async function getRoles(){
         try {
-            const response = await fetch(`https://localhost:7246/api/roles`, {
+            const response = await fetch(`${config.apiUrl}/api/roles`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -64,6 +67,31 @@
         }
     }
 
+    async function createNewUser(){
+        if (checkMandatory())
+        {
+            const response = await fetch(`${config.apiUrl}/api/users`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: user.username,
+                    name: user.name,
+                    surname: user.surname,
+                    roleId: user.roleId,
+                    password: user.password,
+                }),
+                credentials: 'include',
+            });
+            if (response.ok){
+                navigate(`/users`, {replace: true});
+            } else if (response.status === 400){
+                userError = true;
+            }
+        }
+    }
+
 
     onMount(getRoles);
 
@@ -88,8 +116,13 @@
                     <div class="flex-row flex">
                         <label for="username" class="block mb-1 text-lg font-medium text-gray-700">Uživatelské jméno *</label>
                     </div>
-                    <input bind:value={user.username} type="text" id="username" class={`w-1/3 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700 ${checkDone && (user.username === null || user.username === "") ? 'border-red-500 border-2' : ''}`}/>
+
+                    <input bind:value={user.username} type="text" id="username" class={`w-1/3 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700 ${checkDone && (user.username === null || user.username === "" || userError) ? 'border-red-500 border-2' : ''}`}/>
+                    {#if userError}
+                        <p class="text-red-500">Uživatelské jméno již existuje</p>
+                    {/if}
                 </div>
+
                 <div class="mb-4 w-1/3">
                     <label for="pwd" class="block mb-1 text-lg font-medium text-gray-700">Heslo *</label>
                     <input bind:value={user.password} type="password" id="pwd" class={`w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700 ${checkDone && (user.password === null || user.password === "") ? 'border-red-500 border-2' : ''}`}/>
@@ -115,7 +148,7 @@
                     </select>
                 </div>
                 <div class="flex  w-1/3 justify-end">
-                    <button on:click={() => checkMandatory()} 
+                    <button on:click={async () => await createNewUser()} 
                         class="px-10 py-2 rounded-xl bg-slate-500 hover:bg-slate-700 text-white">
                         Vytvořit
                     </button>

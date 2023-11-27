@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0067)https://www.fit.vutbr.cz/study/courses/IIS/private/projekt/doc.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-2">
+    
+    <title>Projekt IIS</title>
+    <style type="text/css">
+    	table { border-collapse: collapse; }
+    	td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
+    	dt { font-weight: bold; margin-top: 0.5em; }
+    </style>
+<script src="chrome-extension://nngceckbapebfimnlniiiahkandclblb/content/fido2/page-script.js"></script></head>
+<body>
+
+<!-- Zkontrolujte pros?m nastaven? k?dov?n? v hlavi?ce dokumentu 
+     podle pou?it?ho editoru -->
+
+<h1>IoT správa zařízení</h1> <!-- Nahradte n?zvem sv?ho zad?n? -->
+
+<dl>
+	<dt>Autoři</dt>
+	<dd>Lukáš Večerka <!-- Nahra?te skute?n?m jm?nem a e-mailem autora a popisem ?innosti -->
+	    <a href="mailto:xvecer30@stud.fit.vutbr.cz">xvecer30@stud.fit.vutbr.cz</a> -
+		konfigurace databáze, implementace backendu, implementace frontendu
+	</dd>
+	<dd>Veronika Nevařilová <!-- Nahra?te skute?n?m jm?nem a e-mailem autora a popisem ?innosti -->
+	    <a href="mailto:xnevar00@stud.fit.vutbr.cz">xnevar00@stud.fit.vutbr.cz</a> - 
+		design, implementace frontendu, implementace backendu
+	</dd>
+	<dt>URL aplikace</dt>
+	<dd><a href="https://app-iis-2023-web.azurewebsites.net/">https://app-iis-2023-web.azurewebsites.net/</a></dd>
+</dl>
+
+<h2>Uživatelé systému pro testování</h2>
+<table>
+<tbody><tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
+<tr><td>admin</td><td>admin</td><td>Administrátor</td></tr>
+<tr><td>broker</td><td>broker</td><td>Prodavač</td></tr>
+<tr><td>johndoe</td><td>test123</td><td>Uživatel</td></tr>
+<tr><td>ironmanisawesome</td><td>test123</td><td>Uživatel</td></tr>
+</tbody></table>
+
+<h3>Video</h3>
+
+ <!-- Pridat odkaz na video  -->
+
+<h2>Implementace</h2>
+
+<h3>Architektura</h3>
+<h4>Frontend</h4>
+<p>Frontend jsme implementovali pomocí Javascriptového framworku Svelte. Pro komunikaci s backendem používáme asynchroní volání pomocí
+fetch. V aplikaci validujeme vstupy uživatelů a podle uživatelovi role zobrazujeme různé části aplikace. Díky frameworku jsme schopni 
+zajistit reaktivitu aplikace</p>
+<h4>Backend</h4>
+<p>Backend jsme implementovali pomocí frameworku ASP.NET Core. Pro práci s databází používáme Entity Framework Core. Pro autentizaci a autorizaci
+ukládáme na straně klienta JWT token v Cookies.</p>
+<h4>Databáze</h4>
+<p>Databázi jsme použili MS SQL, protože aplikaci nasazujeme na Azure a tato databáze se tam nasazuje nejlépe. Pro lokální vývoj jsme databázi spustili jako 
+kontejner Docker. Inicializace databáze se provádí pomocí Entity Framework Core, ve kterém je vytvořen tzv. DbContext, podle kterého je databáze vytvořena
+a jsou v ní uloženy data pro testování.</p>
+
+<h3>Popis API</h3>
+<h4>Přihlášení, registrace a odhlášení</h4>
+<p>Pro autentizaci jsme implementovali kontroler AuthController, který má několik koncových bodů. Po úspěšném přihlášení je uživateli vygenerován JWT token s potřebnými atributy.
+Tento token je uložen v Cookies na klientovi. Při odhlášení jsou tyto cookies smazány. Při registraci je zahashováno heslo a uloženo do databáze.
+</p>
+<h4>Systémy</h4>
+<p>Pro práci se systémy jsme implementovali kontroler SystemsController. Na hlavní stránce je seznam systému, ve kterém se dá vyhledávat a je stránkován. Pro periodické aktualizace stavu systému je
+použit polling pomocí setInterval. Stav systému vidí jen uživatelé, kteří mají přístup do systému nebo jsou správci tohoto systému. Uživatel, který nemá přístup do tohoto systému o něj může požádat.
+Stavy systému jsou následovné - v pořádku - všechny zařízení jsou ve stavu OK, varování - alespoň jedno zařízení je ve stavu Varování nebo Chyba, chyba - všechny zařízení jsou ve stavu Chyba.
+</p>
+<h4>Zařízení</h4>
+<p>Pro práci se zařízeními jsme implementovali kontroler DevicesController. Přihlášený uživatel má přístup do záložky Zařízení, ve kterém vidí buď zařízení, které vytvořil a nebo zařízení ze systému, který monitoruje. U zařízeních vidí stav, který je periodicky
+aktualizován stejně jak u systémů. Je zde možnost vyhledávání a stránkování. Stavy zařízení jsou - OK - všechny KPI jsou ve stavu OK, varování - alespoň jedno KPI je ve stavu Chyba, chyba - všechny KPI jsou ve stavu Chyba. V detailu zařízení může uživatel
+kontrolovat dané KPI a u jednotlivých KPI vidí jestli jsou ve stavu Chyba nebo ne. Je zde i seznam parametrů daného typu zařízení. U parametrů můžeme vidět stav - OK - všechny KPI jsou OK, varování - alespoň jedno KPI je ve stavu Chyba, chyba - všechny KPI jsou ve stavu Chyba.
+Uživatel, který zařízení vytvořil ho může editovat nebo smazat. V záložce měření najdeme seznam měření seřazený podle data. Při kliknutí na parametr si může uživatel vyfiltrovat KPI a měření podle tohoto parametru.
+<h4>Uživatelé</h4>
+<p>Pro práci s uživateli jsme implementovali kontroler UsersController. Administrátor může editovat, mazat a vytvářet nové uživatele a může měnit role uživatelů.</p>
+<h4>Role</h4>
+<p>Pro práci s rolí jsme implementovali kontroler RolesController. V systémů jsou tyto 3 role - <strong>Administrátor</strong>, <strong>Uživatel</strong>, <strong>Broker</strong></p>
+<h4>Typy zařízení</h4>
+<p>Pro práci s typy zařízení jsme implementovali kontroler DeviceTypesController. Administrátor může vytvářet nové typy zařízení,
+	které jsou sdíleny mezi všemi uživateli systému.
+	</p></p>
+<h4>KPI</h4>
+<p>Pro práci s KPI jsme implementovali kontroler KpiController. Uživatel může zadefinovat funkci KPI (>, <, =, !=, >=, <=) a hodnotu. Pokud poslední měření, nesplní tuto funkci, je KPI vyhodnoceno jako chyba.</p>
+<h4>Měření</h4>
+<p>Pro práci s měřeními jsme implementovali kontroler MeasurementsController. Na stránce měření může buď uživatel v roli broker nebo admin přidávat měření k jednotlivým zařízením. Po přidání nového pěření jsou aktualizovány stavy KPI pro parametr a zařízení tohoto měření.
+Při vytvoření měření je uloženo aktuální datum v UTC formátu.
+</p>
+<h4>Parametry</h4>
+<p>Pro práci s parametry jsme implementovali kontroler ParametersController. Při vytváření nového typu zařízení může administrátor specifikovat jeho parametry. Ty jsou potom aplikovány na všechny zařízení, které jsou tento typ. Parametr může mít horní a spodní limit hodnoty.
+Admin nebo broker může přidat měření jen v tomto limitu.
+</p>
+<h4>Žádosti o přístup do systému</h4>
+<p>Pro práci s žádostmi o přístup do systému jsme implementovali kontroler AssignToSystemController. Uživatelé můžou zažádat o přístup do systému a vidí stav této žádosti na hlavní stránce se systémy. Pokud je přístup zažádán ale nepotvrzel, lze vidět stav v Čeká na vyřízení
+V případě, že je přístup potvrzen, je uživatel přidán do sýstému a žádost je smazána. Pokud je přístup zamítnut, je žádost smazána.
+</p>
+
+<p>Podrobná dokumentace jednotlivých kontrolerů je dostupná ná koncovém bodu /swagger/index.html</p>
+
+<h3>Databáze</h3>
+
+<img src="./er_iss_small.png" alt="ER diagram" style="width: 100%;"/>
+
+<h2>Instalace</h2>
+<ul>
+<li>nasazení na server jsme nakonfigurovali pomocí GitHub actions, dojde k vytvoření aplikace pomocí dotnet publish, která se nahraje na Azure Web App server a spustí se</li>
+<li>SW požadavky - .NET Core 7, ASP.NET Core, Node.js 18.16.0</li>
+<li>konfigurace backendu se dělá pomocí appsettings.json ve složce API, je nutné zadat řetězec pro připojení do databáze, inicializace databáze pak proběhne automaticky pří spuštění aplikace pomocí dbContext v .NET</li>
+<li>pro inicializaci frontendu je nutné spustit příkaz npm install, který nainstaluje potřebné balíčky, do souboru src/config.js je pak nutné vložit URL adresu API</li>
+</ul>
+
+<h2>Zn?m? probl?my</h2>
+<p>Zde popi?te, kter? body zad?n? nejsou implementov?ny a z jak?ho d?vodu. Nap?. &#8222;Z ?asov?ch d?vod? nebyla implementov?na spr?va u?ivatel?.&#8221; Pom??ete t?m zrychlit hodnocen?, kdy? neimplementovan? funkce nebudeme muset dlouze hledat.</p>
+
+
+
+</body></html>

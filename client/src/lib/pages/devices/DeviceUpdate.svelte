@@ -11,6 +11,7 @@
     import {KpiFunction, mapKpiFunctionToString} from "../../../utils"
     import ParameterCompDeviceDetail from '../../components/ParameterCompDeviceDetail.svelte';
     import TrashBin from '../../../assets/trash.svg';
+    import config from '../../../config.js';
 
     export let id;
 
@@ -56,7 +57,7 @@
 
     async function getSystems(){
         try {
-            const response = await fetch(`https://localhost:7246/api/systems`, {
+            const response = await fetch(`${config.apiUrl}/api/systems`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -73,7 +74,7 @@
 
     async function getDeviceTypes(){
         try {
-            const response = await fetch(`https://localhost:7246/api/deviceTypes`, {
+            const response = await fetch(`${config.apiUrl}/api/deviceTypes`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -89,7 +90,7 @@
     }
 
     async function fetchDeviceDetail(){
-            const resp = await fetch(`https://localhost:7246/api/devices/${id}`, {
+            const resp = await fetch(`${config.apiUrl}/api/devices/${id}`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -108,7 +109,7 @@
     }
 
     async function fetchParameters(){
-            const resp = await fetch(`https://localhost:7246/api/deviceTypes/${device.deviceTypeId}`, {
+            const resp = await fetch(`${config.apiUrl}/api/deviceTypes/${device.deviceTypeId}`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -138,7 +139,7 @@
 
   async function deleteAllKpis()
   {
-    const urlBase = 'https://localhost:7246/api/kpis';
+    const urlBase = '${config.apiUrl}/api/kpis';
 
     try {
         const requests = existingKpis.map(async (kpi) => {
@@ -169,7 +170,7 @@
   async function createKpis()
   {
     await deleteAllKpis();
-    const url = 'https://localhost:7246/api/kpis';
+    const url = `${config.apiUrl}/api/kpis`;
 
     try {
         const requests = kpis.map(async (kpi) => {
@@ -204,7 +205,7 @@
 
   async function updateDevice()
   {
-    const url = `https://localhost:7246/api/devices/${id}`;
+    const url = `${config.apiUrl}/api/devices/${id}`;
 
     try {
         const response = await fetch(url, {
@@ -240,7 +241,7 @@
         const params = new URLSearchParams({
             deviceId: id
         });
-        const resp = await fetch(`https://localhost:7246/api/kpis/search?${params}`, {
+        const resp = await fetch(`${config.apiUrl}/api/kpis/search?${params}`, {
             method: 'GET',
             credentials: 'include',
         });

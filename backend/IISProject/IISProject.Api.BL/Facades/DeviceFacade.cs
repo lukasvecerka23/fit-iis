@@ -3,7 +3,9 @@ using AutoMapper;
 using IISProject.Api.BL.Enums;
 using IISProject.Api.BL.Facades.Interfaces;
 using IISProject.Api.BL.Models.Device;
+using IISProject.Api.BL.Models.Responses;
 using IISProject.Api.DAL.Entities;
+using IISProject.Api.DAL.Repositories;
 using IISProject.Api.DAL.UnitOfWork;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
@@ -22,7 +24,7 @@ public class DeviceFacade: FacadeBase<DeviceEntity, DeviceListModel, DeviceDetai
     public async Task<DeviceSearchModel> SearchAsync(SearchDeviceParams parameters)
     {
         var userId = _contextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var isAdmin = _contextAccessor.HttpContext!.User.IsInRole("Admin");
+        var isAdminOrBroker = _contextAccessor.HttpContext!.User.IsInRole("Admin") || _contextAccessor.HttpContext!.User.IsInRole("Broker");
         
         var uow = UnitOfWorkFactory.Create();
         var repository = uow.GetRepository<DeviceEntity>();
@@ -30,7 +32,7 @@ public class DeviceFacade: FacadeBase<DeviceEntity, DeviceListModel, DeviceDetai
         var deviceQuery = repository.GetAll();
         IncludeNavigationPathDetails(ref deviceQuery);
 
-        if (!isAdmin)
+        if (!isAdminOrBroker)
         {
             var userSystems = userInSystemRepository.GetAll()
                 .Where(x => x.UserId == Guid.Parse(userId))
@@ -122,6 +124,30 @@ public class DeviceFacade: FacadeBase<DeviceEntity, DeviceListModel, DeviceDetai
         }
 
         return DeviceStatus.Okay;
+    }
+    
+    public async Task<IdModel?> CreateWithCheckAsync(DeviceCreateUpdateModel model)
+    {
+        DeviceEntity entity = Mapper.Map<DeviceEntity>(model);
+        
+        await using var uow = UnitOfWorkFactory.Create();
+        IRepository<DeviceEntity> repository = uow.GetRepository<DeviceEntity>();
+        
+        var existUserId = repository.GetAll().Any(x => x.UserId == entity.UserId);
+        
+        if (existUserId)
+        {
+            return null;
+        }
+        
+        entity.Id = Guid.NewGuid();
+        DeviceEntity insertedEntity = await repository.InsertAsync(entity);
+        
+        await uow.CommitAsync();
+        
+        var result = Mapper.Map<IdModel>(insertedEntity);
+        
+        return result;
     }
     
     public override List<string> NavigationPathDetails => new()

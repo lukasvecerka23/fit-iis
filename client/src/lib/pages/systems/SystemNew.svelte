@@ -17,6 +17,7 @@
     import KpisCard from '../../components/KpisCardDeviceDetail.svelte';
     import QuestionMark from '../../../assets/question_mark.svg';
     import { user} from "../../../store.js";
+    import config from "../../../config.js";
 
     let isLoading = true;
     let isSmallScreen = false;
@@ -42,7 +43,7 @@
 
     async function getDevices(){
         try {
-            const response = await fetch(`https://localhost:7246/api/devices`, {
+            const response = await fetch(`${config.apiUrl}/api/devices`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -57,6 +58,33 @@
             console.error('Error getting roles:', error);
         }
         isLoading = false;
+    }
+
+    async function createSystem(){
+        const response = await fetch(`${config.apiUrl}/api/systems`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                description: description,
+                creatorId: $user.userId,
+                deviceIds: selectedDevices
+            }),
+            credentials: 'include',
+        });
+        if (response.ok){
+            navigate(`/`, {replace: true});
+        }
+    }
+
+    async function handleCreate(){
+        if (name === ''){
+            nameNull = true;
+            return;
+        }
+        await createSystem();
     }
 
     function toggleDescription() {

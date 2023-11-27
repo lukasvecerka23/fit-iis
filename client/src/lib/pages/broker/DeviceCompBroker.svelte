@@ -18,6 +18,9 @@
         <p>{device.userAlias}</p>
       </button>
     </td>
+    <td class="py-4 px-6 font-semibold">
+      <p>{device.userId}</p>
+    </td>
     <td class="py-4 px-6">{device.deviceTypeName}</td>
     <td class="py-4 px-6">
       <div class="flex-row flex items-center justify-center">

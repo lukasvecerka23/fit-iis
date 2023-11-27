@@ -21,6 +21,7 @@
     import MeasurementsCard from '../../components/MeasurementsCardDeviceDetail.svelte';
     import RemoveChoice from '../../../assets/status_bad.svg';
     import TrashBin from '../../../assets/trash.svg';
+    import config from '../../../config.js';
   
     export let id;
 
@@ -50,7 +51,7 @@
 
     async function getSystems(){
         try {
-            const response = await fetch(`https://localhost:7246/api/systems`, {
+            const response = await fetch(`${config.apiUrl}/api/systems`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -68,7 +69,7 @@
 
     async function updateSystem(){
         device.systemId =selectedSystem;
-        const url = `https://localhost:7246/api/devices/${id}`;
+        const url = `${config.apiUrl}/api/devices/${id}`;
 
         try {
             const response = await fetch(url, {
@@ -102,7 +103,7 @@
     async function deleteDevice() {
         // Add logic for deleting the system here
         try {
-            const response = await fetch(`https://localhost:7246/api/devices/${id}`, {
+            const response = await fetch(`${config.apiUrl}/api/devices/${id}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });
@@ -119,7 +120,7 @@
 
     async function fetchDeviceDetail() {
         try {
-            const resp = await fetch(`https://localhost:7246/api/devices/${id}`, {
+            const resp = await fetch(`${config.apiUrl}/api/devices/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -145,7 +146,7 @@
             deviceTypeId: device.deviceTypeId,
             deviceId: device.id,
         });
-        const resp = await fetch(`https://localhost:7246/api/parameters/status?${params}`, {
+        const resp = await fetch(`${config.apiUrl}/api/parameters/status?${params}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -251,6 +252,7 @@
                         </div>
                     </div>
                 </div>
+                <h1 class=" text-lg font-medium text-gray-800 font-poppins text-left">{device.userId}</h1>
                 {#if device.description !== null}
                     <h1 class=" text-lg font-medium text-gray-700 pb-10 font-poppins-light text-left">{device.description}</h1>
                 {:else}

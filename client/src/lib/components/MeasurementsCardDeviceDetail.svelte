@@ -3,6 +3,7 @@
     import MeasurementsCompDeviceDetail from './MeasurementsCompDeviceDetail.svelte';
     import {onMount} from 'svelte';
     import {selectedParameterId} from '../../store.js';
+    import config from '../../config.js';
     
     export let deviceId;
 
@@ -21,7 +22,13 @@
         if (parameterId) {
             params.append('parameterId', parameterId);
         }
-        const resp = await fetch(`https://localhost:7246/api/measurements/search?${params}`);
+        const resp = await fetch(`${config.apiUrl}/api/measurements/search?${params}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+        });
         if (resp.ok){
             const data = await resp.json();
             measurements = data.measurements;

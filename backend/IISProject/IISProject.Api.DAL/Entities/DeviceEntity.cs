@@ -5,7 +5,9 @@ namespace IISProject.Api.DAL.Entities;
 public record DeviceEntity : IEntity
 {
     public required Guid Id { get; set; }
-    public required string UserAlias { get; set; }
+    
+    public required string UserId { get; set; }
+    public string? UserAlias { get; set; }
     public string? Description { get; set; }
 
     public Guid? CreatorId { get; set; }

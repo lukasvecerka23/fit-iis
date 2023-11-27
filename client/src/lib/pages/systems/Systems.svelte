@@ -5,6 +5,7 @@
     import SystemComp from '../../components/SystemComp.svelte';
     import {systems, user, reloadSystems} from '../../../store.js';
     import New from '../../../assets/new.svg';
+    import config from '../../../config.js';
     import { Link, navigate } from "svelte-routing";
   
     let intervalId;
@@ -22,7 +23,7 @@
             params.append('q', searchTerm);
         }
 
-        const resp = await fetch(`https://localhost:7246/api/systems/search?${params}`, {
+        const resp = await fetch(`${config.apiUrl}/api/systems/search?${params}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

@@ -12,7 +12,8 @@ public static class DeviceSeeds
         DeviceTypeId = DeviceTypeSeeds.DefaultDeviceType.Id,
         CreatorId = UserSeeds.DefaultUser.Id,
         SystemId = SystemSeeds.DefaultSystem.Id,
-        Description = "Default Device Description"
+        Description = "Default Device Description",
+        UserId = "KUCHYN_VCHOD01"
     };
     
     public static readonly DeviceEntity DefaultDevice2 = new()
@@ -22,7 +23,8 @@ public static class DeviceSeeds
         DeviceTypeId = DeviceTypeSeeds.DefaultDeviceType.Id,
         CreatorId = UserSeeds.DefaultUser.Id,
         SystemId = SystemSeeds.DefaultSystem.Id,
-        Description = "Default Device Description 2"
+        Description = "Default Device Description 2",
+        UserId = "KUCH_LEDNICE01"
     };
     
     public static readonly DeviceEntity DefaultDevice3 = new()
@@ -32,7 +34,8 @@ public static class DeviceSeeds
         DeviceTypeId = DeviceTypeSeeds.DefaultDeviceType.Id,
         CreatorId = UserSeeds.DefaultUser.Id,
         SystemId = SystemSeeds.DefaultSystem2.Id,
-        Description = "Default Device Description 3"
+        Description = "Default Device Description 3",
+        UserId = "DVUR01"
     };
 
     public static void Seed(this ModelBuilder modelBuilder)

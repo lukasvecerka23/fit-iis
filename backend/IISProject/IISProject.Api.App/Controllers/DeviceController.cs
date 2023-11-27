@@ -44,7 +44,11 @@ public class DeviceController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<IdModel>> CreateDevice(DeviceCreateUpdateModel device)
     {
-        var result = await _deviceFacade.CreateAsync(device);
+        var result = await _deviceFacade.CreateWithCheckAsync(device);
+        if (result == null)
+        {
+            return NotFound(new ErrorModel {Error = $"The identifier already exists"});
+        }
         return Created($"/api/devices/{result.Id}", result);
     }
     

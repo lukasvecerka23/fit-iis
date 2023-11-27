@@ -2,6 +2,7 @@
     import NavButton from "./NavButton.svelte";
     import { Link , navigate} from "svelte-routing";
     import {user} from "../../store.js";
+    import config from "../../config.js";
     $: activepage = location;
 
     function isActivePage(page) {
@@ -9,7 +10,7 @@
     }
 
     async function handleLogout() {
-        const response = await fetch('https://localhost:7246/api/auth/logout', {
+        const response = await fetch(`${config.apiUrl}/api/auth/logout`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

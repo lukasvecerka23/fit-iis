@@ -5,7 +5,8 @@
     import { navigate, useLocation } from 'svelte-routing';
     import Sidebar from '../../components/SideBar.svelte';
     import TopBar from '../../components/TopBar.svelte';
-    import { user} from "../../../store.js";
+    import { user}  from "../../../store.js";
+    import config from "../../../config.js";
 
 
     export let id;
@@ -34,7 +35,7 @@
 
     async function getDevices(){
         try {
-            const response = await fetch(`https://localhost:7246/api/devices`, {
+            const response = await fetch(`${config.apiUrl}/api/devices`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -61,7 +62,7 @@
 
 
     async function fetchSystemDetail() {
-            const resp = await fetch(`https://localhost:7246/api/systems/${id}`, 
+            const resp = await fetch(`${config.apiUrl}/api/systems/${id}`, 
             {
                 method: 'GET',
                 headers: {
@@ -80,7 +81,7 @@
 
     async function saveSystem(){
         const updatedDeviceIds = Array.from(selectedDevices);
-        const resp = await fetch(`https://localhost:7246/api/systems/${id}`, 
+        const resp = await fetch(`${config.apiUrl}/api/systems/${id}`, 
         {
             method: 'PUT',
             headers: {

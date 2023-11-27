@@ -4,6 +4,7 @@
     import { Link, navigate } from "svelte-routing";
     import Users from "../../assets/users.svg";
     import Edit from "../../assets/edit.svg";
+    import config from "../../config.js";
     export let userDetail;
     export let system;
 
@@ -12,7 +13,7 @@
     }
 
     async function removeUserFromSystem(){
-      const resp = await fetch(`https://localhost:7246/api/userInSystems/${userDetail.id}`, {
+      const resp = await fetch(`${config.apiUrl}/api/userInSystems/${userDetail.id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'

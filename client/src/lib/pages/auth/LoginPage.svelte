@@ -4,13 +4,14 @@
   import { navigate } from 'svelte-routing';
   import { user, loadUser } from '../../../store.js';
   import MainLogo from '../../../assets/mainlogo.svg';
+  import config from '../../../config.js';
 
   let username = '';
   let password = '';
   let wrongInput = false;
 
   async function handleLogin() {
-    const response = await fetch('https://localhost:7246/api/auth/login', {
+    const response = await fetch(`${config.apiUrl}/api/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

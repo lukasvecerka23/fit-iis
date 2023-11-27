@@ -5,6 +5,7 @@
     import Edit from "../../assets/edit.svg";
     import { onMount } from 'svelte';
     import { createEventDispatcher } from "svelte";
+    import config from "../../config.js";
 
     export let roles;
     export let user;
@@ -14,7 +15,7 @@
 
     async function deleteUser(id) {
         try {
-            const response = await fetch(`https://localhost:7246/api/users/${id}`, {
+            const response = await fetch(`${config.apiUrl}/api/users/${id}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });
