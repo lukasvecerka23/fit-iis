@@ -16,8 +16,9 @@ public record UserEntity : IEntity
     
     public ICollection<UserInSystemEntity> UserInSystems { get; set; } = new List<UserInSystemEntity>();
     public ICollection<DeviceEntity> Devices { get; set; } = new List<DeviceEntity>();
-    public ICollection<MeasurementEntity> Measurements { get; set; } = new List<MeasurementEntity>();
     public ICollection<KpiEntity> Kpis { get; set; } = new List<KpiEntity>();
+    
+    public ICollection<AssignToSystemEntity> AssignsToSystems { get; set; } = new List<AssignToSystemEntity>();
     
     public class UserEntityProfile : Profile
     {

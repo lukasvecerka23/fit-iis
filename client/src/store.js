@@ -8,6 +8,7 @@ export const user = writable(null);
 export const selectedDevices = writable({});
 
 export const selectedParameterId = writable(null);
+export const systemDetailActiveCard = writable(null);
 
 export async function loadUser() {
     const response = await fetch('https://localhost:7246/api/auth/user', {
