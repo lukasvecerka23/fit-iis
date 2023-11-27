@@ -26,7 +26,11 @@
 
     async function fetchDeviceDetail() {
         try {
-            const resp = await fetch(`https://localhost:7246/api/devices/${id}`);
+            const resp = await fetch(`https://localhost:7246/api/devices/${id}`, {
+                method: 'GET',
+                credentials: 'include',
+            
+            });
             if (resp.ok){
                 device = await resp.json();
             } else {

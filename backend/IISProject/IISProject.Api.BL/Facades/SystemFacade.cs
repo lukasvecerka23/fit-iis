@@ -3,10 +3,13 @@ using AutoMapper;
 using IISProject.Api.BL.Enums;
 using IISProject.Api.BL.Facades.Interfaces;
 using IISProject.Api.BL.Models.Device;
+using IISProject.Api.BL.Models.Responses;
 using IISProject.Api.BL.Models.System;
 using IISProject.Api.DAL.Entities;
+using IISProject.Api.DAL.Repositories;
 using IISProject.Api.DAL.UnitOfWork;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace IISProject.Api.BL.Facades;
@@ -153,6 +156,87 @@ public class SystemFacade: FacadeBase<SystemEntity, SystemListModel, SystemDetai
         }
 
         return false;
+    }
+    
+    public async Task<IdModel> CreateAsync(SystemCreateUpdateModel model, Guid creatorId)
+    {
+        model.CreatorId = creatorId;
+        SystemEntity entity = Mapper.Map<SystemEntity>(model);
+        
+        await using var uow = UnitOfWorkFactory.Create();
+        IRepository<SystemEntity> repository = uow.GetRepository<SystemEntity>();
+        
+        entity.Id = Guid.NewGuid();
+        SystemEntity insertedEntity = await repository.InsertAsync(entity);
+        
+        // Add creator to system
+        var userInSystemRepository = uow.GetRepository<UserInSystemEntity>();
+        var userInSystem = new UserInSystemEntity
+        {
+            Id = Guid.NewGuid(),
+            SystemId = insertedEntity.Id,
+            UserId = creatorId
+        };
+        await userInSystemRepository.InsertAsync(userInSystem);
+
+        await uow.CommitAsync();
+        
+        // Add devices to system
+        await AddDevicesToSystemAsync(insertedEntity.Id, model.DeviceIds);
+        
+        var result = Mapper.Map<IdModel>(insertedEntity);
+        
+        return result;
+    }
+    
+    public override async Task<IdModel?> UpdateAsync(SystemCreateUpdateModel model, Guid id)
+    {
+        var entity = Mapper.Map<SystemEntity>(model);
+
+        await using var uow = UnitOfWorkFactory.Create();
+        var repository = uow.GetRepository<SystemEntity>();
+
+        if (!await repository.ExistsAsync(id))
+        {
+            return null;
+        }
+        
+        entity.Id = id;
+        var updatedEntity = await repository.UpdateAsync(entity);
+        
+        // Add devices to system
+        var currentSystem = await repository.GetAll().Include(x => x.Devices).FirstOrDefaultAsync(x => x.Id == id);
+        
+        var devicesToAdd = model.DeviceIds.Except(currentSystem.Devices.Select(x => x.Id)).ToList();
+        var devicesToRemove = currentSystem.Devices.Select(x => x.Id).Except(model.DeviceIds).ToList();
+        
+        await AddDevicesToSystemAsync(id, devicesToAdd);
+        await RemoveDevicesFromSystemAsync(devicesToRemove);
+        
+
+        await uow.CommitAsync();
+
+        var result = Mapper.Map<IdModel>(updatedEntity);
+        return result;
+    }
+    
+    
+    private async Task AddDevicesToSystemAsync(Guid systemId, List<Guid> devicesIds)
+    {
+        await using var uow = UnitOfWorkFactory.Create();
+        var repository = uow.GetRepository<DeviceEntity>();
+        var devices = repository.GetAll().Where(x => devicesIds.Contains(x.Id)).ToList();
+        devices.ForEach(x => x.SystemId = systemId);
+        await uow.CommitAsync();
+    }
+    
+    private async Task RemoveDevicesFromSystemAsync(List<Guid> devicesIds)
+    {
+        await using var uow = UnitOfWorkFactory.Create();
+        var repository = uow.GetRepository<DeviceEntity>();
+        var devices = repository.GetAll().Where(x => devicesIds.Contains(x.Id)).ToList();
+        devices.ForEach(x => x.SystemId = null);
+        await uow.CommitAsync();
     }
     
     public override List<string> NavigationPathDetails => new()

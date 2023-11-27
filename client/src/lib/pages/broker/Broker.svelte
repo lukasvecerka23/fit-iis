@@ -24,7 +24,13 @@
         }
 
         try {
-            const resp = await fetch(`https://localhost:7246/api/devices/search?${params}`);
+            const resp = await fetch(`https://localhost:7246/api/devices/search?${params}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+            });
             if (resp.ok){
                 const data = await resp.json();
                 devices.set(data.devices);

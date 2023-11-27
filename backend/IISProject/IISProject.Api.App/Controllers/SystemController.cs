@@ -42,7 +42,12 @@ public class SystemController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<IdModel>> CreateSystem(SystemCreateUpdateModel system)
     {
-        var result = await _systemFacade.CreateAsync(system);
+        var userId = Request.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+        {
+            return NotFound();
+        }
+        var result = await _systemFacade.CreateAsync(system, Guid.Parse(userId));
         return Created($"/api/systems/{result.Id}", result);
     }
     

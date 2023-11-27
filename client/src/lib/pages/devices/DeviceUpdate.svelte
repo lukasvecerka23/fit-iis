@@ -89,7 +89,10 @@
     }
 
     async function fetchDeviceDetail(){
-            const resp = await fetch(`https://localhost:7246/api/devices/${id}`);
+            const resp = await fetch(`https://localhost:7246/api/devices/${id}`, {
+                method: 'GET',
+                credentials: 'include',
+            });
             if (resp.ok){
                 data = await resp.json();
                 device.creatorId = data.creatorId;
@@ -105,7 +108,10 @@
     }
 
     async function fetchParameters(){
-            const resp = await fetch(`https://localhost:7246/api/deviceTypes/${device.deviceTypeId}`);
+            const resp = await fetch(`https://localhost:7246/api/deviceTypes/${device.deviceTypeId}`, {
+                method: 'GET',
+                credentials: 'include',
+            });
             if (resp.ok){
                 const data = await resp.json();
                 parameters = data.parameters;
@@ -142,6 +148,7 @@
             method: 'DELETE',
             headers: {
             'Content-Type': 'application/json',
+            credentials: 'include',
             },
         });
 
@@ -172,6 +179,7 @@
             'Content-Type': 'application/json',
             },
             body: JSON.stringify(kpi),
+            credentials: 'include',
         });
 
         if (!response.ok) {
@@ -205,6 +213,7 @@
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(device),
+        credentials: 'include',
         });
 
         if (!response.ok) {
@@ -231,7 +240,10 @@
         const params = new URLSearchParams({
             deviceId: id
         });
-        const resp = await fetch(`https://localhost:7246/api/kpis/search?${params}`);
+        const resp = await fetch(`https://localhost:7246/api/kpis/search?${params}`, {
+            method: 'GET',
+            credentials: 'include',
+        });
         if (resp.ok){
             const data = await resp.json();
             existingKpis = data.kpis;

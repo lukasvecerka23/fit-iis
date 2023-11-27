@@ -23,6 +23,9 @@
     let devices = [];
     let showDescription = false;
     let selectedDevices = [];
+    let name = '';
+    let description = '';
+    let nameNull = false;
 
     //for parameter button description
     onMount(() => {
@@ -59,6 +62,33 @@
         isLoading = false;
     }
 
+    async function createSystem(){
+        const response = await fetch(`https://localhost:7246/api/systems`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                description: description,
+                creatorId: $user.userId,
+                deviceIds: selectedDevices
+            }),
+            credentials: 'include',
+        });
+        if (response.ok){
+            navigate(`/`, {replace: true});
+        }
+    }
+
+    async function handleCreate(){
+        if (name === ''){
+            nameNull = true;
+            return;
+        }
+        await createSystem();
+    }
+
     function toggleDescription() {
     showDescription = !showDescription;
     }
@@ -69,11 +99,10 @@
     } else {
       selectedDevices = [...selectedDevices, deviceId];
     }
+    console.log(selectedDevices)
   }
 
     onMount(getDevices);
-
-
 
   </script>
 
@@ -97,15 +126,15 @@
                         <div class="flex-row flex">
                             <label for="username" class="block mb-1 text-lg font-medium text-gray-700">Název</label>
                         </div>
-                        <input type="text" id="username" class="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700" placeholder="Zadejte název systému..."/>
+                        <input type="text" id="username" class="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700 {nameNull ? 'border-red-500 border-2' : ''}" placeholder="Zadejte název systému..." bind:value={name}/>
                     </div>
                     <div class="mb-4 w-full">
                         <label for="username" class="block mb-1 text-lg font-medium text-gray-700">Popis</label>
-                        <textarea id="device-description" class="border border-gray-300 rounded-xl p-2 w-full h-40 resize-none" placeholder="Přidejte popis systému..."></textarea>
+                        <textarea id="device-description" class="border border-gray-300 rounded-xl p-2 w-full h-40 resize-none" placeholder="Přidejte popis systému..." bind:value={description}></textarea>
                     </div>
                     <div class="flex  w-full justify-end">
                         <button 
-                            class="px-10 py-2 rounded-xl bg-slate-500 hover:bg-slate-700 text-white">
+                            class="px-10 py-2 rounded-xl bg-slate-500 hover:bg-slate-700 text-white" on:click={async () => await handleCreate()}>
                             Vytvořit
                         </button>
                     </div>

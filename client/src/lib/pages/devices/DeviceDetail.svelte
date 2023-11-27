@@ -77,6 +77,7 @@
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(device),
+            credentials: 'include',
             });
 
             if (!response.ok) {
@@ -203,12 +204,6 @@
 
 </script>
 
-{#if isLoading}
-<div class="flex flex-col w-full h-screen bg-slate-400">
-    <p>Loading...</p>
-</div>
-{:else}
-
 {#if isPopupOpen}
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div class="bg-white p-8 rounded-md text-center">
@@ -231,6 +226,7 @@
   <TopBar />
   <div class="flex flex-1 overflow-hidden">
     <Sidebar/>
+    {#if !isLoading}
     <div class="flex flex-1 bg-primary-white justify-center overflow-auto">
         <div class="flex-col flex w-4/5 items-center">
             <div class = "flex-col flex w-full">
@@ -362,8 +358,9 @@
             </div>
         </div>
     </div>
+    {/if}
   </div>
 </div>
-{/if}
+
 
   

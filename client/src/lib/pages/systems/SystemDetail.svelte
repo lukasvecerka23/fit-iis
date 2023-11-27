@@ -16,7 +16,7 @@
     import AssignDark from '../../../assets/assign_dark.svg';
     import Edit from '../../../assets/edit_black.svg';
     import TrashBin from '../../../assets/trash.svg';
-    import { user, systemDetailActiveCard } from '../../../store.js';
+    import { user, systemDetailActiveCard, reloadSystemDetail } from '../../../store.js';
   
     export let id;
 
@@ -121,6 +121,7 @@
     });
 
     onMount( () => {
+        reloadSystemDetail.set(false);
         systemDetailActiveCard.set('devices');
         fetchSystemDetail();
     });
@@ -156,6 +157,11 @@
         startPolling(); // Start new polling based on activeCard
     }
 
+    $: if ($reloadSystemDetail) {
+        fetchSystemDetail();
+        reloadSystemDetail.set(false);
+    }
+
     onDestroy(() => {
         stopPolling(); // Make sure to clear the interval when the component is destroyed
     });
@@ -165,15 +171,12 @@
     }
   </script>
 
-{#if isLoading}
-<div class="flex flex-col w-full h-screen bg-slate-400">
-    <p>Loading...</p>
-</div>
-{:else}
+
 <div class="flex flex-col w-full h-screen bg-slate-400">
   <TopBar />
   <div class="flex flex-1 overflow-hidden">
     <Sidebar/>
+    {#if !isLoading}
     <div class="flex flex-1 bg-primary-white justify-center overflow-auto">
         <div class="flex-col flex w-4/5 items-center">
             <div class = "flex-col flex w-full">
@@ -182,7 +185,7 @@
                     <div class="">
                         <div class="pl-5">
                             <button class=" hover:bg-slate-200 p-1  text-white font-medium rounded-3xl disabled:hidden"
-                                disabled={!($user.role === "Admin" || $user.userId === system.creatorId)}
+                                disabled={$user && !($user.role === "Admin" || $user.userId === system.creatorId)}
                                 on:click={() => MoveToUpdate()}>
                                 <img src={Edit} alt="New" class="w-6 h-6 font-poppins-light">
                             </button>
@@ -191,7 +194,7 @@
                     <div class="">
                         <div class="pl-5">
                             <button class=" hover:bg-slate-200 p-1   text-white font-medium rounded-3xl disabled:hidden" 
-                                disabled={!($user.role === "Admin" || $user.userId === system.creatorId)}
+                                disabled={$user && !($user.role === "Admin" || $user.userId === system.creatorId)}
                                 on:click={() => deleteSystem()}>
                                 <img src={TrashBin} alt="New" class="w-6 h-6 font-poppins-light">
                             </button>
@@ -258,7 +261,7 @@
                     {#if $systemDetailActiveCard === 'devices'}
                     <DevicesCard devices={devices} />
                     {:else if $systemDetailActiveCard === 'users'}
-                    <UsersCard users={system.users}/>
+                    <UsersCard users={system.users} system={system}/>
                     {:else if $systemDetailActiveCard === 'assigns'}
                     <AssignCard systemId={id}/>
                     {/if}
@@ -268,8 +271,9 @@
             </div>
         </div>
     </div>
+    {/if}
   </div>
 </div>
-{/if}
+
 
   

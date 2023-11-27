@@ -49,7 +49,7 @@
 
             if (response.ok) {
                 systems = await response.json();
-                systems = systems.filter(system => system.creatorId === $user.userId);
+                systems = systems.filter(system => system.creatorId === $user.userId || $user.role === "Admin");
             } else {
                 console.error('Error getting roles:', await response.text());
             }

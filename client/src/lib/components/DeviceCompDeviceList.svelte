@@ -84,7 +84,7 @@
       </button>
     </td>
     <td class="py-4 px-0">
-      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded disabled:hidden" on:click={()=>showModal.set(true)}
+      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded disabled:hidden" on:click={async ()=> await deleteDevice(device.id)}
         disabled={!($user.role === "Admin" || $user.userId === device.creatorId)}>
         <img src={TrashBin} alt="Trash Bin" class="w-6 h-6" />
       </button>

@@ -2,6 +2,8 @@
 <script>
   import UserCompSystemDetail from './UserCompSystemDetail.svelte';
   export let users;
+  export let system;
+  
 </script>
 
 <div class="w-full">
@@ -10,12 +12,11 @@
           <tr>
               <th scope="col" class="py-3 px-6 text-left">Jméno</th>
               <th scope="col" class="py-3 px-6"></th>
-              <th scope="col" class="py-3 px-6"></th>
           </tr>
       </thead>
       <tbody>
           {#each users as user (user.id)}
-          <UserCompSystemDetail user={user}/>
+          <UserCompSystemDetail userDetail={user} system={system}/>
           {/each}
       </tbody>
   </table>

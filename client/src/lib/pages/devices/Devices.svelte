@@ -115,7 +115,6 @@
     }
 
     function stopPolling() {
-        console.log('stopPolling')
         if (intervalId) {
             clearInterval(intervalId);
             intervalId = null;
