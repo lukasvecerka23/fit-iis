@@ -3,7 +3,7 @@
     import Sidebar from '../../components/SideBar.svelte';
     import TopBar from '../../components/TopBar.svelte';
     import SystemComp from '../../components/SystemComp.svelte';
-    import {systems, user} from '../../../store.js';
+    import {systems, user, reloadSystems} from '../../../store.js';
     import New from '../../../assets/new.svg';
     import { Link, navigate } from "svelte-routing";
   
@@ -22,13 +22,20 @@
             params.append('q', searchTerm);
         }
 
-        const resp = await fetch(`https://localhost:7246/api/systems/search?${params}`);
+        const resp = await fetch(`https://localhost:7246/api/systems/search?${params}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+        });
         const data = await resp.json();
         systems.set(data.systems);
         totalPages = data.totalPages; // Update this based on your API response
     }
 
     onMount(() => {
+        reloadSystems.set(false);
         intervalId = setInterval(() => {
             fetchSystems();
         }, 5000);
@@ -37,6 +44,11 @@
     $: if (searchTerm.length >= 3 || searchTerm.length === 0) {
         currentPageIndex = 0;
         fetchSystems();
+    }
+
+    $: if ($reloadSystems) {
+        fetchSystems();
+        reloadSystems.set(false);
     }
 
     function goToPage(page) {

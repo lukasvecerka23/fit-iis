@@ -54,6 +54,7 @@ builder.Services.AddAuthentication(x =>
 });
 
 builder.Services.AddAuthorization();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
