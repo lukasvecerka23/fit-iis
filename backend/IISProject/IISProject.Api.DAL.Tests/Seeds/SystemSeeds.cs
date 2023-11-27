@@ -21,9 +21,9 @@ public static class SystemSeeds
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<SystemEntity>().HasData(
-            DefaultSystem with { Devices = Array.Empty<DeviceEntity>(), UsersInSystem = Array.Empty<UserInSystemEntity>() },
-            SystemToDelete with { Devices = Array.Empty<DeviceEntity>(), UsersInSystem = Array.Empty<UserInSystemEntity>() },
-            SystemToUpdate with { Devices = Array.Empty<DeviceEntity>(), UsersInSystem = Array.Empty<UserInSystemEntity>() }
+            DefaultSystem with { Devices = Array.Empty<DeviceEntity>(), UsersInSystem = Array.Empty<UserInSystemEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>() },
+            SystemToDelete with { Devices = Array.Empty<DeviceEntity>(), UsersInSystem = Array.Empty<UserInSystemEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>() },
+            SystemToUpdate with { Devices = Array.Empty<DeviceEntity>(), UsersInSystem = Array.Empty<UserInSystemEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>() }
         );
     }
 }

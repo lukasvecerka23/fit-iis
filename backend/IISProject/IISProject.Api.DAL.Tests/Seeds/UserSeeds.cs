@@ -30,9 +30,9 @@ public static class UserSeeds
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserEntity>().HasData(
-            DefaultUser with {UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>()},
-            UserToDelete with {UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>()},
-            UserToUpdate with {UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>()}
+            DefaultUser with {UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>(), Kpis = Array.Empty<KpiEntity>()},
+            UserToDelete with {UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>(), Kpis = Array.Empty<KpiEntity>()},
+            UserToUpdate with {UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>(), Kpis = Array.Empty<KpiEntity>()}
         );
     }
 }

@@ -25,7 +25,8 @@ public class SystemMapperProfile: Profile
             .Ignore(dst => dst.Id)
             .Ignore(dst => dst.Creator)
             .Ignore(dst => dst.Devices)
-            .Ignore(dst => dst.UsersInSystem);
+            .Ignore(dst => dst.UsersInSystem)
+            .Ignore(dst => dst.AssignsToSystems);
         
         CreateMap<SystemEntity, IdModel>();
     }

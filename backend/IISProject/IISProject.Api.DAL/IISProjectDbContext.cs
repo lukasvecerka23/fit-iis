@@ -23,6 +23,7 @@ public class IISProjectDbContext : DbContext
     public DbSet<SystemEntity> Systems => Set<SystemEntity>();
     public DbSet<UserEntity> Users => Set<UserEntity>();
     public DbSet<UserInSystemEntity> UserInSystems => Set<UserInSystemEntity>();
+    public DbSet<AssignToSystemEntity> AssignsToSystems => Set<AssignToSystemEntity>();
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -81,6 +82,10 @@ public class IISProjectDbContext : DbContext
                 .WithOne(i => i.System)
                 .OnDelete(DeleteBehavior.SetNull);
             
+            entity.HasMany(i => i.AssignsToSystems)
+                .WithOne(i => i.System)
+                .OnDelete(DeleteBehavior.Cascade);
+            
         });
         
         modelBuilder.Entity<UserEntity>(entity =>
@@ -92,6 +97,10 @@ public class IISProjectDbContext : DbContext
             entity.HasMany(i => i.UserInSystems)
                 .WithOne(i => i.User)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasMany(i => i.AssignsToSystems)
+                .WithOne(i => i.User)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         if (_seedDemoData)
@@ -99,12 +108,12 @@ public class IISProjectDbContext : DbContext
             DeviceSeeds.Seed(modelBuilder);
             DeviceTypeSeeds.Seed(modelBuilder);
             KpiSeeds.Seed(modelBuilder);
-            MeasurementSeeds.Seed(modelBuilder);
             ParameterSeeds.Seed(modelBuilder);
             RoleSeeds.Seed(modelBuilder);
             SystemSeeds.Seed(modelBuilder);
             UserSeeds.Seed(modelBuilder);
             UserInSystemSeeds.Seed(modelBuilder);
+            AssignToSystemSeeds.Seed(modelBuilder);
         }
         
     }

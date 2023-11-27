@@ -24,7 +24,7 @@ public class UserMapperProfile: Profile
             .Ignore(dst => dst.Role)
             .Ignore(dst => dst.Kpis)
             .Ignore(dst => dst.UserInSystems)
-            .Ignore(dst => dst.Measurements)
+            .Ignore(dst => dst.AssignsToSystems)
             .Ignore(dst => dst.PasswordHash);
 
         CreateMap<UserCreateUpdateModel, UserEntity>()
@@ -33,7 +33,7 @@ public class UserMapperProfile: Profile
             .Ignore(dst => dst.Role)
             .Ignore(dst => dst.Kpis)
             .Ignore(dst => dst.UserInSystems)
-            .Ignore(dst => dst.Measurements)
+            .Ignore(dst => dst.AssignsToSystems)
             .Ignore(dst => dst.PasswordHash);
         
         CreateMap<UserEntity, IdModel>();

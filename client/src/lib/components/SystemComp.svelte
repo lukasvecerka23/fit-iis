@@ -68,6 +68,7 @@
       </div>
     </td>
     <td class="py-4 px-6">{system.creatorName}</td>
+    {#if $user}
     <td class="py-4 px-0">
       <div class="flex-row flex justify-center">
         {#if system.status === SystemStatus.Okay}
@@ -85,7 +86,6 @@
       {/if}
       </div>
     </td>
-    {#if $user}
       <td class="py-4 px-0">
         <button class="bg-gray-500 hover:bg-gray-400 text-white font-poppins-light py-2 px-4 rounded">
             Zažádat správce o přístup
@@ -104,6 +104,7 @@
         </button>
       </td>
     {:else}
+      <td class="py-4 px-0">-</td>
       <td class="py-4 px-0"/>
       <td class="py-4 px-0"/>
       <td class="py-4 px-0"/>

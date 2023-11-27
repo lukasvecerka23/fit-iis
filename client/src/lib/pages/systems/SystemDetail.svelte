@@ -7,17 +7,20 @@
     import TopBar from '../../components/TopBar.svelte';
     import UsersCard from '../../components/UsersCardSystemDetail.svelte';
     import DevicesCard from '../../components/DevicesCardSystemDetail.svelte';
+    import AssignCard from './AssignsCard.svelte';
     import Users from '../../../assets/users.svg'
     import Device from '../../../assets/device.svg';
     import DeviceDark from '../../../assets/device_dark.svg';
     import UsersDark from '../../../assets/users_dark.svg';
+    import Assign from '../../../assets/assign.svg';
+    import AssignDark from '../../../assets/assign_dark.svg';
     import Edit from '../../../assets/edit_black.svg'
+    import { user, systemDetailActiveCard } from '../../../store.js';
   
     export let id;
 
     let system = null;
     let isLoading = true;
-    let activeCard = 'devices';
     let intervalId;
     let searchTerm = '';
     let currentPageIndex = 0;
@@ -87,7 +90,10 @@
     };
     });
 
-    onMount(fetchSystemDetail);
+    onMount( () => {
+        systemDetailActiveCard.set('devices');
+        fetchSystemDetail();
+    });
 
     function MoveToUpdate(){
       navigate(`/systems/${id}/update`);
@@ -95,14 +101,16 @@
 
     function goToPage(page) {
         currentPageIndex = page;
-        if (activeCard === 'devices'){
+        if ($systemDetailActiveCard === 'devices'){
             fetchDevices();
         }
     }
 
     function startPolling() {
-        if (activeCard === 'devices') {
+        if ($systemDetailActiveCard === 'devices') {
             intervalId = setInterval(fetchDevices, 5000);
+        } else if ($systemDetailActiveCard === 'users') {
+            fetchSystemDetail();
         }
     }
 
@@ -113,7 +121,7 @@
         }
     }
 
-    $: if (activeCard) {
+    $: if ($systemDetailActiveCard) {
         stopPolling(); // Stop any existing polling
         startPolling(); // Start new polling based on activeCard
     }
@@ -122,6 +130,9 @@
         stopPolling(); // Make sure to clear the interval when the component is destroyed
     });
 
+    function canSeeAssigns(){
+        return $user && ($user.userId === system.creatorId || $user.role === "Admin")
+    }
   </script>
 
 {#if isLoading}
@@ -151,12 +162,12 @@
                     <h1 class=" text-lg font-semibold text-black font-poppins-light text-left">Vytvořil:</h1>
                     <h1 class=" pl-2 text-lg font-medium text-gray-700 font-poppins-light text-left">{system.creatorName}</h1>
                 </div>
-                <div class="grid w-1/4 grid-cols-2 gap-2 rounded-3xl bg-gray-300 p-1">
+                <div class="grid { canSeeAssigns() ? "w-1/2 grid-cols-3" : "w-1/4 grid-cols-2"} gap-2 rounded-3xl bg-gray-300 p-1">
                     <div>
-                        <input type="radio" name="option" id="1" value="1" class=" peer hidden" checked on:click={() => (activeCard = 'devices')}/>
-                        <label for="1" class="{activeCard === 'devices' ? 'bg-gray-800 text-white' : 'bg-gray-300 hover:bg-gray-400'} radio-label block cursor-pointer select-none rounded-3xl p-1 text-center ">
+                        <input type="radio" name="option" id="1" value="1" class=" peer hidden" checked on:click={() => (systemDetailActiveCard.set('devices'))}/>
+                        <label for="1" class="{$systemDetailActiveCard === 'devices' ? 'bg-gray-800 text-white' : 'bg-gray-300 hover:bg-gray-400'} radio-label block cursor-pointer select-none rounded-3xl p-1 text-center ">
                             <div class="flex-row flex justify-center">
-                                {#if activeCard === 'devices'}
+                                {#if $systemDetailActiveCard === 'devices'}
                                 <img src={Device} alt="Device" class="w-6 h-6" />
                                 {:else}
                                 <img src={DeviceDark} alt="DeviceDark" class="w-6 h-6" />
@@ -169,10 +180,10 @@
                     </div>
             
                     <div>
-                        <input type="radio" name="option" id="2" value="2" class="peer hidden" on:click={() => (activeCard = 'users')}/>
-                        <label for="2" class="{activeCard === 'users' ? 'bg-gray-800 text-white' : 'bg-gray-300 hover:bg-gray-400' } radio-label block cursor-pointer select-none rounded-3xl p-1 text-center ">
+                        <input type="radio" name="option" id="2" value="2" class="peer hidden" on:click={() => (systemDetailActiveCard.set('users'))}/>
+                        <label for="2" class="{$systemDetailActiveCard === 'users' ? 'bg-gray-800 text-white' : 'bg-gray-300 hover:bg-gray-400' } radio-label block cursor-pointer select-none rounded-3xl p-1 text-center ">
                             <div class="flex-row flex justify-center">
-                                {#if activeCard === 'users'}
+                                {#if $systemDetailActiveCard === 'users'}
                                 <img src={Users} alt="Users" class="w-6 h-6" />
                                 {:else}
                                 <img src={UsersDark} alt="UsersDark" class="w-6 h-6" />
@@ -183,12 +194,32 @@
                             </div>
                         </label>
                     </div>
+                    
+                    {#if canSeeAssigns()}
+                    <div>
+                        <input type="radio" name="option" id="3" value="3" class=" peer hidden" checked on:click={() => (systemDetailActiveCard.set('assigns'))}/>
+                        <label for="3" class="{$systemDetailActiveCard === 'assigns' ? 'bg-gray-800 text-white' : 'bg-gray-300 hover:bg-gray-400'} radio-label block cursor-pointer select-none rounded-3xl p-1 text-center ">
+                            <div class="flex-row flex justify-center">
+                                {#if $systemDetailActiveCard === 'assigns'}
+                                <img src={Assign} alt="Assigns" class="w-6 h-6" />
+                                {:else}
+                                <img src={AssignDark} alt="Assigns" class="w-6 h-6" />
+                                {/if}
+                                {#if !isSmallScreen}
+                                    <p class="pl-2">Žádosti</p>
+                                {/if}
+                            </div>
+                        </label>
+                    </div>
+                    {/if}
                 </div>
                 <div class="pt-4">
-                    {#if activeCard === 'devices'}
+                    {#if $systemDetailActiveCard === 'devices'}
                     <DevicesCard devices={devices} />
-                    {:else}
-                    <UsersCard users={system.users} />
+                    {:else if $systemDetailActiveCard === 'users'}
+                    <UsersCard users={system.users}/>
+                    {:else if $systemDetailActiveCard === 'assigns'}
+                    <AssignCard systemId={id}/>
                     {/if}
                 </div>
                 
