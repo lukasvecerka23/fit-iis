@@ -4,6 +4,8 @@
     import { onMount } from 'svelte';
     import Sidebar from '../../components/SideBar.svelte';
     import TopBar from '../../components/TopBar.svelte';
+    import { user} from "../../../store.js";
+
 
     export let id;
 
@@ -38,7 +40,7 @@
 
             if (response.ok) {
                 devices = await response.json();
-                devices = devices.filter(device => device.systemId === null || device.systemId === id);
+                devices = devices.filter(device => (device.systemId === null || device.systemId === id) && (device.creatorId === $user.userId || $user.role === "Admin"));
             } else {
                 console.error('Error getting roles:', await response.text());
             }

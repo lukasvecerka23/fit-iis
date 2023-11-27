@@ -67,13 +67,13 @@
     <!-- Pagination Controls -->
     <div class="flex gap-2 items-center my-4">
         <button 
-            class="px-4 py-2 rounded-xl bg-slate-500 hover:bg-slate-600 disabled:hover:bg-slate-500 text-white disabled:text-gray-300" 
+            class="px-4 py-2 rounded-xl bg-slate-500 hover:bg-slate-600 disabled:hover:bg-slate-500 text-white disabled:hidden" 
             on:click={goToPage(currentPageIndex - 1)} 
             disabled={currentPageIndex === 0}>
             Zpět
         </button>
         <button 
-            class="px-4 py-2 rounded-xl bg-slate-500 hover:bg-slate-600 text-white disabled:hover:bg-slate-500 disabled:text-gray-300" 
+            class="px-4 py-2 rounded-xl bg-slate-500 hover:bg-slate-600 text-white disabled:hover:bg-slate-500 disabled:hidden" 
             on:click={goToPage(currentPageIndex + 1)} 
             disabled={!totalPages ? true : currentPageIndex === totalPages - 1}>
             Další

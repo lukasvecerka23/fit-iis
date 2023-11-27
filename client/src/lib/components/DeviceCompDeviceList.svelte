@@ -2,8 +2,6 @@
     import TrashBin from "../../assets/trash.svg";
     import {devices, user} from "../../store.js";
     import { Link, navigate } from "svelte-routing";
-    import Users from "../../assets/users.svg";
-    import Devices from "../../assets/device.svg";
     import Edit from "../../assets/edit.svg";
     import StatusOk from '../../assets/status_ok.svg';
     import StatusWarning from '../../assets/status_warning.svg';
@@ -38,7 +36,8 @@
       navigate(`/devices/${deviceId}/update`);
     }
   </script>
-  
+
+
 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700">
     <td class="py-4 px-6 text-left font-semibold text-base text-gray-300">
       <button class="hover:cursor-pointer hover:underline" on:click={() => MoveToDetail(device.id)}>
@@ -79,13 +78,13 @@
       </div>
     </td>
     <td class="py-4 px-0">
-      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>MoveToUpdate(device.id)}
+      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded disabled:hidden" on:click={()=>MoveToUpdate(device.id)}
         disabled={!($user.role === "Admin" || $user.userId === device.creatorId)}>
         <img src={Edit} alt="Trash Bin" class="w-6 h-6" />
       </button>
     </td>
     <td class="py-4 px-0">
-      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded disabled:hidden" on:click={()=>deleteDevice(device.id)}
+      <button class="bg-transparent text-white font-semibold py-2 px-4 rounded disabled:hidden" on:click={()=>showModal.set(true)}
         disabled={!($user.role === "Admin" || $user.userId === device.creatorId)}>
         <img src={TrashBin} alt="Trash Bin" class="w-6 h-6" />
       </button>
