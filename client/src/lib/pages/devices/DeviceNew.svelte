@@ -49,6 +49,7 @@
 
             if (response.ok) {
                 systems = await response.json();
+                systems = systems.filter(system => system.creatorId === $user.userId);
             } else {
                 console.error('Error getting roles:', await response.text());
             }
@@ -117,6 +118,7 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(device),
+                credentials: 'include',
             });
 
             if (!response.ok) {

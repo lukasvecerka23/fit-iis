@@ -1,29 +1,50 @@
+using System.Security.Claims;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using IISProject.Api.BL.Enums;
 using IISProject.Api.BL.Facades.Interfaces;
 using IISProject.Api.BL.Models.Device;
 using IISProject.Api.DAL.Entities;
 using IISProject.Api.DAL.UnitOfWork;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 
 namespace IISProject.Api.BL.Facades;
 
 public class DeviceFacade: FacadeBase<DeviceEntity, DeviceListModel, DeviceDetailModel, DeviceCreateUpdateModel>, IDeviceFacade
 {
-    public DeviceFacade(IUnitOfWorkFactory unitOfWorkFactory, IMapper mapper) : base(unitOfWorkFactory, mapper)
+    private readonly IHttpContextAccessor _contextAccessor;
+
+    public DeviceFacade(IUnitOfWorkFactory unitOfWorkFactory, IMapper mapper, IHttpContextAccessor contextAccessor) : base(unitOfWorkFactory, mapper)
     {
-        
+        _contextAccessor = contextAccessor;
     }
     
     public async Task<DeviceSearchModel> SearchAsync(SearchDeviceParams parameters)
     {
+        var userId = _contextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var isAdmin = _contextAccessor.HttpContext!.User.IsInRole("Admin");
+        
         var uow = UnitOfWorkFactory.Create();
         var repository = uow.GetRepository<DeviceEntity>();
+        var userInSystemRepository = uow.GetRepository<UserInSystemEntity>();
         var deviceQuery = repository.GetAll();
         IncludeNavigationPathDetails(ref deviceQuery);
 
+        if (!isAdmin)
+        {
+            var userSystems = userInSystemRepository.GetAll()
+                .Where(x => x.UserId == Guid.Parse(userId))
+                .Select(x => x.SystemId).ToList();
+            
+            if (userSystems.Count == 0)
+            {
+                return new DeviceSearchModel();
+            }
+            
+            deviceQuery = deviceQuery.Where(x => x.CreatorId == Guid.Parse(userId) || userSystems.Contains(x.SystemId ?? Guid.Empty));
+        }
+
+        
         IEnumerable<DeviceEntity> filteredDevices;
         if (parameters.SystemId != Guid.Empty)
         {
@@ -39,7 +60,7 @@ public class DeviceFacade: FacadeBase<DeviceEntity, DeviceListModel, DeviceDetai
                 .Where(x => x.UserAlias.ToLower().Contains(parameters.Query.ToLower()) ||
                             x.Description.ToLower().Contains(parameters.Query.ToLower()));
         }
-
+        
         var devices = filteredDevices
             .Skip(parameters.PageIndex * parameters.PageSize)
             .Take(parameters.PageSize).ToList();

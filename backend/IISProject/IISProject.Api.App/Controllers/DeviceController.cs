@@ -1,6 +1,7 @@
 using IISProject.Api.BL.Facades;
 using IISProject.Api.BL.Models.Device;
 using IISProject.Api.BL.Models.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IISProject.Controllers;
@@ -18,12 +19,14 @@ public class DeviceController : ControllerBase
         _deviceFacade = deviceFacade;
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IEnumerable<DeviceListModel>> GetDevices()
     {
         return await _deviceFacade.GetAllAsync();
     }
 
+    [Authorize]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<DeviceDetailModel>> GetDeviceById(Guid id)
     {
@@ -37,6 +40,7 @@ public class DeviceController : ControllerBase
         return result;
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<IdModel>> CreateDevice(DeviceCreateUpdateModel device)
     {
@@ -44,6 +48,7 @@ public class DeviceController : ControllerBase
         return Created($"/api/devices/{result.Id}", result);
     }
     
+    [Authorize]
     [HttpPut("{id:guid}")]
     public async Task<ActionResult<IdModel>> UpdateDevice(Guid id, DeviceCreateUpdateModel device)
     {
@@ -58,6 +63,7 @@ public class DeviceController : ControllerBase
         return result;
     }
 
+    [Authorize]
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult> DeleteDevice(Guid id)
     {
@@ -71,6 +77,7 @@ public class DeviceController : ControllerBase
         return Ok();
     }
 
+    [Authorize]
     [HttpGet("search")]
     public async Task<ActionResult<DeviceSearchModel>> Search([FromQuery] SearchDeviceParams searchParams)
     {

@@ -33,7 +33,13 @@
 
     async function fetchDeviceDetail() {
         try {
-            const resp = await fetch(`https://localhost:7246/api/devices/${id}`);
+            const resp = await fetch(`https://localhost:7246/api/devices/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+            });
             if (resp.ok){
                 device = await resp.json();
                 await fetchParameters();
@@ -53,7 +59,13 @@
             deviceTypeId: device.deviceTypeId,
             deviceId: device.id,
         });
-        const resp = await fetch(`https://localhost:7246/api/parameters/status?${params}`)
+        const resp = await fetch(`https://localhost:7246/api/parameters/status?${params}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+        })
         if (resp.ok){
             parameters = await resp.json();
         }
