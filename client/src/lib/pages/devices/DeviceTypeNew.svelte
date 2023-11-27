@@ -7,6 +7,7 @@
     import { navigate, useLocation } from 'svelte-routing';
     import New from '../../../assets/new.svg';
     import QuestionMark from '../../../assets/question_mark.svg';
+    import TrashBin from '../../../assets/trash.svg';
 
     let isLoading = true;
     let isSmallScreen = false;
@@ -88,6 +89,11 @@
         console.log(parameters);
     }
 
+    function removeParameter(index)
+    {
+        parameters = [...parameters.slice(0, index), ...parameters.slice(index + 1)];
+    }
+
     function checkMandatoryFields()
     {
         if (deviceType.name === null || deviceType.name === "")
@@ -100,6 +106,11 @@
 
         for(const parameter of parameters) {
             if (parameter.name === null || parameter.name === "" || (parameter.lowerLimit === null && parameter.upperLimit === null))
+            {
+                checkDone = true;
+                return false;
+            }
+            if (parameter.lowerLimit !== null && parameter.upperLimit !== null && parameter.lowerLimit > parameter.upperLimit)
             {
                 checkDone = true;
                 return false;
@@ -214,14 +225,22 @@
                         {/if}
                         {/if}
                     </div>
-                    {#each parameters as parameter}
+                    {#each parameters as parameter, index}
                     <div class="pb-2 flex-row flex items-center">
-                        <input type="text" id="name" bind:value={parameter.name} class={`w-1/3 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700 ${checkDone && (parameter.name === null || parameter.name === "")  ? 'border-red-500 border-2' : ''}`} placeholder="Název parametru"/>
-                        <label for="min" class=" px-3 block mb-1 text-base font-medium text-gray-700">Min. hodnota:</label>
-                        <input type="number" bind:value={parameter.lowerLimit} required class={`border border-gray-300 rounded-xl p-2 w-1/5 hover:cursor-pointer ${checkDone && (parameter.lowerLimit === null && parameter.upperLimit === null)  ? 'border-red-500 border-2' : ''}`} />
-                        <label for="min" class=" px-3 block mb-1 text-base font-medium text-gray-700">Max. hodnota:</label>
-                        <input type="number" bind:value={parameter.upperLimit} required class={`border border-gray-300 rounded-xl p-2 w-1/5 hover:cursor-pointer ${checkDone && (parameter.lowerLimit === null && parameter.upperLimit === null)  ? 'border-red-500 border-2' : ''}`} />
+                        <input type="text" id="name" bind:value={parameter.name} class={`w-1/4 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700 ${checkDone && (parameter.name === null || parameter.name === "")  ? 'border-red-500 border-2' : ''}`} placeholder="Název parametru"/>
+                        <label for="min" class=" px-3 w-1/4 block mb-1 text-base font-medium text-gray-700 text-right">Min. hodnota:</label>
+                        <input type="number" bind:value={parameter.lowerLimit} required class={`border border-gray-300 rounded-xl p-2 w-1/5 hover:cursor-pointer ${parameter.lowerLimit != null && parameter.upperLimit != null && parameter.lowerLimit > parameter.upperLimit ? 'border-red-500 border-2' : ''} ${checkDone && (parameter.lowerLimit === null && parameter.upperLimit === null)  ? 'border-red-500 border-2' : ''}`} />
+                        <label for="min" class=" px-3 w-1/4 block mb-1 text-base font-medium text-gray-700 text-right">Max. hodnota:</label>
+                        <input type="number" bind:value={parameter.upperLimit} required class={`border border-gray-300 rounded-xl p-2 w-1/5 hover:cursor-pointer ${parameter.lowerLimit != null && parameter.upperLimit != null && parameter.lowerLimit > parameter.upperLimit ? 'border-red-500 border-2 ' : ''} ${checkDone && (parameter.lowerLimit === null && parameter.upperLimit === null)  ? 'border-red-500 border-2 ' : ''}`}/>
+                        <button
+                        on:click={() => removeParameter(index)}
+                            class="px-2 ml-2 py-2 rounded-3xl bg-slate-500 hover:bg-slate-700 text-white">
+                            <img src={TrashBin} alt="New" class="h-5 w-5"/>
+                        </button>
                     </div>
+                    {#if parameter.lowerLimit > parameter.upperLimit && parameter.lowerLimit !== null && parameter.upperLimit !== null}
+                    <p class="italic text-sm text-right" >Minimální hodnota musí být menší než maximální.</p>
+                    {/if}
                     {/each}
                     <div class="flex  w-1/3 justify-start">
                         <button 
@@ -231,7 +250,10 @@
                         </button>
                     </div>
                 </div>
-                <div class="flex  w-1/3 justify-end">
+                <div class="flex  w-full justify-end">
+                    <div class="w-2/3">
+
+                    </div>
                     <button 
                         on:click={() => createDeviceType()}
                         class="px-10 py-2 rounded-xl bg-slate-500 hover:bg-slate-700 text-white">
