@@ -2,13 +2,13 @@
 
 <script>
     import { onMount, onDestroy } from 'svelte';
-    import { navigate, useLocation } from 'svelte-routing';
+    import { navigate} from 'svelte-routing';
     import Sidebar from '../../components/SideBar.svelte';
     import TopBar from '../../components/TopBar.svelte';
     import Eye from '../../../assets/eye.svg';
     import EyeDark from '../../../assets/eye_dark.svg';
     import UserCompSystemDetail from '../../components/UserCompSystemDetail.svelte';
-    import { systems, selectedParameterId } from '../../../store';
+    import {selectedParameterId, user} from '../../../store';
     import New from '../../../assets/new.svg';
     import Remove from '../../../assets/remove.svg';
     import Edit from '../../../assets/edit_black.svg';
@@ -30,6 +30,91 @@
     let activeCard = 'kpi';
     let isSmallScreen = false;
     let parameters = {};
+    let isPopupOpen = false;
+    let systems = [];
+    let selectedSystem = null;
+
+    function openPopup() {
+        getSystems();
+        isPopupOpen = true;
+    }
+
+    function closePopup() {
+    isPopupOpen = false;
+    }
+
+    function deleteSystem() {
+    // Add logic for deleting the system here
+    closePopup();
+    }
+
+    async function getSystems(){
+        try {
+            const response = await fetch(`https://localhost:7246/api/systems`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                systems = await response.json();
+            } else {
+                console.error('Error getting roles:', await response.text());
+            }
+        } catch (error) {
+            console.error('Error getting roles:', error);
+        }
+        isLoading = false;
+    }
+
+    async function updateSystem(){
+        device.systemId =selectedSystem;
+        const url = `https://localhost:7246/api/devices/${id}`;
+
+        try {
+            const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(device),
+            });
+
+            if (!response.ok) {
+            throw new Error(`Failed to update device with ID ${id}`);
+            }
+
+            const result = await response.json();
+            console.log(`Device with ID ${id} updated successfully:`, result);
+
+        } catch (error) {
+            console.error(`Error updating device with ID ${id}:`, error.message);
+        }
+        closePopup();
+
+    }
+
+    function removeSystem(){
+        selectedSystem = null;
+        updateSystem();
+    }
+
+    async function deleteDevice() {
+        // Add logic for deleting the system here
+        try {
+            const response = await fetch(`https://localhost:7246/api/devices/${id}`, {
+                method: 'DELETE',
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+            } else {
+                console.error('Error deleting device:', await response.text());
+            }
+        } catch (error) {
+            console.error('Error deleting device:', error);
+        }
+        MoveToList();
+    }
 
     async function fetchDeviceDetail() {
         try {
@@ -103,23 +188,6 @@
         selectedParameterId.set(null);
     }
 
-    async function deleteDevice(id) {
-        try {
-            const response = await fetch(`https://localhost:7246/api/devices/${id}`, {
-                method: 'DELETE',
-                credentials: 'include',
-            });
-
-            if (response.ok) {
-            } else {
-                console.error('Error deleting device:', await response.text());
-            }
-        } catch (error) {
-            console.error('Error deleting device:', error);
-        }
-        MoveToList();
-    }
-
 
 </script>
 
@@ -128,6 +196,25 @@
     <p>Loading...</p>
 </div>
 {:else}
+
+{#if isPopupOpen}
+    <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <div class="bg-white p-8 rounded-md text-center">
+        <p class="mb-4">Přidat zařízení do systému</p>
+        <select 
+            bind:value={selectedSystem}
+            class="border border-gray-300 rounded-xl p-2 mb-2 w-full hover:cursor-pointer" >
+            <option value={null}>Žádný systém</option>
+            {#each systems as system (system.id)}
+                <option value={system.id}>{system.name}</option>
+            {/each}
+        </select>
+        <button on:click={closePopup} class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Zrušit</button>
+        <button on:click={updateSystem} class="bg-green-600 text-white px-4 py-2 rounded mr-2">Uložit</button>
+      </div>
+    </div>
+{/if}
+
 <div class="flex flex-col w-full h-screen bg-slate-400">
   <TopBar />
   <div class="flex flex-1 overflow-hidden">
@@ -139,14 +226,18 @@
                     <h2 class="text-3xl font-bold font-poppins-light text-left">{device.userAlias}</h2>
                     <div class="">
                         <div class="pl-5">
-                            <button class=" hover:bg-slate-200 p-1  text-white font-medium rounded-3xl" on:click={() => MoveToUpdate()}>
+                            <button class=" hover:bg-slate-200 p-1  text-white font-medium rounded-3xl disabled:hidden"
+                                disabled={!($user.role === "Admin" || $user.userId === device.creatorId)}
+                                on:click={() => MoveToUpdate()}>
                                 <img src={Edit} alt="New" class="w-6 h-6 font-poppins-light">
                             </button>
                         </div>
                     </div>
                     <div class="">
                         <div class="pl-5">
-                            <button class=" hover:bg-slate-200 p-1   text-white font-medium rounded-3xl" on:click={() => deleteDevice(id)}>
+                            <button class=" hover:bg-slate-200 p-1   text-white font-medium rounded-3xl disabled:hidden" 
+                                disabled={!($user.role === "Admin" || $user.userId === device.creatorId)}
+                                on:click={() => deleteDevice()}>
                                 <img src={TrashBin} alt="New" class="w-6 h-6 font-poppins-light">
                             </button>
                         </div>
@@ -170,19 +261,25 @@
                         {#if device.systemId != undefined}
                         <h1 class=" pl-2 text-lg font-medium text-gray-700 font-poppins-light text-left">{device.systemName}</h1>
                         <div class="pl-2 rounded-xl">
-                            <button class=" bg-slate-300 hover:bg-slate-200  text-white font-medium rounded-3xl">
+                            <button on:click={() => removeSystem()} class=" bg-slate-300 hover:bg-slate-200 disabled:hidden  text-white font-medium rounded-3xl"
+                                disabled={!($user.role === "Admin" || $user.userId === device.creatorId)}
+                                >                                
                                 <img src={Remove} alt="New" class="w-6 h-6 font-poppins-light">
                             </button>
                         </div>
                         {:else}
-                        <div class="rounded-xl pl-2">
-                            <button class="bg-slate-500 hover:bg-slate-300  text-white font-small text-sm py-2 px-2 rounded-2xl">
-                                <div class="flex flex-row">
-                                    <img src={New} alt="New" class="w-4 h-4 pt-1  font-poppins-light">
-                                    <span class="pr-1">Přidat do systému</span>
-                                </div>
-                            </button>
-                        </div>
+                            {#if ($user.role === "Admin" || $user.userId === device.creatorId)}
+                            <div class="rounded-xl pl-2">
+                                <button on:click={() => openPopup()} class="bg-slate-500 hover:bg-slate-300  text-white font-small text-sm py-2 px-2 rounded-2xl">
+                                    <div class="flex flex-row">
+                                        <img src={New} alt="New" class="w-4 h-4 pt-1  font-poppins-light">
+                                        <span class="pr-1">Přidat do systému</span>
+                                    </div>
+                                </button>
+                            </div>
+                            {:else}
+                            <p class="text-gray-700 italic pl-2">Zařízení momentálně není v žádném systému.</p>
+                            {/if}
                         {/if}
                     </div>
                 <div class="flex-row flex w-full items-center pt-6 pb-1">

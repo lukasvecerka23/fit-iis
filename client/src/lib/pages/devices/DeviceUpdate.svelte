@@ -128,7 +128,6 @@
         value
     };
     kpis = [...kpis, newKpi];
-    console.log(kpis);
   }
 
   async function deleteAllKpis()
@@ -176,11 +175,11 @@
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to update KPI: ${kpi.name}`);
+            throw new Error(`Failed to update KPI.`);
         }
 
         const result = await response.json();
-        console.log(`KPI "${kpi.name}" updated successfully:`, result);
+        console.log(`KPI updated successfully:`, result);
         });
 
         await Promise.all(requests); // Wait for all requests to complete
@@ -226,7 +225,6 @@
     function removeKpi(index)
     {
         kpis = [...kpis.slice(0, index), ...kpis.slice(index + 1)];
-        console.log(kpis);
     }
 
     async function fetchExistingKpis() {
@@ -240,7 +238,6 @@
             kpis = existingKpis;
             isLoading = false;
         }
-        console.log(existingKpis);
     }
 
     onMount(() => {
