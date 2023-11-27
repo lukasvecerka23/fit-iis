@@ -1,6 +1,6 @@
 <script>
     import TrashBin from "../../assets/trash.svg";
-    import {systems} from "../../store.js";
+    import {systems, reloadSystems} from "../../store.js";
     import { Link, navigate } from "svelte-routing";
     import Users from "../../assets/users.svg";
     import Devices from "../../assets/device.svg";
@@ -9,7 +9,7 @@
     import StatusOk from '../../assets/status_ok.svg';
     import StatusWarning from '../../assets/status_warning.svg';
     import StatusBad from '../../assets/status_bad.svg';
-    import {SystemStatus} from '../../utils.js';
+    import {SystemStatus, AssignStatus} from '../../utils.js';
     export let system;
 
     async function deleteSystem(id) {
@@ -30,12 +30,46 @@
         }
     }
 
+    async function sendAssignment(systemId){
+      const response = await fetch(`https://localhost:7246/api/assignToSystem`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          systemId: systemId,
+          userId: $user.userId
+        }),
+        credentials: 'include',
+      });
+    }
+
+    async function leaveSystem(systemId){
+      const response = await fetch(`https://localhost:7246/api/systems/${systemId}/leave`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+      });
+    }
+
+    async function handleAssign(assignStatus, systemId){
+      if(assignStatus === AssignStatus.CanAssign){
+        await sendAssignment(systemId);
+      }
+      else if(assignStatus === AssignStatus.Leave){
+        await leaveSystem(systemId);
+      }
+      reloadSystems.set(true);
+    }
+
     function MoveToDetail(systemId){
       navigate(`/systems/${systemId}`);   
     }
 
     function MoveToUpdate(systemId){
-      navigate(`/systems/${systemId}/update`);   
+      navigate(`/systems/${systemId}/update`);
     }
 
 
@@ -83,13 +117,25 @@
         <div class="bg-red-600 text-white font-semibold w-6 h-6 py-1 px-1 rounded-3xl">
           <img src={StatusBad} alt="StatusBad" class="" />
         </div>
+        {:else if system.status === SystemStatus.None}
+          -
       {/if}
       </div>
     </td>
       <td class="py-4 px-0">
-        <button class="bg-gray-500 hover:bg-gray-400 text-white font-poppins-light py-2 px-4 rounded">
+        {#if system.assignStatus === AssignStatus.CanAssign}
+        <button class="bg-gray-500 hover:bg-gray-400 text-white font-poppins-light py-2 px-4 rounded" on:click={() => handleAssign(system.assignStatus, system.id)}>
             Zažádat správce o přístup
         </button>
+        {:else if system.assignStatus === AssignStatus.Processing}
+        <button class="bg-orange-600 text-white font-poppins-light py-2 px-4 rounded cursor-default">
+            Čeká se na schválení...
+        </button>
+        {:else if system.assignStatus === AssignStatus.Leave}
+        <button class="bg-red-600 hover:bg-red-500 text-white font-poppins-light py-2 px-4 rounded" on:click={() => handleAssign(system.assignStatus, system.id)}>
+            Odejít ze systému
+        </button>
+        {/if}
       </td>
       <td class="py-4 px-0">
         <button class="bg-transparent text-white font-semibold py-2 px-4 rounded disabled:hidden" on:click={()=>MoveToUpdate(system.id)}

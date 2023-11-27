@@ -13,4 +13,8 @@ public record SystemListModel : IModel
     public int DevicesCount { get; set; }
     
     public SystemStatus Status { get; set; }
+    
+    public bool CanEdit { get; set; }
+    
+    public AssignStatus AssignStatus { get; set; }
 }

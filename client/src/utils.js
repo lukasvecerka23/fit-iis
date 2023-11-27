@@ -27,6 +27,13 @@ export const SystemStatus = {
     Critical: 3
 }
 
+export const AssignStatus = {
+    None: 0,
+    CanAssign: 1,
+    Processing: 2,
+    Leave: 3
+}
+
 export function mapKpiFunctionToString(value) {
     const mapping = {
         [KpiFunction.Less]: "<",

@@ -29,12 +29,21 @@ public static class SystemSeeds
         CreatorId = UserSeeds.DefaultUser.Id
     };
     
+    public static readonly SystemEntity DefaultSystem4 = new()
+    {
+        Id = Guid.Parse("018BF066-23C6-4B94-916E-95CF3DAA6539"),
+        Name = "Zahrada",
+        Description = "Default system 3",
+        CreatorId = UserSeeds.DefaultUser2.Id
+    };
+    
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<SystemEntity>().HasData(
             DefaultSystem with { Devices = Array.Empty<DeviceEntity>(), UsersInSystem = Array.Empty<UserInSystemEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>() },
             DefaultSystem2 with { Devices = Array.Empty<DeviceEntity>(), UsersInSystem = Array.Empty<UserInSystemEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>() },
-            DefaultSystem3 with { Devices = Array.Empty<DeviceEntity>(), UsersInSystem = Array.Empty<UserInSystemEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>() }
+            DefaultSystem3 with { Devices = Array.Empty<DeviceEntity>(), UsersInSystem = Array.Empty<UserInSystemEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>() },
+            DefaultSystem4 with { Devices = Array.Empty<DeviceEntity>(), UsersInSystem = Array.Empty<UserInSystemEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>() }
         );
     }
 }

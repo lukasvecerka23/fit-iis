@@ -29,12 +29,21 @@ public static class UserInSystemSeeds
 
     };
     
+    public static readonly UserInSystemEntity DefaultUserInSystem4 = new()
+    {
+        Id = Guid.Parse("5DFAABC0-36A5-43F3-BB4F-0D156765EDBB"),
+        UserId = UserSeeds.DefaultUser2.Id,
+        SystemId = SystemSeeds.DefaultSystem4.Id
+
+    };
+    
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserInSystemEntity>().HasData(
             DefaultUserInSystem,
             DefaultUserInSystem2,
-            DefaultUserInSystem3
+            DefaultUserInSystem3,
+            DefaultUserInSystem4
         );
     }
 

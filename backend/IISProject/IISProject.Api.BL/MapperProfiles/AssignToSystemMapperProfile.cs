@@ -1,6 +1,7 @@
 using AutoMapper;
 using IISProject.Api.BL.Extensions;
 using IISProject.Api.BL.Models.AssignToSystem;
+using IISProject.Api.BL.Models.Responses;
 using IISProject.Api.DAL.Entities;
 
 namespace IISProject.Api.BL.MapperProfiles;
@@ -21,5 +22,7 @@ public class AssignToSystemMapperProfile: Profile
             .Ignore(dst => dst.Id)
             .Ignore(dst => dst.User)
             .Ignore(dst => dst.System);
+        
+        CreateMap<AssignToSystemEntity, IdModel>();
     }
 }

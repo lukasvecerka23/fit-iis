@@ -3,6 +3,7 @@ using IISProject.Api.BL.Models.Responses;
 using IISProject.Api.BL.Models.System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace IISProject.Controllers;
 
@@ -76,5 +77,18 @@ public class SystemController : ControllerBase
     {
         var result = await _systemFacade.SearchAsync(searchParams);
         return result;
+    }
+    
+    [HttpPost("{id:guid}/leave")]
+    public async Task<ActionResult> LeaveSystem(Guid id)
+    {
+        var result = await _systemFacade.LeaveSystemAsync(id);
+        
+        if (!result)
+        {
+            return NotFound(new ErrorModel {Error = $"System with id {id} not found"});
+        }
+        
+        return Ok();
     }
 }
