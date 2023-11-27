@@ -33,6 +33,7 @@ public class AuthController: ControllerBase
             return BadRequest();
         }
         
+        user.RoleName = RoleSeeds.UserRole.Name;
         string token = GenerateJwtToken(user);
 
         // Create a session cookie

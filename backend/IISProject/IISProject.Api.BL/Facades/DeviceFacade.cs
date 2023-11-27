@@ -38,11 +38,6 @@ public class DeviceFacade: FacadeBase<DeviceEntity, DeviceListModel, DeviceDetai
                 .Where(x => x.UserId == Guid.Parse(userId))
                 .Select(x => x.SystemId).ToList();
             
-            if (userSystems.Count == 0)
-            {
-                return new DeviceSearchModel();
-            }
-            
             deviceQuery = deviceQuery.Where(x => x.CreatorId == Guid.Parse(userId) || userSystems.Contains(x.SystemId ?? Guid.Empty));
         }
 
