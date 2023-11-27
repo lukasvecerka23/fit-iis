@@ -41,7 +41,7 @@
 
 <h3>Video</h3>
 
- <!-- Pridat odkaz na video  -->
+<a href="https://drive.google.com/file/d/1UiDJzxcKxKL7KstCcYeAlAr1sLBVRrYF/view?usp=sharing">Video</a>
 
 <h2>Implementace</h2>
 
@@ -59,9 +59,9 @@ kontejner Docker. Inicializace databáze se provádí pomocí Entity Framework Core,
 a jsou v ní ulo¾eny data pro testování.</p>
 
 <h3>Popis API</h3>
-<h4>Pøihlá¹ení, registrace a odhlá¹ení</h4>
+<h4>Pøihlá¹ení a odhlá¹ení</h4>
 <p>Pro autentizaci jsme implementovali kontroler AuthController, který má nìkolik koncových bodù. Po úspì¹ném pøihlá¹ení je u¾ivateli vygenerován JWT token s potøebnými atributy.
-Tento token je ulo¾en v Cookies na klientovi. Pøi odhlá¹ení jsou tyto cookies smazány. Pøi registraci je zahashováno heslo a ulo¾eno do databáze.
+Tento token je ulo¾en v Cookies na klientovi. Pøi odhlá¹ení jsou tyto cookies smazány. Nové u¾ivatele vytváøí administrátor.
 </p>
 <h4>Systémy</h4>
 <p>Pro práci se systémy jsme implementovali kontroler SystemsController. Na hlavní stránce je seznam systému, ve kterém se dá vyhledávat a je stránkován. Pro periodické aktualizace stavu systému je
@@ -110,8 +110,8 @@ V pøípadì, ¾e je pøístup potvrzen, je u¾ivatel pøidán do sýstému a ¾ádost je sma
 <li>pro inicializaci frontendu je nutné spustit pøíkaz npm install, který nainstaluje potøebné balíèky, do souboru src/config.js je pak nutné vlo¾it URL adresu API</li>
 </ul>
 
-<h2>Zn?m? probl?my</h2>
-<p>Zde popi?te, kter? body zad?n? nejsou implementov?ny a z jak?ho d?vodu. Nap?. &#8222;Z ?asov?ch d?vod? nebyla implementov?na spr?va u?ivatel?.&#8221; Pom??ete t?m zrychlit hodnocen?, kdy? neimplementovan? funkce nebudeme muset dlouze hledat.</p>
+<h2>Známé problémy</h2>
+<p>Pøi editaci zaøízení po zmìnì typu zaøízení by se správnì mìly vymazat v¹echny KPI, proto¾e zaøízení bude mít nové parametry. Z èasových dùvodù jsme toto nestihli o¹etøit.</p>
 
 
 

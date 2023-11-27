@@ -35,7 +35,7 @@
             </div>
         {:else}
             <Link to="/login" class="hover:bg-slate-400 rounded-xl p-1">Přihlásit se</Link>
-            <Link to="/signup" class="hover:bg-slate-400 rounded-xl p-1">Registrace</Link>
+            <!-- <Link to="/signup" class="hover:bg-slate-400 rounded-xl p-1">Registrace</Link> -->
         {/if}
 
     </div>

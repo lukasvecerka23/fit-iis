@@ -147,7 +147,7 @@
                         </div>
                         <div class="font-semibold text-base mr-4 w-1/4">
                             <label for="value" class="block mb-1 text-lg font-medium text-gray-700">Hodnota</label>
-                            <input type="number" min={selectedParameter.lowerLimit} max={selectedParameter.upperLimit} bind:value={measurementValue} required class="border border-gray-300 rounded-xl p-2 w-full hover:cursor-pointer" />
+                            <input type="number" min={selectedParameter.lowerLimit || Number.MIN_SAFE_INTEGER } max={selectedParameter.upperLimit || Number.MAX_SAFE_INTEGER} bind:value={measurementValue} required class="border border-gray-300 rounded-xl p-2 w-full hover:cursor-pointer" />
                         </div>
                         <div class="flex items-end mr-4">
                             <button type="submit" class="w-1/2 h-1/2 rounded-full bg-slate-500 hover:bg-slate-600 text-white font-bold p-5 focus:outline-none focus:shadow-outline flex justify-center items-center">

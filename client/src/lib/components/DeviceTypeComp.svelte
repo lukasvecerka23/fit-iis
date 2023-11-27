@@ -3,6 +3,7 @@
     import {deviceTypes} from "../../store.js";
     import { Link, navigate } from "svelte-routing";
     import Edit from "../../assets/edit.svg";
+    import { user } from "../../store.js";
     import config from "../../config.js";
     export let deviceType;
 
@@ -36,8 +37,10 @@
     <td class="py-4 px-0">
     </td>
     <td class="py-4 px-0">
+        {#if $user && $user.role === "Admin"}
       <button class="bg-transparent text-white font-semibold py-2 px-4 rounded" on:click={()=>deleteDeviceType(deviceType.id)}>
         <img src={TrashBin} alt="Trash Bin" class="w-6 h-6" />
       </button>
+        {/if}
     </td>
 </tr>

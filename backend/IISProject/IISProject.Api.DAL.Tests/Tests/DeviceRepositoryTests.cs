@@ -37,7 +37,8 @@ public class DeviceRepositoryTests: DALTestsBase
             DeviceTypeId = DeviceTypeSeeds.DefaultDeviceType.Id,
             CreatorId = UserSeeds.DefaultUser.Id,
             SystemId = SystemSeeds.DefaultSystem.Id,
-            Description = "New Device Description"
+            Description = "New Device Description",
+            UserId = "NEW01"
         };
         
         // act

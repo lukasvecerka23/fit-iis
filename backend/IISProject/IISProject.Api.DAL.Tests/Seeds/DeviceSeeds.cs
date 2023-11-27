@@ -12,14 +12,15 @@ public static class DeviceSeeds
         DeviceTypeId = DeviceTypeSeeds.DefaultDeviceType.Id,
         CreatorId = UserSeeds.DefaultUser.Id,
         SystemId = SystemSeeds.DefaultSystem.Id,
-        Description = "Default Device Description"
+        Description = "Default Device Description",
+        UserId = "DEFAULT01"
     };
 
     public static readonly DeviceEntity DeviceToDelete =
-        DefaultDevice with { Id = Guid.Parse("F5D37582-5A58-4710-9BCB-7D19DF0606D5") };
+        DefaultDevice with { Id = Guid.Parse("F5D37582-5A58-4710-9BCB-7D19DF0606D5") , UserId = "DEFAULT02"};
     
     public static readonly DeviceEntity DeviceToUpdate =
-        DefaultDevice with { Id = Guid.Parse("FF1E7470-E672-410F-97D8-462168BD6866") };
+        DefaultDevice with { Id = Guid.Parse("FF1E7470-E672-410F-97D8-462168BD6866") , UserId = "DEFAULT03"};
 
     public static void Seed(this ModelBuilder modelBuilder)
     {

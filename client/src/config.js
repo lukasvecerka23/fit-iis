@@ -4,7 +4,7 @@ const development = {
 };
 
 const production = {
-    apiUrl: 'https://myproductionapi.com',
+    apiUrl: 'https://app-iis-2023-api.azurewebsites.net',
     // other production settings
 };
 
