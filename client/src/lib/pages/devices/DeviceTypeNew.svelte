@@ -4,7 +4,9 @@
     import { onMount } from 'svelte';
     import Sidebar from '../../components/SideBar.svelte';
     import TopBar from '../../components/TopBar.svelte';
+    import { navigate, useLocation } from 'svelte-routing';
     import New from '../../../assets/new.svg';
+    import QuestionMark from '../../../assets/question_mark.svg';
 
     let isLoading = true;
     let isSmallScreen = false;
@@ -12,6 +14,13 @@
     let deviceTypes = [];
     let parameters = [];
     let measurementValue = null;
+    let deviceTypeId = null;
+    let showDescription = false;
+    const deviceType = {
+        name: null
+    };
+    let deviceTypeNull = false;
+    let checkDone = false;
 
     //for parameter button description
     onMount(() => {
@@ -65,8 +74,104 @@
         isLoading = false;
     }
 
+    function toggleDescription() {
+    showDescription = !showDescription;
+    }
+
     function addParameter() {
-        parameters = [...parameters, 'Ahoj'];
+        const parameter = {
+            name: null,
+            lowerLimit: null,
+            upperLimit: null,
+        }
+        parameters = [...parameters, parameter];
+        console.log(parameters);
+    }
+
+    function checkMandatoryFields()
+    {
+        if (deviceType.name === null || deviceType.name === "")
+        {
+            deviceTypeNull = true;
+            return false;
+        } else {
+            deviceTypeNull = false;
+        }
+
+        for(const parameter of parameters) {
+            if (parameter.name === null || parameter.name === "" || (parameter.lowerLimit === null && parameter.upperLimit === null))
+            {
+                checkDone = true;
+                return false;
+            }
+        }
+    return true;
+    }
+
+    async function CreateParameters()
+    {
+        const url = 'https://localhost:7246/api/parameters';
+
+        for (const parameter of parameters) {
+            // Add the current deviceTypeId to the parameter
+            parameter.deviceTypeId = deviceTypeId;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(parameter),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to create parameter');
+                }
+
+                const result = await response.json();
+                console.log('Parameter created successfully:', result);
+
+            } catch (error) {
+                console.error('Error creating parameter:', error.message);
+            }
+        }
+    }
+
+    function MoveToList(){
+      navigate(`/devices/`);
+    }
+
+    async function createDeviceType(){
+        if (checkMandatoryFields() === false)
+        {
+            return;
+        }
+
+        const url = 'https://localhost:7246/api/deviceTypes';
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(deviceType),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create device type');
+            }
+
+            const result = await response.json();
+            deviceTypeId = result.id;
+            console.log('Device type created successfully:', result);
+
+        } catch (error) {
+            console.error('Error creating device:', error.message);
+        }
+        CreateParameters();
+        MoveToList();
     }
 
     onMount(getSystems);
@@ -95,17 +200,27 @@
                     <div class="flex-row flex">
                         <label for="username" class="block mb-1 text-lg font-medium text-gray-700">Jméno</label>
                     </div>
-                    <input type="text" id="username" class="w-1/3 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700" placeholder="Přidejte jméno..."/>
+                    <input bind:value={deviceType.name} type="text" id="username" class={`w-1/3 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700  ${deviceTypeNull ? 'border-red-500 border-2' : ''}`} placeholder="Přidejte jméno..."/>
                 </div>
                 <div class="mb-4 w-full">
-                    <label for="parameters" class="block w-1/3 mb-1 text-lg font-medium text-gray-700">Parametry</label>
+                    <div class = "flex-row flex items-start">
+                        <label for="parameters" class="block mb-1 text-lg font-medium text-gray-700">Parametry</label>
+                        {#if parameters.length !== 0}
+                        <img src="{QuestionMark}" alt="QuestionMark" class="pl-1 h-5 w-5" on:blur={toggleDescription} on:mouseover={toggleDescription} on:focus={toggleDescription} on:mouseout={toggleDescription}>
+                        {#if showDescription === true}
+                        <div class="pl-2 pr-2  rounded-xl text-sm text-gray-600">
+                            <p>Při vytváření parametru musí být zadána alespoň jedna z hodnot.</p>
+                        </div>
+                        {/if}
+                        {/if}
+                    </div>
                     {#each parameters as parameter}
                     <div class="pb-2 flex-row flex items-center">
-                        <input type="text" id="name" class="w-1/3 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700" placeholder="Název parametru"/>
+                        <input type="text" id="name" bind:value={parameter.name} class={`w-1/3 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700 ${checkDone && (parameter.name === null || parameter.name === "")  ? 'border-red-500 border-2' : ''}`} placeholder="Název parametru"/>
                         <label for="min" class=" px-3 block mb-1 text-base font-medium text-gray-700">Min. hodnota:</label>
-                        <input type="number" bind:value={measurementValue} required class="border border-gray-300 rounded-xl p-2 w-1/5 hover:cursor-pointer" />
+                        <input type="number" bind:value={parameter.lowerLimit} required class={`border border-gray-300 rounded-xl p-2 w-1/5 hover:cursor-pointer ${checkDone && (parameter.lowerLimit === null && parameter.upperLimit === null)  ? 'border-red-500 border-2' : ''}`} />
                         <label for="min" class=" px-3 block mb-1 text-base font-medium text-gray-700">Max. hodnota:</label>
-                        <input type="number" bind:value={measurementValue} required class="border border-gray-300 rounded-xl p-2 w-1/5 hover:cursor-pointer" />
+                        <input type="number" bind:value={parameter.upperLimit} required class={`border border-gray-300 rounded-xl p-2 w-1/5 hover:cursor-pointer ${checkDone && (parameter.lowerLimit === null && parameter.upperLimit === null)  ? 'border-red-500 border-2' : ''}`} />
                     </div>
                     {/each}
                     <div class="flex  w-1/3 justify-start">
@@ -118,6 +233,7 @@
                 </div>
                 <div class="flex  w-1/3 justify-end">
                     <button 
+                        on:click={() => createDeviceType()}
                         class="px-10 py-2 rounded-xl bg-slate-500 hover:bg-slate-700 text-white">
                         Vytvořit
                     </button>

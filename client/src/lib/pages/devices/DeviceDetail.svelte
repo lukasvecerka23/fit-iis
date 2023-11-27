@@ -123,7 +123,11 @@
                         </div>
                     </div>
                 </div>
-                <h1 class=" text-lg font-medium text-gray-700 pb-10 font-poppins-light text-left">{device.description}</h1>
+                {#if device.description !== null}
+                    <h1 class=" text-lg font-medium text-gray-700 pb-10 font-poppins-light text-left">{device.description}</h1>
+                {:else}
+                    <h1 class=" text-lg font-medium italic text-gray-700 pb-10 font-poppins-light text-left">Popis není k dispozici.</h1>
+                {/if}
                 <div class="flex-row flex pb-2">
                     <h1 class=" text-lg text-black font-poppins-light text-left font-semibold">Vytvořil:</h1>
                     <h1 class=" pl-2 text-lg font-medium text-gray-700 font-poppins-light text-left">{device.creatorName}</h1>

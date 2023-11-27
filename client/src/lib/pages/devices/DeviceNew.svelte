@@ -4,6 +4,8 @@
     import { onMount } from 'svelte';
     import Sidebar from '../../components/SideBar.svelte';
     import TopBar from '../../components/TopBar.svelte';
+    import {user} from "../../../store";
+    import { navigate, useLocation } from 'svelte-routing';
     import QuestionMark from '../../../assets/question_mark.svg';
 
     let isLoading = true;
@@ -12,6 +14,15 @@
     let systems = [];
     let deviceTypes = [];
     let showDescription = false;
+    const device = {
+        userAlias: null,
+        description: null,
+        systemId: null,
+        deviceTypeId: null,
+        creatorId: null
+    }
+    let userAliasNull = false;
+    let deviceTypeIdNull = false;
 
     //for parameter button description
     onMount(() => {
@@ -69,6 +80,60 @@
     showDescription = !showDescription;
     }
 
+    function MoveToList(){
+      navigate(`/devices/`);
+    }
+
+    function checkMandatoryFields()
+    {
+        if (device.userAlias === null || device.userAlias === "" || device.deviceTypeId === null)
+        {
+            if(device.userAlias === null || device.userAlias === "")
+            {
+                userAliasNull=true;
+            }
+            if (device.deviceTypeId === null)
+            {
+                deviceTypeIdNull = true;
+            }
+            return false;
+        }
+        return true;
+    }
+
+    async function createDevice(){
+        if (checkMandatoryFields() === false)
+        {
+            return;
+        }
+
+        device.creatorId = $user.userId;
+            const url = 'https://localhost:7246/api/devices';
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(device),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create device');
+            }
+
+            const result = await response.json();
+            console.log('Device created successfully:', result);
+
+            // You can handle the response or perform additional actions here
+        } catch (error) {
+            console.error('Error creating device:', error.message);
+            // You can handle errors or show an error message to the user
+        }
+        MoveToList();
+    }
+
     onMount(getSystems);
     onMount(getDeviceTypes);
 
@@ -93,24 +158,29 @@
                 </div>
                 <div class="mb-4 w-full">
                     <div class="flex-row flex">
-                        <label for="username" class="block mb-1 text-lg font-medium text-gray-700">Uživatelský alias</label>
-                        <img src="{QuestionMark}" alt="QuestionMark" class=" pl-1 h-5 w-5" on:blur={toggleDescription} on:mouseover={toggleDescription} on:focus={toggleDescription} on:mouseout={toggleDescription}>
+                        <label for="username" class="block mb-1 text-lg font-medium text-gray-700">Uživatelský alias *</label>
+                        <img src="{QuestionMark}" alt="QuestionMark" class="pl-1 h-5 w-5" on:blur={toggleDescription} on:mouseover={toggleDescription} on:focus={toggleDescription} on:mouseout={toggleDescription}>
                         {#if showDescription === true}
                         <div class="pl-2 pr-2  rounded-xl text-sm text-gray-600">
                             <p>Pod tímto názvem se bude zařízení zobrazovat v seznamu zařízení.</p>
                         </div>
                         {/if}
                     </div>
-                    <input type="text" id="username" class="w-1/3 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700" placeholder="Přidejte uživatelský alias..."/>
+                    <input 
+                    bind:value={device.userAlias}
+                    required type="text" id="username" class={`w-1/3 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-700 ${userAliasNull ? 'border-red-500 border-2' : ''}`} placeholder="Přidejte uživatelský alias..."/>
                 </div>
                 <div class="mb-4 w-1/3">
                     <label for="device-description" class="block mb-1 text-lg font-medium text-gray-700">Popis</label>
-                    <textarea id="device-description" class="border border-gray-300 rounded-xl p-2 w-full h-40 resize-none" placeholder="Přidejte popis zařízení..."></textarea>
+                    <textarea bind:value={device.description} id="device-description" class="border border-gray-300 rounded-xl p-2 w-full h-40 resize-none" placeholder="Přidejte popis zařízení..."></textarea>
                 </div>
                 <div class="font-semibold text-base w-1/3 mb-4">
-                    <label for="deviceType" class="block mb-1 text-lg font-medium text-gray-700">Typ zařízení</label>
+                    <label for="deviceType" class="block mb-1 text-lg font-medium text-gray-700">Typ zařízení *</label>
                     <select 
-                        class="border border-gray-300 rounded-xl p-2 w-full hover:cursor-pointer" >
+                        bind:value={device.deviceTypeId}
+                        required
+                        class={`border border-gray-300 rounded-xl p-2 w-full hover:cursor-pointer ${deviceTypeIdNull ? 'border-red-500 border-2' : ''}`} >
+                        <option value={null}>Vyberte typ zařízení</option>
                         {#each deviceTypes as deviceType (deviceType.id)}
                             <option value={deviceType.id}>{deviceType.name}</option>
                         {/each}
@@ -119,8 +189,9 @@
                 <div class="font-semibold text-base w-1/3 mb-4">
                     <label for="system" class="block mb-1 text-lg font-medium text-gray-700">Systém</label>
                     <select 
+                        bind:value={device.systemId}
                         class="border border-gray-300 rounded-xl p-2 w-full hover:cursor-pointer" >
-                        <option>Žádný systém</option>
+                        <option value={null}>Žádný systém</option>
                         {#each systems as system (system.id)}
                             <option value={system.id}>{system.name}</option>
                         {/each}
@@ -128,6 +199,8 @@
                 </div>
                 <div class="flex  w-1/3 justify-end">
                     <button 
+                        on:click={() => createDevice()}
+                        type="submit"
                         class="px-10 py-2 rounded-xl bg-slate-500 hover:bg-slate-700 text-white">
                         Vytvořit
                     </button>
