@@ -41,7 +41,7 @@ public class AuthController: ControllerBase
         {
             HttpOnly = true,
             Secure = true,
-            SameSite = SameSiteMode.Strict
+            SameSite = SameSiteMode.None
         };
 
         Response.Cookies.Append("jwt", token, cookieOptions);
@@ -64,7 +64,7 @@ public class AuthController: ControllerBase
         {
             HttpOnly = true,
             Secure = true,
-            SameSite = SameSiteMode.Strict
+            SameSite = SameSiteMode.None
         };
 
         Response.Cookies.Append("jwt", token, cookieOptions);
@@ -103,7 +103,7 @@ public class AuthController: ControllerBase
         {
             HttpOnly = true,
             Secure = true,
-            SameSite = SameSiteMode.Strict
+            SameSite = SameSiteMode.None
         };
 
         Response.Cookies.Delete("jwt", cookieOptions);
