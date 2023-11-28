@@ -24,6 +24,8 @@ public class SqlDbMigrator: IDbMigrator
         await using IISProjectDbContext dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
         // If you want to delete the database before migration, uncomment the following line
-        await dbContext.Database.EnsureCreatedAsync(cancellationToken);
+        await dbContext.Database.MigrateAsync(cancellationToken);
+
+        await dbContext.SeedDatabaseAsync();
     }
 }

@@ -38,13 +38,13 @@ public static class DeviceSeeds
         UserId = "DVUR01"
     };
 
-    public static void Seed(this ModelBuilder modelBuilder)
+    public static IEnumerable<DeviceEntity> GetDefaultDevices()
     {
-        modelBuilder.Entity<DeviceEntity>().HasData(
-            DefaultDevice with { Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>() },
-            DefaultDevice2 with { Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>() },
-            DefaultDevice3 with { Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>() }
-            );
+        return new List<DeviceEntity>
+        {
+            DefaultDevice with { Measurements = new List<MeasurementEntity>(), Kpis = new List<KpiEntity>() },
+            DefaultDevice2 with { Measurements = new List<MeasurementEntity>(), Kpis = new List<KpiEntity>() },
+            DefaultDevice3 with { Measurements = new List<MeasurementEntity>(), Kpis = new List<KpiEntity>() }
+        };
     }
-
 }

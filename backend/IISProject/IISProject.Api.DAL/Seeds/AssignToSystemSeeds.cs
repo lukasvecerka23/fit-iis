@@ -12,10 +12,11 @@ public static class AssignToSystemSeeds
         SystemId = SystemSeeds.DefaultSystem.Id
     };
     
-    public static void Seed(this ModelBuilder modelBuilder)
+    public static IEnumerable<AssignToSystemEntity> GetDefaultAssignsToSystems()
     {
-        modelBuilder.Entity<AssignToSystemEntity>().HasData(
+        return new List<AssignToSystemEntity>
+        {
             DefaultAssign
-        );
+        };
     }
 }

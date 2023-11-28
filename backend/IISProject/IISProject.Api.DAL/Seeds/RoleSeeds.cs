@@ -23,12 +23,13 @@ public static class RoleSeeds
         Name = "Broker"
     };
     
-    public static void Seed(this ModelBuilder modelBuilder)
+    public static IEnumerable<RoleEntity> GetDefaultRoles()
     {
-        modelBuilder.Entity<RoleEntity>().HasData(
-            UserRole with {Users = Array.Empty<UserEntity>()},
-            AdminRole with {Users = Array.Empty<UserEntity>()},
-            BrokerRole with {Users = Array.Empty<UserEntity>()}
-        );
+        return new List<RoleEntity>
+        {
+            UserRole with {Users = new List<UserEntity>()},
+            AdminRole with {Users = new List<UserEntity>()},
+            BrokerRole with {Users = new List<UserEntity>()}
+        };
     }
 }

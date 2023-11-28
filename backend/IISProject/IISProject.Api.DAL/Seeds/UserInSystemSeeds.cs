@@ -36,15 +36,15 @@ public static class UserInSystemSeeds
         SystemId = SystemSeeds.DefaultSystem4.Id
 
     };
-    
-    public static void Seed(this ModelBuilder modelBuilder)
+
+    public static IEnumerable<UserInSystemEntity> GetDefaultUserInSystems()
     {
-        modelBuilder.Entity<UserInSystemEntity>().HasData(
+        return new List<UserInSystemEntity>
+        {
             DefaultUserInSystem,
             DefaultUserInSystem2,
             DefaultUserInSystem3,
             DefaultUserInSystem4
-        );
+        };
     }
-
 }

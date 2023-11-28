@@ -53,13 +53,14 @@ public static class UserSeeds
         return passwordHasher.HashPassword(DefaultUser, password);
     }
     
-    public static void Seed(this ModelBuilder modelBuilder)
+    public static IEnumerable<UserEntity> GetDefaultUsers()
     {
-        modelBuilder.Entity<UserEntity>().HasData(
-            DefaultUser with {UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), Kpis = Array.Empty<KpiEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>()},
-            AdminUser with {UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), Kpis = Array.Empty<KpiEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>()},
-            BrokerUser with {UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), Kpis = Array.Empty<KpiEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>()},
-            DefaultUser2 with {UserInSystems = Array.Empty<UserInSystemEntity>(), Devices = Array.Empty<DeviceEntity>(), Kpis = Array.Empty<KpiEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>()}
-        );
+        return new List<UserEntity>
+        {
+            DefaultUser with {UserInSystems = new List<UserInSystemEntity>(), Devices = new List<DeviceEntity>(), Kpis = new List<KpiEntity>(), AssignsToSystems = new List<AssignToSystemEntity>()},
+            AdminUser with {UserInSystems = new List<UserInSystemEntity>(), Devices = new List<DeviceEntity>(), Kpis = new List<KpiEntity>(), AssignsToSystems = new List<AssignToSystemEntity>()},
+            BrokerUser with {UserInSystems = new List<UserInSystemEntity>(), Devices = new List<DeviceEntity>(), Kpis = new List<KpiEntity>(), AssignsToSystems = new List<AssignToSystemEntity>()},
+            DefaultUser2 with {UserInSystems = new List<UserInSystemEntity>(), Devices = new List<DeviceEntity>(), Kpis = new List<KpiEntity>(), AssignsToSystems = new List<AssignToSystemEntity>()}
+        };
     }
 }

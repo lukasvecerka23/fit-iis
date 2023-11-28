@@ -22,12 +22,13 @@ public static class ParameterSeeds
         UpperLimit = 10.0,
         DeviceTypeId = DeviceTypeSeeds.DefaultDeviceType.Id
     };
-
-    public static void Seed(this ModelBuilder modelBuilder)
+    
+    public static IEnumerable<ParameterEntity> GetDefaultParameters()
     {
-        modelBuilder.Entity<ParameterEntity>().HasData(
-            DefaultParameter with { Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>() },
-            DefaultParameter2 with { Measurements = Array.Empty<MeasurementEntity>(), Kpis = Array.Empty<KpiEntity>() }
-        );
+        return new List<ParameterEntity>
+        {
+            DefaultParameter with { Measurements = new List<MeasurementEntity>(), Kpis = new List<KpiEntity>() },
+            DefaultParameter2 with { Measurements = new List<MeasurementEntity>(), Kpis = new List<KpiEntity>() }
+        };
     }
 }

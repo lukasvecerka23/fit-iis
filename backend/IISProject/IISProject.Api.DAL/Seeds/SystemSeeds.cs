@@ -37,13 +37,14 @@ public static class SystemSeeds
         CreatorId = UserSeeds.DefaultUser2.Id
     };
     
-    public static void Seed(this ModelBuilder modelBuilder)
+    public static IEnumerable<SystemEntity> GetDefaultSystems()
     {
-        modelBuilder.Entity<SystemEntity>().HasData(
-            DefaultSystem with { Devices = Array.Empty<DeviceEntity>(), UsersInSystem = Array.Empty<UserInSystemEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>() },
-            DefaultSystem2 with { Devices = Array.Empty<DeviceEntity>(), UsersInSystem = Array.Empty<UserInSystemEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>() },
-            DefaultSystem3 with { Devices = Array.Empty<DeviceEntity>(), UsersInSystem = Array.Empty<UserInSystemEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>() },
-            DefaultSystem4 with { Devices = Array.Empty<DeviceEntity>(), UsersInSystem = Array.Empty<UserInSystemEntity>(), AssignsToSystems = Array.Empty<AssignToSystemEntity>() }
-        );
+        return new List<SystemEntity>
+        {
+            DefaultSystem with { Devices = new List<DeviceEntity>(), UsersInSystem = new List<UserInSystemEntity>(), AssignsToSystems = new List<AssignToSystemEntity>() },
+            DefaultSystem2 with { Devices = new List<DeviceEntity>(), UsersInSystem = new List<UserInSystemEntity>(), AssignsToSystems = new List<AssignToSystemEntity>() },
+            DefaultSystem3 with { Devices = new List<DeviceEntity>(), UsersInSystem = new List<UserInSystemEntity>(), AssignsToSystems = new List<AssignToSystemEntity>() },
+            DefaultSystem4 with { Devices = new List<DeviceEntity>(), UsersInSystem = new List<UserInSystemEntity>(), AssignsToSystems = new List<AssignToSystemEntity>() }
+        };
     }
 }

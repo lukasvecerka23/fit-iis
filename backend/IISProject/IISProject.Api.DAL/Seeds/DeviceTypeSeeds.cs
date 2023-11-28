@@ -10,14 +10,15 @@ public static class DeviceTypeSeeds
         Id = Guid.Parse("C7BEC5C9-736D-4CD3-A75E-BB2F45FBCE51"),
         Name = "Senzor teploty",
     };
-
-    public static void Seed(this ModelBuilder modelBuilder)
+    
+    public static IEnumerable<DeviceTypeEntity> GetDefaultDeviceTypes()
     {
-        modelBuilder.Entity<DeviceTypeEntity>().HasData(
+        return new List<DeviceTypeEntity>
+        {
             DefaultDeviceType with
             {
-                Devices = Array.Empty<DeviceEntity>(), Parameters = Array.Empty<ParameterEntity>()
+                Devices = new List<DeviceEntity>(), Parameters = new List<ParameterEntity>()
             }
-        );
+        };
     }
 }

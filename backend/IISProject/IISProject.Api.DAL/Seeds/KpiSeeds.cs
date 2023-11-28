@@ -39,13 +39,13 @@ public static class KpiSeeds
         Value = 10
     };
     
-    
-    public static void Seed(this ModelBuilder modelBuilder)
+    public static IEnumerable<KpiEntity> GetDefaultKpis()
     {
-        modelBuilder.Entity<KpiEntity>().HasData(
+        return new List<KpiEntity>
+        {
             DefaultKpi,
             DefaultKpi2,
             DefaultKpi3
-        );
+        };
     }
 }

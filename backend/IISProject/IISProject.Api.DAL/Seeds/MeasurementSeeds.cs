@@ -23,11 +23,12 @@ public static class MeasurementSeeds
         ParameterId = ParameterSeeds.DefaultParameter.Id
     };
     
-    public static void Seed(this ModelBuilder modelBuilder)
+    public static IEnumerable<MeasurementEntity> GetDefaultMeasurements()
     {
-        modelBuilder.Entity<MeasurementEntity>().HasData(
+        return new List<MeasurementEntity>
+        {
             DefaultMeasurement,
             DefaultMeasurement2
-        );
+        };
     }
 }

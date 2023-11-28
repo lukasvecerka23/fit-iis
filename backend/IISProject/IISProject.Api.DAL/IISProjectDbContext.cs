@@ -102,19 +102,78 @@ public class IISProjectDbContext : DbContext
                 .WithOne(i => i.User)
                 .OnDelete(DeleteBehavior.Cascade);
         });
+    }
 
-        if (_seedDemoData)
+    public async Task SeedDatabaseAsync()
+    {
+        if (!this.Roles.Any())
         {
-            DeviceSeeds.Seed(modelBuilder);
-            DeviceTypeSeeds.Seed(modelBuilder);
-            KpiSeeds.Seed(modelBuilder);
-            ParameterSeeds.Seed(modelBuilder);
-            RoleSeeds.Seed(modelBuilder);
-            SystemSeeds.Seed(modelBuilder);
-            UserSeeds.Seed(modelBuilder);
-            UserInSystemSeeds.Seed(modelBuilder);
-            AssignToSystemSeeds.Seed(modelBuilder);
+            // Add seed data for Roles
+            this.Roles.AddRange(RoleSeeds.GetDefaultRoles());
+            await this.SaveChangesAsync();
         }
         
+        if (!this.Users.Any())
+        {
+            // Add seed data for Users
+            this.Users.AddRange(UserSeeds.GetDefaultUsers());
+            await this.SaveChangesAsync();
+        }
+        
+        if (!this.Systems.Any())
+        {
+            // Add seed data for Systems
+            this.Systems.AddRange(SystemSeeds.GetDefaultSystems());
+            await this.SaveChangesAsync();
+        }
+        
+        if (!this.UserInSystems.Any())
+        {
+            // Add seed data for UserInSystems
+            this.UserInSystems.AddRange(UserInSystemSeeds.GetDefaultUserInSystems());
+            await this.SaveChangesAsync();
+        }
+        
+        if (!this.AssignsToSystems.Any())
+        {
+            // Add seed data for AssignsToSystems
+            this.AssignsToSystems.AddRange(AssignToSystemSeeds.GetDefaultAssignsToSystems());
+            await this.SaveChangesAsync();
+        }
+        
+        if (!this.DeviceTypes.Any())
+        {
+            // Add seed data for DeviceTypes
+            this.DeviceTypes.AddRange(DeviceTypeSeeds.GetDefaultDeviceTypes());
+            await this.SaveChangesAsync();
+        }
+        
+        if (!this.Devices.Any())
+        {
+            // Add seed data for Devices
+            this.Devices.AddRange(DeviceSeeds.GetDefaultDevices());
+            await this.SaveChangesAsync();
+        }
+        
+        if (!this.Parameters.Any())
+        {
+            // Add seed data for Parameters
+            this.Parameters.AddRange(ParameterSeeds.GetDefaultParameters());
+            await this.SaveChangesAsync();
+        }
+        
+        if (!this.Kpis.Any())
+        {
+            // Add seed data for Kpis
+            this.Kpis.AddRange(KpiSeeds.GetDefaultKpis());
+            await this.SaveChangesAsync();
+        }
+        
+        if (!this.Measurements.Any())
+        {
+            // Add seed data for Measurements
+            this.Measurements.AddRange(MeasurementSeeds.GetDefaultMeasurements());
+            await this.SaveChangesAsync();
+        }
     }
 }
