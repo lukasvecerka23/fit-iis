@@ -74,7 +74,7 @@ public class AuthController: ControllerBase
     private string GenerateJwtToken(UserDetailModel user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_configuration["JwtConfig:Secret"]!);
+        var key = Encoding.ASCII.GetBytes(_configuration["JwtConfig_Secret"]!);
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -86,8 +86,8 @@ public class AuthController: ControllerBase
         {
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddHours(6), // Or any time frame you see fit
-            Issuer = _configuration["JwtConfig:Issuer"],
-            Audience = _configuration["JwtConfig:Audience"],
+            Issuer = _configuration["JwtConfig_Issuer"],
+            Audience = _configuration["JwtConfig_Audience"],
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 
