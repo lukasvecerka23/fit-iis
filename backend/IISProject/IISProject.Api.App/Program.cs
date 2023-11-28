@@ -43,9 +43,9 @@ builder.Services.AddAuthentication(x =>
     };
     x.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidIssuer = builder.Configuration["JwtConfig:Issuer"],
-        ValidAudience = builder.Configuration["JwtConfig:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtConfig:Secret"]!)),
+        ValidIssuer = builder.Configuration["JwtConfig_Issuer"],
+        ValidAudience = builder.Configuration["JwtConfig_Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtConfig_Secret"]!)),
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
@@ -90,7 +90,7 @@ void ConfigureCors(IServiceCollection serviceCollection, IConfiguration configur
     serviceCollection.AddCors(options =>
     {
         options.AddDefaultPolicy(o =>
-            o.WithOrigins(configuration["Cors:AllowedOrigins"] ?? "")
+            o.WithOrigins(configuration["Cors_AllowedOrigins"] ?? "")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials());
@@ -99,7 +99,7 @@ void ConfigureCors(IServiceCollection serviceCollection, IConfiguration configur
 
 void ConfigureDependencies(IServiceCollection serviceCollection, IConfiguration configuration)
 {
-    var connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new ArgumentException("The connection string is missing");
+    var connectionString = configuration["ConnectionStrings_DefaultConnection"] ?? throw new ArgumentException("The connection string is missing");
     serviceCollection.AddInstaller<ApiDALInstaller>(connectionString);
     serviceCollection.AddInstaller<ApiBLInstaller>();
 }
